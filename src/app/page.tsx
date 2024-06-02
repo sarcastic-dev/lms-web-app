@@ -1,11 +1,12 @@
-"use client"
+import React from "react";
 
-import AuthPage from "./components/Signup/page";
-
-export default function Home() {
+const page = () => {
   return (
-   <>
-   <AuthPage />
-   </>
+    <div className="w-full h-screen flex justify-center items-center">
+      This page will show tha hero section page aur login logout button to
+      redirect there!!
+    </div>
   );
-}
+};
+
+export default page;
