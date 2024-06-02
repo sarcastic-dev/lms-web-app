@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProfileSelect from '../profileselect/page';
+import ProfileCreation from '../createprofile/page';
 
 interface OTPComponentProps {
   input: string;
@@ -35,13 +36,15 @@ const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}
 
   const handleOTPSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const otpValue = otp.join('');
+    console.log('OTP submitted:', otpValue);
     setSubmitted(true); // Set submitted to true to render ProfileSelect component
     onSubmitOTP(); // Call parent function to handle OTP submission
   };
 
   // Render ProfileSelect component if submitted is true
   if (submitted) {
-    return <ProfileSelect />;
+    return <ProfileCreation />;
   }
 
   return (
