@@ -3,7 +3,7 @@ import React from 'react'
 const FatherInfo = () => {
   return (
     <div>
-      
+      FatherInfo
     </div>
   )
 }

@@ -3,6 +3,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, CircleUser, CircleUserRoundIcon, ClipboardPlus, GraduationCap, Info, LocateFixed, LucideIcon, MapPin, Shield } from "lucide-react";
 import { IconProps, StepProps, StepperProps } from "@/types";
+import BasicInfo from "@/components/StudentRegistration/BasicInfo";
+import AddressInfo from "@/components/StudentRegistration/AddressInfo";
+import FatherInfo from "@/components/StudentRegistration/FatherInfo";
+import MotherInfo from "@/components/StudentRegistration/MotherInfo";
+import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
+import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
+import MedicalInfo from "@/components/StudentRegistration/Medical";
 
 
 
@@ -16,30 +23,13 @@ export default function Page() {
           <Stepper step={step} />
         </div>
         <div className="px-8 pb-8">
-          {step === 1 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-slate-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-slate-100" />
-              <div className="h-4 rounded bg-slate-100" />
-              <div className="h-4 w-4/6 rounded bg-slate-100" />
-            </div>
-          </div>}
-          {step === 2 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-red-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-red-100" />
-              <div className="h-4 rounded bg-red-100" />
-              <div className="h-4 w-4/6 rounded bg-red-100" />
-            </div>
-          </div>}
-          {step === 3 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-blue-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-blue-100" />
-              <div className="h-4 rounded bg-blue-100" />
-              <div className="h-4 w-4/6 rounded bg-blue-100" />
-            </div>
-          </div>}
+          {step === 1 && <BasicInfo/>}
+          {step === 2 && <AddressInfo/>}
+          {step === 3 && <FatherInfo/>}
+          {step === 4 && <MotherInfo/>}
+          {step === 5 && <GuardianInfo/>}
+          {step === 6 && <AcademicInfo/>}
+          {step === 7 && <MedicalInfo/>}
 
           <div className="mt-10 flex justify-between">
             <button

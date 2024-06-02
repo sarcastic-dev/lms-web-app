@@ -1,6 +1,6 @@
 import React from "react";
 
-import AuthPage from "../app/components/Signup/page";
+import AuthPage from "@/components/Signup/page";
 
 export default function Home() {
   return (
