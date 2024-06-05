@@ -1,78 +1,88 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { complex, motion } from "framer-motion";
 import {
+	BadgePlus,
+	BriefcaseBusiness,
 	ChevronRight,
 	CircleUser,
 	CircleUserRoundIcon,
 	ClipboardPlus,
 	GraduationCap,
+	History,
 	Info,
+	Landmark,
 	LocateFixed,
+	LucideIcon,
+	MapPin,
+	NotebookTabs,
 	Shield,
-	Users,
 } from "lucide-react";
 import { IconProps, StepProps, StepperProps } from "@/types";
-import BasicInfo from "@/components/StudentRegistration/BasicInfo";
-import AddressInfo from "@/components/StudentRegistration/AddressInfo";
-import FatherInfo from "@/components/StudentRegistration/FatherInfo";
-import MotherInfo from "@/components/StudentRegistration/MotherInfo";
-import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
-import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
-import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
+import BasicInfo from "@/components/StaffRegistration/BasicInfo";
+import AddressInfo from "@/components/StaffRegistration/AddressInfo";
+import EmploymentDetails from "@/components/StaffRegistration/EmploymentDetails";
+import AdditionalDetails from "@/components/StaffRegistration/AdditionalDetails";
+import PreviousExperience from "@/components/StaffRegistration/PreviousExperience";
+import BankDetails from "@/components/StaffRegistration/BankDetails";
 
 export default function Page() {
 	const [step, setStep] = useState<number>(1);
 
 	return (
-		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
-			<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
-				<Users size={35} strokeWidth='3' />
-				<h1 className='text-4xl'>Student Registration</h1>
-			</div>
-			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
-				<div className='flex justify-between rounded p-8'>
-					<Stepper step={step} />
+		<>
+			<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
+				<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
+					<NotebookTabs size={35} strokeWidth={3}/>
+					<h1 className='text-4xl'>Staff Registration</h1>
 				</div>
-				<div className='px-8 pb-8'>
-					{step === 1 && <BasicInfo />}
-					{step === 2 && <AddressInfo />}
-					{step === 3 && <FatherInfo />}
-					{step === 4 && <MotherInfo />}
-					{step === 5 && <GuardianInfo />}
-					{step === 6 && <AcademicInfo />}
-					{step === 7 && <MedicalInfo />}
-					{step === 8 && "Hello"}
+				<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
+					<div className='flex justify-between rounded p-8'>
+						<Stepper step={step} />
+					</div>
+					<div className='px-8 pb-8'>
+						{step === 1 && <BasicInfo />}
+						{step === 2 && <AddressInfo />}
+						{step === 3 && <EmploymentDetails />}
+						{step === 4 && <AdditionalDetails />}
+						{step === 5 && <PreviousExperience />}
+						{step === 6 && <BankDetails />}
+						{step === 7 && "Hello"}
 
-					<div className='mt-10 flex justify-between'>
-						<button
-							onClick={() => setStep(step < 2 ? step : step - 1)}
-							className={`${
-								step >= 8
-									? "pointer-events-none opacity-50"
-									: ""
-							} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
-						>
-							Back
-						</button>
-						<button
-							onClick={() => setStep(step >= 8 ? step : step + 1)}
-							className={`${
-								step >= 8
-									? "pointer-events-none opacity-50"
-									: ""
-							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
-						>
-							{step === 7
-								? "Finish"
-								: step === 8
-								? "Finish"
-								: "Next"}
-						</button>
+						<div className='mt-10 flex justify-between'>
+							<button
+								onClick={() =>
+									setStep(step < 2 ? step : step - 1)
+								}
+								className={`${
+									step >= 7
+										? "pointer-events-none opacity-50"
+										: ""
+								} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
+							>
+								Back
+							</button>
+							<button
+								onClick={() =>
+									setStep(step >= 7 ? step : step + 1)
+								}
+								className={`${
+									step >= 7
+										? "pointer-events-none opacity-50"
+										: ""
+								} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
+							>
+								{step === 6
+									? "Finish"
+									: step === 7
+									? "Finish"
+									: "Next"}
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
@@ -80,11 +90,14 @@ function Stepper({ step }: StepperProps) {
 	const steps = [
 		{ number: 1, description: "Basic Info", icon: Info },
 		{ number: 2, description: "Address Info", icon: LocateFixed },
-		{ number: 3, description: "Father’s Info", icon: CircleUser },
-		{ number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
-		{ number: 5, description: "Guardian’s Info", icon: Shield },
-		{ number: 6, description: "Academic Info", icon: GraduationCap },
-		{ number: 7, description: "Medical Info", icon: ClipboardPlus },
+		{
+			number: 3,
+			description: "Employment Details",
+			icon: BriefcaseBusiness,
+		},
+		{ number: 4, description: "Additional Details", icon: BadgePlus },
+		{ number: 5, description: "Previous Experience", icon: History },
+		{ number: 6, description: "Bank Details", icon: Landmark },
 	];
 
 	return (

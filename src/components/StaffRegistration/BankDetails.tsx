@@ -1,99 +1,69 @@
-import React from "react";
+import React, { ChangeEvent, FocusEvent, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 
-const AddressInfo = () => {
+const PreviousExperience = () => {
 	return (
 		<div className='flex justify-center my-8'>
 			<div className='grid grid-cols-3 gap-8 w-3/4 items-center tracking-wide'>
-				{/* Address Line 1 */}
+				{/* Bank Name */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='addr_1'
+						htmlFor='bank_name'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Address Line 1
+						Bank Name
 					</Label>
 					<Input
-						id='addr_1'
+						id='bank_name'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Abc near xyz'
+						placeholder='ABC Bank'
 					/>
 				</div>
-				{/* Address Line 2 */}
+				{/* Bank Account Number */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='addr_2'
+						htmlFor='account_no'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Address Line 2
+						Bank Account Number
 					</Label>
 					<Input
-						id='addr_2'
+						id='account_no'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Flat/House No, Landmark'
+						placeholder='9898 98XXXX 98XXXX'
 					/>
 				</div>
-				{/* City/Town */}
+				{/* IFSC Code */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='city'
+						htmlFor='ifsc_code'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						City/Town
+						IFSC Code
 					</Label>
 					<Input
-						id='city'
+						id='ifsc_code'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Mumbai'
+						placeholder='ABC0909021'
 					/>
 				</div>
-				{/* State */}
+				{/* Account Holder's Name */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='state'
+						htmlFor='holder_name'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						State
+						Account Holder&apos;s Name
 					</Label>
 					<Input
-						id='state'
+						id='holder_name'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Maharashtra'
-					/>
-				</div>
-				{/* PIN Code */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='pin_code'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						PIN Code
-					</Label>
-					<Input
-						id='pin_code'
-						type='number'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='123456'
-					/>
-				</div>
-				{/* Country */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='country'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Country
-					</Label>
-					<Input
-						id='country'
-						type='text'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='India'
+						placeholder='John Doe'
 					/>
 				</div>
 			</div>
@@ -101,4 +71,4 @@ const AddressInfo = () => {
 	);
 };
 
-export default AddressInfo;
+export default PreviousExperience;

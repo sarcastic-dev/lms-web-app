@@ -1,3 +1,4 @@
+"use client";
 import React, { ReactElement, FocusEvent, ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -15,9 +16,9 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Select,
 	SelectContent,
-	SelectGroup,
+
 	SelectItem,
-	SelectLabel,
+
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
@@ -28,6 +29,7 @@ dayjs.extend(customParseFormat);
 const dateFormat = "YYYY-MM-DD";
 
 const BasicInfo = (): ReactElement => {
+	const [selectedValue, setSelectedValue] = useState("");
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day"); // Current date as max date
 
@@ -54,20 +56,23 @@ const BasicInfo = (): ReactElement => {
 		}
 	};
 
+	const handleSelectChange = (value: string) => {
+		setSelectedValue(value);
+	};
 	return (
 		<div className='flex justify-center my-8'>
 			<div className='grid grid-cols-3 gap-8 w-3/4 items-center tracking-wide'>
 				{/* Input Number */}
 				<div className='flex flex-col gap-2 '>
 					<Label
-						htmlFor='student_mobile_number'
+						htmlFor='employee_mobile_number'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Student Mobile Number
+						Employee Mobile Number
 					</Label>
 					<div className='relative tracking-wider'>
 						<Input
-							id='student_mobile_number'
+							id='employee_mobile_number'
 							type='tel'
 							className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 '
 							value={inputValue}
@@ -87,7 +92,7 @@ const BasicInfo = (): ReactElement => {
 						htmlFor='email'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Student Email ID
+						Employee Email ID
 					</Label>
 					<Input
 						id='email'
@@ -182,39 +187,6 @@ const BasicInfo = (): ReactElement => {
 					/>
 				</div>
 
-				{/* Date of Admission */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='admission_date'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Date of Admission
-					</Label>
-					<DatePicker
-						id='admission_date'
-						size='large'
-						className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-						format={dateFormat}
-						disabledDate={disabledDate}
-						placeholder='Select Date'
-					/>
-				</div>
-
-				{/* Class Roll Number */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='class_roll_number'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Class Roll Number
-					</Label>
-					<Input
-						id='class_roll_number'
-						type='number'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-						placeholder='Roll Number'
-					/>
-				</div>
 				{/* Date of Birth */}
 				<div className='flex flex-col gap-2 '>
 					<Label
@@ -252,17 +224,14 @@ const BasicInfo = (): ReactElement => {
 							/>
 						</SelectTrigger>
 						<SelectContent>
-							<SelectGroup>
-								<SelectLabel>Gender</SelectLabel>
-								{Gender.map((item, index) => (
-									<SelectItem
-										key={index}
-										value={item.value}
-									>
-										{item.option}
-									</SelectItem>
-								))}
-							</SelectGroup>
+							{Gender.map((item, index) => (
+								<SelectItem
+									key={index}
+									value={item.value}
+								>
+									{item.option}
+								</SelectItem>
+							))}
 						</SelectContent>
 					</Select>
 				</div>
@@ -286,17 +255,46 @@ const BasicInfo = (): ReactElement => {
 							/>
 						</SelectTrigger>
 						<SelectContent>
-							<SelectGroup>
-								<SelectLabel>Blood Group</SelectLabel>
-								{BloodGroups.map((item, index) => (
-									<SelectItem
-										key={index}
-										value={item.value}
-									>
-										{item.option}
-									</SelectItem>
-								))}
-							</SelectGroup>
+							{BloodGroups.map((item, index) => (
+								<SelectItem
+									key={index}
+									value={item.value}
+								>
+									{item.option}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+				{/* User Role */}
+				<div className='flex flex-col gap-2'>
+					<Label
+						htmlFor='user_roll'
+						className='pl-1 text-blue-500 font-semibold'
+					>
+						User Role
+					</Label>
+					<Select onValueChange={handleSelectChange}>
+						<SelectTrigger
+							id='user_roll'
+							className={`border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+								selectedValue
+									? "text-gray-700"
+									: "text-gray-400"
+							}`}
+						>
+							<SelectValue
+								placeholder='Select Role'
+								className={`${
+									selectedValue
+										? "text-gray-700"
+										: "text-gray-400"
+								}`}
+							/>
+						</SelectTrigger>
+						<SelectContent className='text-gray-700'>
+							<SelectItem value='owner'>Owner</SelectItem>
+							<SelectItem value='teacher'>Teacher</SelectItem>
 						</SelectContent>
 					</Select>
 				</div>

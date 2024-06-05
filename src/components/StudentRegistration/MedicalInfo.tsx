@@ -1,99 +1,129 @@
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
-const AddressInfo = () => {
+dayjs.extend(customParseFormat);
+
+const dateFormat = "YYYY-MM-DD";
+
+const MedicalInfo = () => {
+	const minDate = dayjs("2019-08-01", dateFormat);
+	const maxDate = dayjs().endOf("day"); // Current date as max date
+
+	const disabledDate = (current: any) => {
+		// Disable dates before minDate and after maxDate
+		return current && (current < minDate || current > maxDate);
+	};
 	return (
 		<div className='flex justify-center my-8'>
 			<div className='grid grid-cols-3 gap-8 w-3/4 items-center tracking-wide'>
-				{/* Address Line 1 */}
+				{/* Wight */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='addr_1'
+						htmlFor='wight'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Address Line 1
+						Wight (Kg)
 					</Label>
 					<Input
-						id='addr_1'
+						id='wight'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Abc near xyz'
+						placeholder='60'
 					/>
 				</div>
-				{/* Address Line 2 */}
+				{/* Height */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='addr_2'
+						htmlFor='height'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						Address Line 2
+						Height (cm)
 					</Label>
 					<Input
-						id='addr_2'
+						id='height'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Flat/House No, Landmark'
+						placeholder='162'
 					/>
 				</div>
-				{/* City/Town */}
+				{/* Body Mass Index */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='city'
+						htmlFor='bmi'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						City/Town
+						Body Mass Index
 					</Label>
 					<Input
-						id='city'
+						id='bmi'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Mumbai'
+						placeholder='24.56'
 					/>
 				</div>
-				{/* State */}
+				{/* Pulse Rate */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='state'
+						htmlFor='pulse'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						State
+						Pulse Rate
 					</Label>
 					<Input
-						id='state'
+						id='pulse'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='Maharashtra'
+						placeholder='72 BPM'
 					/>
 				</div>
-				{/* PIN Code */}
+				{/* Haemoglobin (Hb) */}
 				<div className='flex flex-col gap-2'>
 					<Label
-						htmlFor='pin_code'
+						htmlFor='hb'
 						className='pl-1 text-blue-500 font-semibold'
 					>
-						PIN Code
+						Haemoglobin (Hb)
 					</Label>
 					<Input
-						id='pin_code'
-						type='number'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='123456'
-					/>
-				</div>
-				{/* Country */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='country'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Country
-					</Label>
-					<Input
-						id='country'
+						id='hb'
 						type='text'
 						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='India'
+						placeholder='16'
+					/>
+				</div>
+				{/* Allergies */}
+				<div className='flex flex-col gap-2'>
+					<Label
+						htmlFor='allergies'
+						className='pl-1 text-blue-500 font-semibold'
+					>
+						Allergies
+					</Label>
+					<Input
+						id='allergies'
+						type='text'
+						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
+						placeholder='"Asthma" , "Soy" etc.'
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<Label
+						htmlFor='issued_date'
+						className='pl-1 text-blue-500 font-semibold'
+					>
+						Issued Date
+					</Label>
+					<DatePicker
+						id='issued_date'
+						size='large'
+						className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+						format={dateFormat}
+						disabledDate={disabledDate}
+						placeholder='Select Date'
 					/>
 				</div>
 			</div>
@@ -101,4 +131,4 @@ const AddressInfo = () => {
 	);
 };
 
-export default AddressInfo;
+export default MedicalInfo;
