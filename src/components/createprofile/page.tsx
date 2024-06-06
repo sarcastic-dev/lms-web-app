@@ -1,111 +1,184 @@
-"use client"
-import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CreateInstitute from '../createinstitute/page';
-// import { useRouter } from 'next/navigation';
 
-const ProfileCreation: React.FC = () => {
+type Field = 'name' | 'email' | 'phone' | 'password';
 
+interface ProfileCreationProps {
+  input: string;
+}
+
+const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; username?: string }>({});
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phoneNumber?: string; password?: string }>({});
   const [showInstituteCreation, setShowInstituteCreation] = useState(false);
-  // const router = useRouter();
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+  const [isFocused, setIsFocused] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    password: false
+  });
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (
+      name.trim() &&
+      password.trim() &&
+      (isEmail ? input.trim() : phoneNumber.trim() ? input.trim() : email.trim())
+    ) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [name, email, phoneNumber, password, input, isEmail]);
+
+  const handleFocus = (field: Field) => {
+    setIsFocused((prev) => ({ ...prev, [field]: true }));
+  };
+
+  const handleBlur = (field: Field, value: string) => {
+    if (value.trim() === '') {
+      setIsFocused((prev) => ({ ...prev, [field]: false }));
+    }
+  };
 
   const validateForm = () => {
-    const newErrors: { name?: string; username?: string } = {};
+    const newErrors: { name?: string; email?: string; phoneNumber?: string; password?: string } = {};
 
     if (!name.trim()) {
       newErrors.name = 'Name is required.';
     }
 
-    const usernameRegex = /^[a-zA-Z0-9._-]{6,20}$/;
-    if (!username.trim()) {
-      newErrors.username = 'Username is required.';
-    } else if (!usernameRegex.test(username)) {
-      newErrors.username = 'Username must be 6-20 characters long and can only include letters, numbers, dots, dashes, and underscores.';
+    if (!password.trim()) {
+      newErrors.password = 'Password is required.';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters long.';
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validateForm()) {
-      // Proceed with form submission
-      console.log('Form submitted:', { name, username });
-
-       // Transition to the next step (create institute)
-      //  router.push("/create-institute")
+      console.log('Form submitted:', { name, email: isEmail ? input : email, phoneNumber: isEmail ? phoneNumber : input, password });
       setShowInstituteCreation(true);
     }
   };
 
   if (showInstituteCreation) {
-    return <CreateInstitute /> // Render the CreateInstitute component
-  };
-
+    return <CreateInstitute />;
+  }
 
   return (
-      <div>
-        <h1 className="text-2xl text-center font-bold mb-3">Account Details</h1>
-        <p className="text-center text-gray-500 mb-6">Please enter your details</p>
-        <div className="flex justify-center mb-8">
-          <div className="relative">
-            <Image
-              src="/profileIcon.png"  // Replace with the actual path to your avatar image
-              alt="Avatar"
-              width={200}
-              height={200}
-              className="w-24 h-24 rounded-full"
-            />
-            <div className="absolute bottom-3 right-3 bg-white p-1 rounded-full border-2">
-              <Image
-                src="/editIconNew.png"  // Replace with the actual path to your edit icon
-                alt="Edit"
-                width={200}
-                height={200}
-                className="w-3 h-3"
-              />
-            </div>
-          </div>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Name<span className="text-red-500"> *</span></label>
+    <div className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-5/6 z-10">
+      <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">Account Details</h1>
+      <p className="text-center text-gray-500 mb-6">Please enter your details</p>
+      <form onSubmit={handleSubmit}>
+        <div className="p-8">
+          <div className="relative mb-4">
+            <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.name || name ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+              Name<span className="text-red-500"> *</span>
+            </label>
             <input
-               type="text"
-               className={`w-full p-4 border rounded-xl bg-slate-100 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-               placeholder="Enter Your Name"
-               value={name}
-               onChange={(e) => setName(e.target.value)}
-               required
+              type="text"
+              className={`w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'} pt-6`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onFocus={() => handleFocus('name')}
+              onBlur={() => handleBlur('name', name)}
+              required
             />
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Username<span className="text-red-500"> *</span></label>
+
+          {isEmail ? (
+            <>
+              <div className="relative mb-4">
+                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.email || email ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  value={input}
+                  disabled
+                />
+              </div>
+              <div className="relative mb-4">
+                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onFocus={() => handleFocus('phone')}
+                  onBlur={() => handleBlur('phone', phoneNumber)}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="relative mb-4">
+                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  value={input}
+                  disabled
+                />
+              </div>
+              <div className="relative mb-4">
+                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.email || email ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => handleFocus('email')}
+                  onBlur={() => handleBlur('email', email)}
+                />
+              </div>
+            </>
+          )}
+
+          <div className="relative mb-4">
+            <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.password || password ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+              Password<span className="text-red-500"> *</span>
+            </label>
             <input
-               type="text"
-               className={`w-full p-4 border rounded-xl bg-slate-100 ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
-               placeholder="Enter Your Username"
-               value={username}
-               onChange={(e) => setUsername(e.target.value)}
-               required
+              type="password"
+              className={`w-full p-2 font-medium pl-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'} pt-6`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => handleFocus('password')}
+              onBlur={() => handleBlur('password', password)}
+              required
             />
-            {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
-          <button
-            type="submit"
-            className="w-full py-2 mt-10 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-          >
-            Create Account
-          </button>
-        </form>
-      </div>
+        </div>
+        <button
+          type="submit"
+          className={`w-96 ml-8 py-2 font-semibold text-blue-500 border-2 border-blue-500 rounded-xl ${
+            isButtonDisabled ? 'bg-white cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+          }`}
+          disabled={isButtonDisabled}
+        >
+          Create Account
+        </button>
+      </form>
+    </div>
   );
 };
 
