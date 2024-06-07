@@ -22,7 +22,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { BloodGroups, Gender } from "@/Constant";
-import { useDispatch } from 'react-redux';
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -39,19 +39,14 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import { setBasicInfoData } from "@/context/studentRegistrationSlice";
-
 
 dayjs.extend(customParseFormat);
 
 const dateFormat = "YYYY-MM-DD";
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const TestComponent = (): ReactElement => {
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
-	const dispatch = useDispatch();
 
 	const disabledDate = (current: any) => {
 		return current && (current < minDate || current > maxDate);
@@ -93,14 +88,12 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 	});
 
 	const onSubmit = (value: BasicInfoSchemaType) => {
-		onNext(value);
+		console.log(value);
 	};
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	return (
 		<div className='flex justify-center my-8'>
-			<div className='w-[90%] tracking-wide'>
+			<div className='w-3/4 tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
@@ -487,7 +480,7 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 						</div>
 						<Button
 							type='submit'
-							className='mt-4 hidden'
+							className='mt-4 '
 						>
 							Submit
 						</Button>

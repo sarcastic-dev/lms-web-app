@@ -10,6 +10,7 @@ import {
 	Info,
 	LocateFixed,
 	Shield,
+	ShieldEllipsis,
 	Users,
 } from "lucide-react";
 import { IconProps, StepProps, StepperProps } from "@/types";
@@ -20,48 +21,15 @@ import MotherInfo from "@/components/StudentRegistration/MotherInfo";
 import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
 import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
 import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
-import { useDispatch, useSelector } from 'react-redux';
-import { setAcademicInfoData, setAddressInfoData, setBasicInfoData, setFatherInfoData, setGuardianInfoData, setMedicalInfoData, setMotherInfoDate } from "@/context/studentRegistrationSlice";
-import { RootState } from "@/context/store";
+import TestComponent from "@/components/StudentRegistration/TestComponent";
 
 export default function Page() {
 	const [step, setStep] = useState<number>(1);
-	const dispatch = useDispatch();
-	const registrationData = useSelector((state: RootState) => state.studentRegistration);
-
-	const handleNext = (data: any) => {
-		if (step === 1) {
-		  dispatch(setBasicInfoData(data)); 
-		}
-		else if (step===2) {
-			dispatch(setAddressInfoData(data));
-		}
-		else if (step===3) {
-			dispatch(setFatherInfoData(data));
-		}
-		else if (step===4) {
-			dispatch(setMotherInfoDate(data));
-		}
-		else if (step===5) {
-			dispatch(setGuardianInfoData(data));
-		}
-		else if (step===6) {
-			dispatch(setAcademicInfoData(data));
-		}
-		else {
-			dispatch(setMedicalInfoData(data))
-		}
-		console.log(registrationData)
-		setStep(step + 1);
-	  };
 
 	return (
 		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
 			<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
-				<Users
-					size={35}
-					strokeWidth='3'
-				/>
+				<Users size={35} strokeWidth='3' />
 				<h1 className='text-4xl'>Student Registration</h1>
 			</div>
 			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
@@ -69,13 +37,13 @@ export default function Page() {
 					<Stepper step={step} />
 				</div>
 				<div className='px-8 pb-8'>
-					{step === 1 && <BasicInfo onNext={handleNext}/>}
-					{step === 2 && <AddressInfo onNext={handleNext}/>}
-					{step === 3 && <FatherInfo onNext={handleNext}/>}
-					{step === 4 && <MotherInfo onNext={handleNext}/>}
-					{step === 5 && <GuardianInfo onNext={handleNext}/>}
-					{step === 6 && <AcademicInfo onNext={handleNext}/>}
-					{step === 7 && <MedicalInfo onNext={handleNext}/>}
+					{step === 1 && <TestComponent />}
+					{step === 2 && <AddressInfo />}
+					{step === 3 && <FatherInfo />}
+					{step === 4 && <MotherInfo />}
+					{step === 5 && <GuardianInfo />}
+					{step === 6 && <AcademicInfo />}
+					{step === 7 && <MedicalInfo />}
 					{step === 8 && "Hello"}
 
 					<div className='mt-10 flex justify-between'>
@@ -90,17 +58,7 @@ export default function Page() {
 							Back
 						</button>
 						<button
-							onClick={() => {
-								// Manually trigger the form submission of the current step
-								document
-									.querySelector("form")
-									?.dispatchEvent(
-										new Event("submit", {
-											cancelable: true,
-											bubbles: true,
-										})
-									);
-							}}
+							onClick={() => setStep(step >= 8 ? step : step + 1)}
 							className={`${
 								step >= 8
 									? "pointer-events-none opacity-50"
@@ -126,7 +84,7 @@ function Stepper({ step }: StepperProps) {
 		{ number: 2, description: "Address Info", icon: LocateFixed },
 		{ number: 3, description: "Father’s Info", icon: CircleUser },
 		{ number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
-		{ number: 5, description: "Guardian’s Info", icon: Shield },
+		{ number: 5, description: "Guardian’s Info", icon: ShieldEllipsis },
 		{ number: 6, description: "Academic Info", icon: GraduationCap },
 		{ number: 7, description: "Medical Info", icon: ClipboardPlus },
 	];

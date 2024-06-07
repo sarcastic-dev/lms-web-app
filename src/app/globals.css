@@ -62,6 +62,15 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    
+    .form-label.text-red-500 {
+      color: #ef4444; /* Red color for error state */
+    }
+    
+    .form-item.has-error .form-label {
+      color: #ef4444; /* Red color for error state */
+    }
+    
 }
 
 @layer utilities {

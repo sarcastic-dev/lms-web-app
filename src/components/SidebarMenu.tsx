@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
 
 interface SidebarMenuProps {
 	sidebarItems: SidebarItems;
@@ -16,6 +17,7 @@ interface SidebarMenuProps {
 
 const SidebarMenu = ({ sidebarItems }: SidebarMenuProps) => {
 	const [open, setOpen] = useState(true);
+	const pathName = usePathname();
 
 	return (
 		<aside
@@ -58,6 +60,7 @@ const SidebarMenu = ({ sidebarItems }: SidebarMenuProps) => {
 									collapsed={!open}
 									className='w-full'
 									label={link.label}
+									variant={pathName === link.href ? 'secondary':'ghost'}
 								>
 									{link.label}
 								</SideButton>
@@ -67,7 +70,7 @@ const SidebarMenu = ({ sidebarItems }: SidebarMenuProps) => {
 				</div>
 			</div>
 			<div className='absolute bottom-4 w-full left-0 px-5'>
-				<Separator className='mb-2 bg-blue-500 shadow' />
+				<Separator className='mb-1 bg-gray-500 shadow' />
 				<Popover>
 					<PopoverTrigger asChild>
 						<Button
