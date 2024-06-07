@@ -126,15 +126,15 @@ const AuthPage: React.FC = () => {
               >
                 {hasAccount ? (
                   <div className="relative w-96 mb-4 mt-6">
-                    <label
-                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out ${
+                    <div
+                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${
                         isPasswordFocused || password
-                          ? "text-xs -top-1 mt-3"
+                          ? "text-xs -top-2 mt-4"
                           : ""
                       }`}
                     >
                       Password
-                    </label>
+                    </div>
                     <input
                       type="password"
                       className="w-full p-2 pt-6 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
@@ -150,13 +150,13 @@ const AuthPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="relative w-96 mb-4 mt-6">
-                    <label
-                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out ${
-                        isFocused || input ? "text-xs -top-1 mt-3" : ""
+                    <div
+                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${
+                        isFocused || input ? "text-xs -top-2 mt-4" : ""
                       }`}
                     >
                       Email Address or Phone Number
-                    </label>
+                    </div>
                     <input
                       type="text"
                       className="w-full p-2 pt-6 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
