@@ -24,7 +24,7 @@ const SideButton = ({ icon: Icon, className, children, collapsed, label, ...prop
                         >
                             {children}
                         </span>
-                    </Button>
+                    </Button>   
                 </TooltipTrigger>
                 {collapsed && (
                     <TooltipContent side='right'>

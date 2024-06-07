@@ -8,8 +8,8 @@ const sidebarItems: SidebarItems= {
   links: [
     {label:"Dashboard", href:"/dashboard", icon:LayoutDashboard},
     {label:"Student Information", href:"/studentRegistration", icon:Users},
-    {label:"Staff Information", href:"/student", icon:User},
-    {label:"Attendance", href:"/student", icon:ClipboardCheck},
+    {label:"Staff Information", href:"/staffRegistration", icon:User},
+    {label:"Attendance", href:"/attendance", icon:ClipboardCheck},
     {label:"Classroom", href:"/student", icon:School2},
     {label:"TimeTable", href:"/", icon:Calendar},
     {label:"Events", href:"/", icon:CalendarClockIcon},
