@@ -1,3 +1,3 @@
-import CreateInstitute from '../../components/createinstitute/page'
+import CreateInstitute from '../../components/CreateInstitute'
 
 export default CreateInstitute;

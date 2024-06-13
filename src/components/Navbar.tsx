@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaBell, FaQuestionCircle, FaPhoneAlt, FaUser, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import Image from 'next/image';
-import ExpandedModal from '../extendedmodal/page';
+import ExpandedModal from '../components/ExtendedModal';
 
 const Navbar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);

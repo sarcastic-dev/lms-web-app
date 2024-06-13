@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpandedCard from '../card/page';
+import ExpandedCard from '../components/Card';
 
 const ExpandedModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
