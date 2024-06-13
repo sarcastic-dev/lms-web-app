@@ -1,232 +1,110 @@
-"use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Pencil, UserPlus } from "lucide-react";
 import {
-	ChevronRight,
-	CircleUser,
-	CircleUserRoundIcon,
-	ClipboardPlus,
-	GraduationCap,
-	Info,
-	LocateFixed,
-	Shield,
-	ShieldEllipsis,
-	Users,
-} from "lucide-react";
-import { IconProps, StepProps, StepperProps } from "@/types";
-import BasicInfo from "@/components/StudentRegistration/BasicInfo";
-import AddressInfo from "@/components/StudentRegistration/AddressInfo";
-import FatherInfo from "@/components/StudentRegistration/FatherInfo";
-import MotherInfo from "@/components/StudentRegistration/MotherInfo";
-import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
-import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
-import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
-import TestComponent from "@/components/StudentRegistration/TestComponent";
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
-export default function Page() {
-	const [step, setStep] = useState<number>(1);
+import columns from "./columns";
+import { DataTable } from "./data-table";
 
+async function getTeacher (){
+	const res = await fetch('https://666945b12e964a6dfed467a7.mockapi.io/api/v1/teachers');
+	const data = await res.json()
+	return data
+}
+
+  
+const page = () => {
+	const data = getTeacher()
 	return (
-		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
-			<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
-				<Users size={35} strokeWidth='3' />
-				<h1 className='text-4xl'>Student Registration</h1>
-			</div>
-			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
-				<div className='flex justify-between rounded p-8'>
-					<Stepper step={step} />
-				</div>
-				<div className='px-8 pb-8'>
-					{step === 1 && <TestComponent />}
-					{step === 2 && <AddressInfo />}
-					{step === 3 && <FatherInfo />}
-					{step === 4 && <MotherInfo />}
-					{step === 5 && <GuardianInfo />}
-					{step === 6 && <AcademicInfo />}
-					{step === 7 && <MedicalInfo />}
-					{step === 8 && "Hello"}
+		<div className='flex flex-col w-full h-screen space-y-8'>
+			<div>
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								href='/'
+								className='font-semibold'
+							>
+								{" "}
+								Dashboard
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
 
-					<div className='mt-10 flex justify-between'>
-						<button
-							onClick={() => setStep(step < 2 ? step : step - 1)}
-							className={`${
-								step >= 8
-									? "pointer-events-none opacity-50"
-									: ""
-							} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
-						>
-							Back
-						</button>
-						<button
-							onClick={() => setStep(step >= 8 ? step : step + 1)}
-							className={`${
-								step >= 8
-									? "pointer-events-none opacity-50"
-									: ""
-							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
-						>
-							{step === 7
-								? "Finish"
-								: step === 8
-								? "Finish"
-								: "Next"}
-						</button>
+						<BreadcrumbItem>
+							<BreadcrumbLink className='font-semibold'>
+								Staff Information
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+					</BreadcrumbList>
+				</Breadcrumb>
+			</div>
+			<div>
+				<h1 className='font-semibold text-2xl'>Staff Directory</h1>
+			</div>
+			<div className='w-full border-b border-dashed border-black'></div>
+			<div>
+				<Tabs defaultValue='teaching'>
+					<div className='flex justify-between items-center'>
+						<TabsList>
+							<TabsTrigger value='teaching'>
+								Teaching Staff
+							</TabsTrigger>
+							<TabsTrigger value='non-teaching'>
+								Non-Teaching Staff
+							</TabsTrigger>
+						</TabsList>
+						<div className='flex gap-3'>
+							<Link href={"/studentRegistration"}>
+								<Button
+									variant={"ghost"}
+									style={{ border: "dashed" }}
+									className=''
+								>
+									<Pencil
+										size={15}
+										className='mr-2'
+									/>{" "}
+									Update Data
+								</Button>
+							</Link>
+							<Button
+								variant={"ghost"}
+								style={{ border: "dashed" }}
+							>
+								<UserPlus
+									size={18}
+									className='mr-2'
+								/>{" "}
+								Add Staff
+							</Button>
+						</div>
 					</div>
-				</div>
+
+					<TabsContent value='teaching'>
+						<DataTable columns={columns} data={data}/>
+					</TabsContent>
+					<TabsContent value='non-teaching'>
+						Change your password here.
+					</TabsContent>
+				</Tabs>
 			</div>
 		</div>
 	);
-}
+};
 
-function Stepper({ step }: StepperProps) {
-	const steps = [
-		{ number: 1, description: "Basic Info", icon: Info },
-		{ number: 2, description: "Address Info", icon: LocateFixed },
-		{ number: 3, description: "Father’s Info", icon: CircleUser },
-		{ number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
-		{ number: 5, description: "Guardian’s Info", icon: ShieldEllipsis },
-		{ number: 6, description: "Academic Info", icon: GraduationCap },
-		{ number: 7, description: "Medical Info", icon: ClipboardPlus },
-	];
+export default page;
+/*
 
-	return (
-		<div className='flex w-full items-center space-x-4'>
-			{steps.map((s, index) => (
-				<div
-					key={s.number}
-					className='flex items-center'
-				>
-					<Step
-						step={s.number}
-						currentStep={step}
-						description={s.description}
-						icon={s.icon}
-					/>
-					{index < steps.length - 1 && (
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ delay: 0.2 }}
-							className='mx-2 text-slate-400'
-						>
-							<ChevronRight
-								color={
-									step > s.number
-										? "var(--blue-500)"
-										: "var(--slate-400)"
-								}
-							/>
-						</motion.div>
-					)}
-				</div>
-			))}
-		</div>
-	);
-}
-
-function Step({ step, currentStep, description, icon: Icon }: StepProps) {
-	let status =
-		currentStep === step
-			? "active"
-			: currentStep < step
-			? "inactive"
-			: "complete";
-
-	return (
-		<motion.div
-			animate={status}
-			className='flex items-center space-x-2'
-		>
-			<motion.div
-				variants={{
-					active: {
-						scale: 1,
-						transition: {
-							delay: 0,
-							duration: 0.2,
-						},
-					},
-					complete: {
-						scale: 1.25,
-					},
-				}}
-				transition={{
-					duration: 0.6,
-					delay: 0.2,
-					type: "tween",
-					ease: "circOut",
-				}}
-				className='relative'
-			>
-				<div className='absolute inset-0 rounded-full bg-blue-200'></div>
-				<motion.div
-					initial={false}
-					variants={{
-						inactive: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--slate-200)",
-							color: "var(--slate-400)",
-						},
-						active: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-						complete: {
-							backgroundColor: "var(--blue-500)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-					}}
-					transition={{ duration: 0.2 }}
-					className={`relative flex h-6 w-6 items-center justify-center rounded-full border-1 font-semibold`}
-				>
-					<div className='flex items-center justify-center'>
-						{status === "complete" ? (
-							<CheckIcon className='h-3.5 w-3.5 text-white' />
-						) : (
-							<Icon />
-						)}
-					</div>
-				</motion.div>
-			</motion.div>
-
-			<motion.div
-				variants={{
-					complete: {
-						color: "var(--blue-500)",
-					},
-				}}
-				className={`ml-2 text-sm font-medium complete`}
-			>
-				{description}
-			</motion.div>
-		</motion.div>
-	);
-}
-
-function CheckIcon({ className }: IconProps) {
-	return (
-		<svg
-			className={className}
-			fill='none'
-			viewBox='0 0 24 24'
-			stroke='currentColor'
-			strokeWidth={3}
-		>
-			<motion.path
-				initial={{ pathLength: 0 }}
-				animate={{ pathLength: 1 }}
-				transition={{
-					delay: 0.2,
-					type: "tween",
-					ease: "easeOut",
-					duration: 0.3,
-				}}
-				strokeLinecap='round'
-				strokeLinejoin='round'
-				d='M5 13l4 4L19 7'
-			/>
-		</svg>
-	);
-}
+			
+			
+			
+*/

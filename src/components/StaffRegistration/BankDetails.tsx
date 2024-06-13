@@ -1,74 +1,130 @@
-import React, { ChangeEvent, FocusEvent, useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "../ui/button";
+import bankDetailsSchema from "@/staffRegistrationSchema/bankDetailsSchemaStaff"; 
+import { BankDetailsSchemaType } from "@/staffRegistrationSchema/bankDetailsSchemaStaff";
 
-const PreviousExperience = () => {
-	return (
-		<div className='flex justify-center my-8'>
-			<div className='grid grid-cols-3 gap-8 w-3/4 items-center tracking-wide'>
-				{/* Bank Name */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='bank_name'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Bank Name
-					</Label>
-					<Input
-						id='bank_name'
-						type='text'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='ABC Bank'
-					/>
-				</div>
-				{/* Bank Account Number */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='account_no'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Bank Account Number
-					</Label>
-					<Input
-						id='account_no'
-						type='text'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='9898 98XXXX 98XXXX'
-					/>
-				</div>
-				{/* IFSC Code */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='ifsc_code'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						IFSC Code
-					</Label>
-					<Input
-						id='ifsc_code'
-						type='text'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='ABC0909021'
-					/>
-				</div>
-				{/* Account Holder's Name */}
-				<div className='flex flex-col gap-2'>
-					<Label
-						htmlFor='holder_name'
-						className='pl-1 text-blue-500 font-semibold'
-					>
-						Account Holder&apos;s Name
-					</Label>
-					<Input
-						id='holder_name'
-						type='text'
-						className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 placeholder:text'
-						placeholder='John Doe'
-					/>
-				</div>
-			</div>
-		</div>
-	);
+const BankDetails = ({ onNext }: { onNext: (data: any) => void; }) => {
+    const form = useForm<BankDetailsSchemaType>({
+        resolver: zodResolver(bankDetailsSchema),
+        defaultValues: {
+            bankName: "",
+            accountNo: "",
+            ifscCode: "",
+            holderName: "",
+        },
+    });
+
+    const onSubmit = (value: BankDetailsSchemaType) => {
+        onNext(value);
+        // console.log(value);
+    };
+
+    return (
+        <div className='flex justify-center my-8'>
+            <div className='w-full tracking-wide'>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="grid grid-cols-3 gap-x-8 gap-y-3">
+                            <FormField
+                                control={form.control}
+                                name="bankName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="bank_name" className="pl-1 text-blue-500 font-semibold">
+                                            Bank Name
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="bank_name"
+                                                type="text"
+                                                className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                                placeholder="ABC Bank"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="accountNo"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="account_no" className="pl-1 text-blue-500 font-semibold">
+                                            Bank Account Number
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="account_no"
+                                                type="text"
+                                                className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                                placeholder="9898 98XXXX 98XXXX"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="ifscCode"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="ifsc_code" className="pl-1 text-blue-500 font-semibold">
+                                            IFSC Code
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="ifsc_code"
+                                                type="text"
+                                                className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                                placeholder="ABC0909021"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="holderName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="holder_name" className="pl-1 text-blue-500 font-semibold">
+                                            Account Holder&apos;s Name
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="holder_name"
+                                                type="text"
+                                                className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                                placeholder="John Doe"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className='flex items-center justify-end space-x-2'>
+                            <Button type="submit" className="mt-8">
+                                Next
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+        </div>
+    );
 };
 
-export default PreviousExperience;
+export default BankDetails;

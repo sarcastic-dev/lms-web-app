@@ -1,13 +1,13 @@
 import React, { ReactElement, FocusEvent, ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "../ui/tooltip";
-import { Info } from "lucide-react";
+
 import { Separator } from "../ui/separator";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
@@ -15,14 +15,12 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Select,
 	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
 import { BloodGroups, Gender } from "@/Constant";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -32,47 +30,28 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import { setBasicInfoData } from "@/context/studentRegistrationSlice";
 
 
 dayjs.extend(customParseFormat);
 
 const dateFormat = "YYYY-MM-DD";
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const TestComponent = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
-	const dispatch = useDispatch();
 
 	const disabledDate = (current: any) => {
 		return current && (current < minDate || current > maxDate);
-	};
-
-	const [inputValue, setInputValue] = useState("+91 ");
-
-	const handleFocus = (event: FocusEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (input.value === "+91 ") {
-			input.setSelectionRange(4, 4);
-		}
-	};
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (!input.value.startsWith("+91 ")) {
-			setInputValue("+91 " + input.value.slice(4));
-		} else {
-			setInputValue(input.value);
-		}
 	};
 
 	const form = useForm<BasicInfoSchemaType>({
@@ -96,11 +75,9 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 		onNext(value);
 	};
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	return (
-		<div className='flex justify-center my-8'>
-			<div className='w-[90%] tracking-wide'>
+		<div className='flex justify-center my-4'>
+			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
@@ -168,26 +145,16 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 								name='enrolmentID'
 								render={({ field }) => (
 									<FormItem>
-										<div className='flex items-center justify-between'>
+										<div className=''>
 											<FormLabel
 												htmlFor='enrolmentID'
-												className='pl-1 text-blue-500 font-semibold'
+												className='pl-1 text-blue-500 font-semibold mr-[120px]'
 											>
 												Enrolment ID{" "}
 												<span className='text-red-500'>
 													*
 												</span>
 											</FormLabel>
-											<TooltipProvider>
-												<Tooltip>
-													<TooltipTrigger>
-														<Info className='h-4 w-4 text-blue-500' />
-													</TooltipTrigger>
-													<TooltipContent className='text-xs text-white bg-blue-500'>
-														<p>Last Used</p>
-													</TooltipContent>
-												</Tooltip>
-											</TooltipProvider>
 										</div>
 
 										<FormControl>
@@ -204,7 +171,22 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 														orientation='vertical'
 														className='h-6 border-l border-gray-300'
 													/>
-													<span>@TES2097</span>
+													<TooltipProvider>
+														<Tooltip>
+															<TooltipTrigger
+																onClick={(e) =>
+																	e.preventDefault()
+																}
+															>
+																<span>
+																	@TES2097
+																</span>
+															</TooltipTrigger>
+															<TooltipContent className='text-xs text-white bg-blue-500'>
+																<p>Last Used</p>
+															</TooltipContent>
+														</Tooltip>
+													</TooltipProvider>
 												</span>
 											</div>
 										</FormControl>
@@ -271,7 +253,7 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 										<FormLabel
 											htmlFor='lastName'
 											className='pl-1 text-blue-500 font-semibold'
-										>
+											>
 											Last Name
 										</FormLabel>
 										<FormControl>

@@ -5,6 +5,7 @@ export interface SidebarItems {
 		label: string;
 		href: string;
 		icon: LucideIcon;
+		className: string;
 	}>;
 }
 export interface StepProps {
@@ -88,4 +89,71 @@ export interface MedicalInfo {
 	issuedDate: string;
 	pulseRate: string;
 	weight: string;
+}
+
+// //////////////////////////////////////////////////////////////////////////////////////////////////
+// staff information types
+export interface BasicStaffInfo {
+    bloodGroup: string;
+    dateOfBirth: string;
+    emailID: string;
+    employeeID: string;
+    firstName: string;
+    gender: string;
+    lastName: string;
+    middleName: string;
+    mobileNumber: string;
+    userRole: string;
+}
+
+export interface AddressStaffInfo {
+    addressLine1: string;
+    addressLine2: string;
+    cityTown: string;
+    country: string;
+    pincode: string;
+    state: string;
+}
+
+export interface EmploymentDetails {
+    appointmentDate: string;
+    department: string;
+    designation: string;
+    employmentType: string;
+    esiCodeNumber: string;
+    experience: string;
+    highestQualification: string;
+    jobTitle: string;
+    pfAccountNumber: string;
+    reportingManager: string;
+    uan: string;
+}
+
+export interface AdditionalDetails {
+    aadharNumber: string;
+    category: string;
+    emergencyMobileNumber: string;
+    fatherName: string;
+    maritalStatus: string;
+    motherName: string;
+    panNumber: string;
+    religion: string;
+    spouseName: string;
+}
+
+export interface PreviousExperience {
+    instituteName: string;
+    jobTitle: string;
+    joiningDate: string;
+    location: string;
+    referenceName: string;
+    referenceNumber: string;
+    relievingDate: string;
+}
+
+export interface BankDetails {
+    accountNo: string;
+    bankName: string;
+    holderName: string;
+    ifscCode: string;
 }

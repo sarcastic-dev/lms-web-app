@@ -15,3 +15,4 @@ export const addressSchema = z.object({
 		.optional(),
 	country: z.string().trim().min(1, { message: "Country is required" }),
 });
+export type AddressSchemaStaffType = z.infer<typeof addressSchema>;

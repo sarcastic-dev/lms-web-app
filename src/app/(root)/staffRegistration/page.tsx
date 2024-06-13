@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { complex, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
 	BadgePlus,
 	BriefcaseBusiness,
@@ -9,9 +9,7 @@ import {
 	Info,
 	Landmark,
 	LocateFixed,
-	MapPin,
 	NotebookTabs,
-	Shield,
 } from "lucide-react";
 import { IconProps, StepProps, StepperProps } from "@/types";
 import BasicInfo from "@/components/StaffRegistration/BasicInfo";
@@ -20,64 +18,98 @@ import EmploymentDetails from "@/components/StaffRegistration/EmploymentDetails"
 import AdditionalDetails from "@/components/StaffRegistration/AdditionalDetails";
 import PreviousExperience from "@/components/StaffRegistration/PreviousExperience";
 import BankDetails from "@/components/StaffRegistration/BankDetails";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	setBasicInfoData,
+	setAddressInfoData,
+	setEmploymentDetailsData,
+	setAdditionalDetailsData,
+	setPreviousExperienceData,
+	setBankDetailsData,
+} from "@/context/staffRegistrationSlice";
+import { RootState } from "@/context/store";
 
 export default function Page() {
 	const [step, setStep] = useState<number>(1);
+	const dispatch = useDispatch();
+	const registrationData = useSelector(
+		(state: RootState) => state.staffRegistration
+	);
+
+	const handleNext = (data: any) => {
+		if (step === 1) {
+			dispatch(setBasicInfoData(data));
+		} else if (step === 2) {
+			dispatch(setAddressInfoData(data));
+		} else if (step === 3) {
+			dispatch(setEmploymentDetailsData(data));
+		} else if (step === 4) {
+			dispatch(setAdditionalDetailsData(data));
+		} else if (step === 5) {
+			dispatch(setPreviousExperienceData(data));
+		} else {
+			dispatch(setBankDetailsData(data));
+		}
+		console.log(registrationData);
+		setStep(step + 1);
+	};
 
 	return (
-		<>
-			<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
-				<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
-					<NotebookTabs size={35} strokeWidth={3}/>
-					<h1 className='text-4xl'>Staff Registration</h1>
+		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br 2xl:pt-40 xl:pt-20 relative '>
+			<div className='flex font-semibold items-center text-blue-500 absolute 2xl:top-24 xl:top-6 gap-3'>
+				<NotebookTabs size={35} strokeWidth={3}/>
+				<h1 className='text-4xl'>Staff Registration</h1>
+			</div>
+			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark 2xl:mt-12 xl:mt-6'>
+				<div className='flex justify-between rounded py-8 px-10 flex-wrap'>
+					<Stepper step={step} />
 				</div>
-				<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
-					<div className='flex justify-between rounded p-8'>
-						<Stepper step={step} />
-					</div>
-					<div className='px-8 pb-8'>
-						{step === 1 && <BasicInfo />}
-						{step === 2 && <AddressInfo />}
-						{step === 3 && <EmploymentDetails />}
-						{step === 4 && <AdditionalDetails />}
-						{step === 5 && <PreviousExperience />}
-						{step === 6 && <BankDetails />}
-						{step === 7 && "Hello"}
+				<div className='px-10 pb-8 '>
+					{step === 1 && <BasicInfo onNext={handleNext} />}
+					{step === 2 && <AddressInfo onNext={handleNext} />}
+					{step === 3 && <EmploymentDetails onNext={handleNext} />}
+					{step === 4 && <AdditionalDetails onNext={handleNext} />}
+					{step === 5 && <PreviousExperience onNext={handleNext} />}
+					{step === 6 && <BankDetails onNext={handleNext} />}
+					{step === 7 && "Hello"}
 
-						<div className='mt-10 flex justify-between'>
-							<button
-								onClick={() =>
-									setStep(step < 2 ? step : step - 1)
-								}
-								className={`${
-									step >= 7
-										? "pointer-events-none opacity-50"
-										: ""
-								} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
-							>
-								Back
-							</button>
-							<button
-								onClick={() =>
-									setStep(step >= 7 ? step : step + 1)
-								}
-								className={`${
-									step >= 7
-										? "pointer-events-none opacity-50"
-										: ""
-								} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
-							>
-								{step === 6
-									? "Finish"
-									: step === 7
-									? "Finish"
-									: "Next"}
-							</button>
-						</div>
+					<div className='2xl:mt-10 xl:mt-6 flex justify-between'>
+						<button
+							onClick={() => setStep(step < 2 ? step : step - 1)}
+							className={`${
+								step >= 7
+									? "pointer-events-none opacity-50"
+									: ""
+							} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
+						>
+							Back
+						</button>
+						<button
+							onClick={() => {
+								// Manually trigger the form submission of the current step
+								document.querySelector("form")?.dispatchEvent(
+									new Event("submit", {
+										cancelable: true,
+										bubbles: true,
+									})
+								);
+							}}
+							className={`${
+								step >= 7
+									? "pointer-events-none opacity-50"
+									: ""
+							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
+						>
+							{step === 6
+								? "Finish"
+								: step === 7
+								? "Finish"
+								: "Next"}
+						</button>
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 
@@ -85,18 +117,14 @@ function Stepper({ step }: StepperProps) {
 	const steps = [
 		{ number: 1, description: "Basic Info", icon: Info },
 		{ number: 2, description: "Address Info", icon: LocateFixed },
-		{
-			number: 3,
-			description: "Employment Details",
-			icon: BriefcaseBusiness,
-		},
+		{ number: 3, description: "Employment Details", icon: BriefcaseBusiness },
 		{ number: 4, description: "Additional Details", icon: BadgePlus },
 		{ number: 5, description: "Previous Experience", icon: History },
 		{ number: 6, description: "Bank Details", icon: Landmark },
 	];
 
 	return (
-		<div className='flex w-full items-center space-x-4'>
+		<div className='flex w-full items-center flex-wrap 2xl:gap-y-10 2xl:gap-x-4  xl:gap-y-5 xl:gap-x-4 '>
 			{steps.map((s, index) => (
 				<div
 					key={s.number}
@@ -113,7 +141,7 @@ function Stepper({ step }: StepperProps) {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ delay: 0.2 }}
-							className='mx-2 text-slate-400'
+							className='text-slate-400 2xl:ml-2 xl:ml-3'
 						>
 							<ChevronRight
 								color={
@@ -220,15 +248,7 @@ function CheckIcon({ className }: IconProps) {
 			stroke='currentColor'
 			strokeWidth={3}
 		>
-			<motion.path
-				initial={{ pathLength: 0 }}
-				animate={{ pathLength: 1 }}
-				transition={{
-					delay: 0.2,
-					type: "tween",
-					ease: "easeOut",
-					duration: 0.3,
-				}}
+			<path
 				strokeLinecap='round'
 				strokeLinejoin='round'
 				d='M5 13l4 4L19 7'
