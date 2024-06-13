@@ -4,9 +4,9 @@ interface SelectType {
 }
 
 export const Gender: SelectType[] = [
-    { value: "male", option: "Male" },
-    { value: "female", option: "Female" },
-    { value: "other", option: "Other" }
+    { value: "Male", option: "Male" },
+    { value: "Female", option: "Female" },
+    { value: "Other", option: "Other" }
 ];
 
 export const BloodGroups: SelectType[] = [
@@ -58,23 +58,24 @@ export const Department: SelectType[] = [
     { value: 'health-and-safety', option: 'Health and Safety' },
     { value: 'communications', option: 'Communications' },
 ]
-export const Religion: SelectType[] = [
-    {value:'hindu', option:'Hindu'},
-    {value:'muslim', option:'Muslim'},
-    {value:'christian', option:'Christian'},
-    {value:'sikh', option:'Sikh'},
-    {value:'buddhist', option:'Buddhist'},
-    {value:'jain', option:'Jain'},
-    {value:'other', option:'Other'},
-]
-export const Category: SelectType[] = [
-    {value:'gen',option:'GEN'},
-    {value:'gen-ews',option:'GEN-EWS'},
-    {value:'obc',option:'OBC'},
-    {value:'obc-cl',option:'OBC-CL'},
-    {value:'obc-ncl',option:'OBC-NCL'},
-    {value:'sc',option:'SC'},
-    {value:'st',option:'ST'},
-    {value:'foreigner',option:'Foreigner'},
-    {value:'other',option:'Other'},
-]
+export const Religion = [
+    { value: "Hindu", option: "Hindu" },
+    { value: "Muslim", option: "Muslim" },
+    { value: "Christian", option: "Christian" },
+    { value: "Sikh", option: "Sikh" },
+    { value: "Buddhist", option: "Buddhist" },
+    { value: "Jain", option: "Jain" },
+    { value: "Other", option: "Other" },
+];
+
+export const Category = [
+    { value: "GEN", option: "GEN" },
+    { value: "GEN-EWS", option: "GEN-EWS" },
+    { value: "OBC", option: "OBC" },
+    { value: "OBC-CL", option: "OBC-CL" },
+    { value: "OBC-NCL", option: "OBC-NCL" },
+    { value: "SC", option: "SC" },
+    { value: "ST", option: "ST" },
+    { value: "Foreigner", option: "Foreigner" },
+    { value: "Others", option: "Others" },
+];

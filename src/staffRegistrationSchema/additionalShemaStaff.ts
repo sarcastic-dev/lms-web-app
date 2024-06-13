@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const additionalEmployeeDetailsSchema = z.object({
-	aadharNumber: z.string().trim().optional(), // Assuming Aadhar Number is optional
-	panNumber: z.string().trim().optional(), // Assuming PAN Number is optional
+	aadharNumber: z.string().trim().optional(),
+	panNumber: z.string().trim().optional(),
 	religion: z
 		.enum([
 			"Hindu",
@@ -12,9 +12,11 @@ const additionalEmployeeDetailsSchema = z.object({
 			"Buddhist",
 			"Jain",
 			"Other",
-		])
+		],{
+			required_error: "Religion is required"
+		})
 		.optional(),
-		category: z
+	category: z
 		.enum([
 			"GEN",
 			"GEN-EWS",
@@ -31,8 +33,8 @@ const additionalEmployeeDetailsSchema = z.object({
 	motherName: z.string().trim().optional(),
 	maritalStatus: z.enum(["married", "unmarried"]).optional(),
 	spouseName: z.string().trim().optional(),
-	countryCode: z.string().trim().optional(), // Assuming Country Code is optional
-	emergencyMobileNumber: z.string().trim().optional(), // Assuming Emergency Contact Number is optional
+	countryCode: z.string().trim().optional(),
+	emergencyMobileNumber: z.string().trim().optional(),
 });
 
 export default additionalEmployeeDetailsSchema;

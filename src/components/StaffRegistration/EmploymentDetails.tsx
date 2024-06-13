@@ -9,6 +9,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import employmentSchema from "@/staffRegistrationSchema/employmentSchemaStaff"; 
 import { EmploymentStaffSchemaType } from "@/staffRegistrationSchema/employmentSchemaStaff";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+
+dayjs.extend(customParseFormat);
+
+const dateFormat = "YYYY-MM-DD";
 
 const EmploymentDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactElement => {
     const form = useForm<EmploymentStaffSchemaType>({
@@ -27,6 +35,13 @@ const EmploymentDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
             reportingManager: "teacher",
         },
     });
+
+    const minDate = dayjs("2019-08-01", dateFormat);
+    const maxDate = dayjs().endOf("day");
+  
+    const disabledDate = (current: any) => {
+      return current && (current < minDate || current > maxDate);
+    };
 
     const onSubmit = (value: EmploymentStaffSchemaType) => {
         onNext(value);
@@ -145,26 +160,34 @@ const EmploymentDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="appointmentDate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel htmlFor="appointment_date" className="pl-1 text-blue-500 font-semibold">
-                                            Appointment Date
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id="appointment_date"
-                                                type="date"
-                                                className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+<FormField
+                control={form.control}
+                name='appointmentDate'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel
+                      htmlFor='appointmentDate'
+                      className='pl-1 text-blue-500 font-semibold'
+                    >
+                      Issued Date
+                    </FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        id='appointmentDate'
+                        size='large'
+                        className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400 w-full'
+                        format={dateFormat}
+                        disabledDate={disabledDate}
+                        placeholder='Select Date'
+                        {...field}
+                        value={field.value ? dayjs(field.value, dateFormat) : null}
+                        onChange={(date, dateString) => field.onChange(dateString)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                             <FormField
                                 control={form.control}
                                 name="experience"

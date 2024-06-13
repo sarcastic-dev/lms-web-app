@@ -55,13 +55,13 @@ const initialState: RegistrationState = {
 	},
 	additionalDetails: {
 		aadharNumber: "",
-		category: "",
+		category: "Hindu",
 		emergencyMobileNumber: "",
 		fatherName: "",
-		maritalStatus: "",
+		maritalStatus: "unmarried",
 		motherName: "",
 		panNumber: "",
-		religion: "",
+		religion: "GEN",
 		spouseName: "",
 	},
 	previousExperience: {

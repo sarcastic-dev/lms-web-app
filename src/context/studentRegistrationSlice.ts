@@ -10,83 +10,23 @@ import {
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RegistrationState {
-	basicInfo: BasicInfo;
-	addressInfo: AddressInfo;
-	fatherInfo: FatherInfo;
-	motherInfo: MotherInfo;
-	guardianInfo: GuardianInfo;
-	academicInfo: AcademicInfo;
-	medicalInfo: MedicalInfo;
+	basicInfo: Partial<BasicInfo>;
+	addressInfo: Partial<AddressInfo>;
+	fatherInfo: Partial<FatherInfo>;
+	motherInfo: Partial<MotherInfo>;
+	guardianInfo: Partial<GuardianInfo>;
+	academicInfo: Partial<AcademicInfo>;
+	medicalInfo: Partial<MedicalInfo>;
 }
 
 const initialState: RegistrationState = {
-	basicInfo: {
-		bloodGroup: "",
-		classRollNumber: "",
-		dateOfAdmission: "",
-		dateOfBirth: "",
-		email: "",
-		enrolmentID: "",
-		firstName: "",
-		gender: "",
-		lastName: "",
-		middleName: "",
-		mobileNumber: "",
-	},
-	addressInfo: {
-		addressLine1: "",
-		addressLine2: "",
-		cityTown: "",
-		country: "",
-		pincode: "",
-		state: "",
-	},
-	fatherInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		workOrganizationName: "",
-	},
-	motherInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		workOrganizationName: "",
-	},
-	guardianInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		relationship: "",
-		workOrganizationName: "",
-	},
-	academicInfo: {
-		admissionYear: "",
-		boardUniversity: "",
-		programClass: "",
-		section: "",
-	},
-	medicalInfo: {
-		allergies: "",
-		bmi: "",
-		haemoglobin: "",
-		height: "",
-		issuedDate: "",
-		pulseRate: "",
-		weight: "",
-	},
+	basicInfo: {},
+	addressInfo: {},
+	fatherInfo: {},
+	motherInfo: {},
+	guardianInfo: {},
+	academicInfo: {},
+	medicalInfo: {},
 };
 
 const studentRegistrationSlice = createSlice({

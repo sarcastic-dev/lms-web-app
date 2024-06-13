@@ -1,4 +1,10 @@
-import React, { ReactElement, FocusEvent, ChangeEvent, useState } from "react";
+import React, {
+	ReactElement,
+	FocusEvent,
+	ChangeEvent,
+	useState,
+	useEffect,
+} from "react";
 import { Input } from "../ui/input";
 
 import {
@@ -15,12 +21,14 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
 import { BloodGroups, Gender } from "@/Constant";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -36,7 +44,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-
+import { RootState } from "@/context/store";
 
 dayjs.extend(customParseFormat);
 
@@ -54,26 +62,36 @@ const TestComponent = ({
 		return current && (current < minDate || current > maxDate);
 	};
 
+	const basicInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.basicInfo
+	);
+
 	const form = useForm<BasicInfoSchemaType>({
 		resolver: zodResolver(BasicInfoSchema),
 		defaultValues: {
-			mobileNumber: "",
-			email: "",
-			enrolmentID: "",
-			firstName: "",
-			middleName: "",
-			lastName: "",
-			dateOfAdmission: "",
-			classRollNumber: "",
-			dateOfBirth: "",
-			gender: "Male",
-			bloodGroup: "A+",
+			bloodGroup: basicInfoStudent?.bloodGroup || "A+",
+			classRollNumber: basicInfoStudent?.classRollNumber || "",
+			dateOfAdmission: basicInfoStudent?.dateOfAdmission || "",
+			dateOfBirth: basicInfoStudent?.dateOfBirth || "",
+			email: basicInfoStudent?.email || "",
+			enrolmentID: basicInfoStudent?.enrolmentID || "",
+			firstName: basicInfoStudent?.firstName || "",
+			gender: basicInfoStudent?.gender || "Male",
+			lastName: basicInfoStudent?.lastName || "",
+			middleName: basicInfoStudent?.middleName || "",
+			mobileNumber: basicInfoStudent?.mobileNumber || "",
 		},
 	});
 
 	const onSubmit = (value: BasicInfoSchemaType) => {
 		onNext(value);
 	};
+
+	const { reset } = form;
+
+	useEffect(() => {
+		reset(basicInfoStudent || {});
+	}, [basicInfoStudent, reset]);
 
 	return (
 		<div className='flex justify-center my-4'>
@@ -253,7 +271,7 @@ const TestComponent = ({
 										<FormLabel
 											htmlFor='lastName'
 											className='pl-1 text-blue-500 font-semibold'
-											>
+										>
 											Last Name
 										</FormLabel>
 										<FormControl>
@@ -398,23 +416,39 @@ const TestComponent = ({
 											</span>
 										</FormLabel>
 										<FormControl>
-											<Select>
-												<SelectTrigger className='border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 '>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value}
+											>
+												<SelectTrigger
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
+												>
 													<SelectValue placeholder='Select Gender' />
 												</SelectTrigger>
 												<SelectContent>
-													{Gender.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Gender
+														</SelectLabel>
+														{Gender.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -436,29 +470,37 @@ const TestComponent = ({
 										<FormControl>
 											<Select
 												onValueChange={field.onChange}
+												value={field.value}
 											>
 												<SelectTrigger
-													id='gender'
-													className='border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 '
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
 												>
-													<SelectValue
-														placeholder='Select Blood Group'
-														className='text-gray-400'
-													/>
+													<SelectValue placeholder='Select Blood Group' />
 												</SelectTrigger>
 												<SelectContent>
-													{BloodGroups.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Blood Groups
+														</SelectLabel>
+														{BloodGroups.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>

@@ -1,10 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addressSchema } from "@/studentFormSchema/addressInfoSchema";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import {
 	Form,
@@ -14,41 +13,33 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-
-const AddressInfoSchema = z.object({
-	addressLine1: z
-		.string()
-		.trim()
-		.min(1, { message: "Address Line 1 is required" }),
-	addressLine2: z.string().trim().optional(),
-	cityTown: z.string().trim().min(1, { message: "City/Town is required" }),
-	state: z.string().trim().min(1, { message: "State is required" }),
-	pincode: z
-		.string()
-		.trim()
-		.regex(/^\d{6}$/, { message: "Invalid pincode (6 digits)" })
-		.optional(),
-	country: z.string().trim().min(1, { message: "Country is required" }),
-});
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 type AddressInfoSchemaType = z.infer<typeof addressSchema>;
 
-const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const AddressInfoForm = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const addressInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.addressInfo
+	);
 	const form = useForm<AddressInfoSchemaType>({
 		resolver: zodResolver(addressSchema),
-		defaultValues: {
-			addressLine1: "",
-			addressLine2: "",
-			cityTown: "",
-			state: "",
-			pincode: "",
-			country: "",
-		},
+		defaultValues: addressInfoStudent || {},
 	});
 
 	const onSubmit = (values: AddressInfoSchemaType) => {
 		onNext(values);
 	};
+
+	const { reset } = form;
+
+	useEffect(() => {
+		reset(addressInfoStudent || {});
+	}, [addressInfoStudent, reset]);
 
 	return (
 		<div className='flex justify-center my-8'>

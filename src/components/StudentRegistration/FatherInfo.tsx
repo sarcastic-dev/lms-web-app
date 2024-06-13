@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FocusEvent, ReactElement, useState } from "react";
+import React, {
+	ChangeEvent,
+	FocusEvent,
+	ReactElement,
+	useEffect,
+	useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,45 +20,32 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 type FatherInfoSchemaType = z.infer<typeof fatherInfoSchema>;
 
-const FatherInfo = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
-	const [inputValue, setInputValue] = useState("+91 ");
-
-	const handleFocus = (event: FocusEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (input.value === "+91 ") {
-			input.setSelectionRange(4, 4);
-		}
-	};
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (!input.value.startsWith("+91 ")) {
-			setInputValue("+91 " + input.value.slice(4));
-		} else {
-			setInputValue(input.value);
-		}
-	};
-
+const FatherInfo = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const fatherInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.fatherInfo
+	);
 	const form = useForm<FatherInfoSchemaType>({
 		resolver: zodResolver(fatherInfoSchema),
-		defaultValues: {
-			name: "",
-			mobileNumber: "",
-			emailID: "",
-			educationalQualification: "",
-			occupation: "",
-			workOrganizationName: "",
-			designation: "",
-			annualIncome: "",
-		},
+		defaultValues: fatherInfoStudent || {},
 	});
 
 	const onSubmit = (values: FatherInfoSchemaType) => {
 		onNext(values);
 	};
+	
+	const { reset } = form;
+	useEffect(() => {
+		reset(fatherInfoStudent || {});
+	}, [fatherInfoStudent, reset]);
 
 	return (
 		<div className='flex justify-center my-8'>

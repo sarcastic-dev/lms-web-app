@@ -1,8 +1,7 @@
-import React, { ChangeEvent, FocusEvent, ReactElement, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import {
@@ -14,46 +13,31 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { generalInfoSchema } from "@/studentFormSchema/guardianInfoSchema";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 type GeneralInfoSchemaType = z.infer<typeof generalInfoSchema>;
 
-const GuardianInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement => {
-	const [inputValue, setInputValue] = useState("+91 ");
-
-	const handleFocus = (event: FocusEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (input.value === "+91 ") {
-			input.setSelectionRange(4, 4);
-		}
-	};
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (!input.value.startsWith("+91 ")) {
-			setInputValue("+91 " + input.value.slice(4));
-		} else {
-			setInputValue(input.value);
-		}
-	};
-
+const GuardianInfo = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const guardianInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.guardianInfo
+	);
 	const form = useForm<GeneralInfoSchemaType>({
 		resolver: zodResolver(generalInfoSchema),
-		defaultValues: {
-			name: "",
-			mobileNumber: "",
-			emailID: "",
-			relationship: "",
-			educationalQualification: "",
-			occupation: "",
-			workOrganizationName: "",
-			designation: "",
-			annualIncome: "",
-		},
+		defaultValues: guardianInfoStudent || {},
 	});
 
 	const onSubmit = (values: GeneralInfoSchemaType) => {
 		onNext(values);
 	};
+	const { reset } = form;
+	useEffect(() => {
+		reset(guardianInfoStudent || {});
+	}, [guardianInfoStudent, reset]);
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -103,7 +87,7 @@ const GuardianInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement 
 													id='guardian_mobile_number'
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
-													placeholder="Mobile Number"
+													placeholder='Mobile Number'
 													{...field}
 												/>
 												<span className='absolute left-3.5 top-[13.5px] flex items-center space-x-2 text-gray-500'>

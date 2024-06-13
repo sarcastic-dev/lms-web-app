@@ -1,9 +1,8 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import {
 	Form,
@@ -14,23 +13,32 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { programInfoSchema } from "@/studentFormSchema/academicInfoSchema";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 type AcademicInfoSchemaType = z.infer<typeof programInfoSchema>;
 
-const AcademicInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const AcademicInfoForm = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const academicInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.academicInfo
+	);
 	const form = useForm<AcademicInfoSchemaType>({
 		resolver: zodResolver(programInfoSchema),
-		defaultValues: {
-			programClass: "",
-			section: "",
-			admissionYear: "",
-			boardUniversity: "",
-		},
+		defaultValues: academicInfoStudent || {},
 	});
 
 	const onSubmit = (values: AcademicInfoSchemaType) => {
 		onNext(values);
 	};
+	const { reset } = form;
+
+	useEffect(() => {
+		reset(academicInfoStudent || {});
+	}, [academicInfoStudent, reset]);
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -48,7 +56,9 @@ const AcademicInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactEle
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Program/Class{" "}
-											<span className='text-red-500'>*</span>
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -73,7 +83,9 @@ const AcademicInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactEle
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Section{" "}
-											<span className='text-red-500'>*</span>
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -98,7 +110,9 @@ const AcademicInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactEle
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Admission Year{" "}
-											<span className='text-red-500'>*</span>
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -123,7 +137,9 @@ const AcademicInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactEle
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Board/University{" "}
-											<span className='text-red-500'>*</span>
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input

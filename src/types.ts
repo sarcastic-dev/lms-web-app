@@ -24,18 +24,19 @@ export interface IconProps {
 }
 
 export interface BasicInfo {
-	bloodGroup: string;
-	classRollNumber: string;
-	dateOfAdmission: string;
-	dateOfBirth: string;
-	email: string;
-	enrolmentID: string;
-	firstName: string;
-	gender: string;
-	lastName: string;
-	middleName: string;
-	mobileNumber: string;
+    bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
+    classRollNumber: string;
+    dateOfAdmission: string;
+    dateOfBirth: string;
+    email: string;
+    enrolmentID: string;
+    firstName: string;
+    gender?: "Male" | "Female" | "Other";
+    lastName: string;
+    middleName: string;
+    mobileNumber: string;
 }
+
 export interface AddressInfo {
 	addressLine1: string;
 	addressLine2: string;
