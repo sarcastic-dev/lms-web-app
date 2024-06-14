@@ -25,7 +25,7 @@ const page = () => {
 	const data = getTeacher()
 	return (
 		<div className='flex flex-col w-full h-screen space-y-8'>
-			<div>
+			{/* <div>
 				<Breadcrumb>
 					<BreadcrumbList>
 						<BreadcrumbItem>
@@ -46,7 +46,7 @@ const page = () => {
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
-			</div>
+			</div> */}
 			<div>
 				<h1 className='font-semibold text-2xl'>Staff Directory</h1>
 			</div>
@@ -63,7 +63,7 @@ const page = () => {
 							</TabsTrigger>
 						</TabsList>
 						<div className='flex gap-3'>
-							<Link href={"/studentRegistration"}>
+							
 								<Button
 									variant={"ghost"}
 									style={{ border: "dashed" }}
@@ -75,7 +75,8 @@ const page = () => {
 									/>{" "}
 									Update Data
 								</Button>
-							</Link>
+						
+						<Link href={"/staffRegistration"}>
 							<Button
 								variant={"ghost"}
 								style={{ border: "dashed" }}
@@ -86,6 +87,7 @@ const page = () => {
 								/>{" "}
 								Add Staff
 							</Button>
+						</Link>
 						</div>
 					</div>
 

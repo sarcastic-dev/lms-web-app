@@ -67,3 +67,8 @@ export const {
 	setMedicalInfoData,
 } = studentRegistrationSlice.actions;
 export default studentRegistrationSlice.reducer;
+
+
+// resetRegistrationData(state) {
+// 	return initialState;
+//   },

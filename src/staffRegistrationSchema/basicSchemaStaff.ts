@@ -33,7 +33,7 @@ const basicSchemaStaff = z.object({
         required_error: "Blood Group is required"
     }),
 	userRole: z
-		.enum(["owner", "teacher", "non-teaching"], {
+		.enum(["Owner", "Teacher", "Non-Teaching"], {
 			message:
 				'Invalid user role. Choose "owner", "teacher", or "non-teaching"',
 		})

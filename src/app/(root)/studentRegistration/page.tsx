@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
 	ChevronRight,
@@ -29,15 +29,25 @@ import {
 	setGuardianInfoData,
 	setMedicalInfoData,
 	setMotherInfoDate,
+	// resetRegistrationData, // Add this action to reset the data
 } from "@/context/studentRegistrationSlice";
 import { RootState } from "@/context/store";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const router = useRouter();
 	const [step, setStep] = useState<number>(1);
 	const dispatch = useDispatch();
 	const registrationData = useSelector(
 		(state: RootState) => state.studentRegistration
 	);
+
+	// Reset the state when the component unmounts
+	// useEffect(() => {
+	// 	return () => {
+	// 		dispatch(resetRegistrationData());
+	// 	};
+	// }, [dispatch]);
 
 	const handleNext = (data: any) => {
 		if (step === 1) {
@@ -52,8 +62,10 @@ export default function Page() {
 			dispatch(setGuardianInfoData(data));
 		} else if (step === 6) {
 			dispatch(setAcademicInfoData(data));
-		} else {
+		} else if(step === 7){
 			dispatch(setMedicalInfoData(data));
+			router.push('/studentRegistration'); 
+			return; 
 		}
 		console.log(registrationData);
 		setStep(step + 1);
@@ -80,7 +92,6 @@ export default function Page() {
 					{step === 5 && <GuardianInfo onNext={handleNext} />}
 					{step === 6 && <AcademicInfo onNext={handleNext} />}
 					{step === 7 && <MedicalInfo onNext={handleNext} />}
-					{step === 8 && "Hello"}
 
 					<div className='2xl:mt-10 xl:mt-6 flex justify-between'>
 						<button

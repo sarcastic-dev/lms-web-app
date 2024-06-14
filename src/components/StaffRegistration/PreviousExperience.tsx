@@ -11,6 +11,8 @@ import { Button } from "../ui/button";
 import previousExperienceSchema from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
 import { PreviousExperienceSchemaStaffType } from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 dayjs.extend(customParseFormat);
 
@@ -24,19 +26,19 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 		return current && (current < minDate || current > maxDate);
 	};
 
+	const previousExperienceInfo = useSelector((state:RootState)=> state.staffRegistration.previousExperience)
 	const form = useForm<PreviousExperienceSchemaStaffType>({
-		resolver:zodResolver(previousExperienceSchema),
+		resolver: zodResolver(previousExperienceSchema),
 		defaultValues: {
-			instituteName: "",
-			jobTitle: "",
-			joiningDate: "",
-			relievingDate: "",
-			location: "",
-			referenceName: "",
-			referenceNumber: "",
+			instituteName: previousExperienceInfo?.instituteName || "",
+			jobTitle: previousExperienceInfo?.jobTitle || "",
+			joiningDate: previousExperienceInfo?.joiningDate || "",
+			relievingDate: previousExperienceInfo?.relievingDate || "",
+			location: previousExperienceInfo?.location || "",
+			referenceName: previousExperienceInfo?.referenceName || "",
+			referenceNumber: previousExperienceInfo?.referenceNumber || "",
 		},
 	});
-
 	const onSubmit = (value: PreviousExperienceSchemaStaffType) => {
 		onNext(value);
 		// console.log(value);

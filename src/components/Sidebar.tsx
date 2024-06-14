@@ -15,8 +15,8 @@ interface SidebarProps {
 const sidebarItems: SidebarItems = {
   links: [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, className: 'string' },
-    { label: "Student Information", href: "/studentRegistration", icon: Users, className: 'string' },
-    { label: "Staff Information", href: "/staffRegistration", icon: User, className: 'string' },
+    { label: "Student Information", href: "/studentInfo", icon: Users, className: 'string' },
+    { label: "Staff Information", href: "/staffInfo", icon: User, className: 'string' },
     { label: "Attendance", href: "/attendance", icon: ClipboardCheck, className: 'string' },
     { label: "Classroom", href: "/student", icon: School2, className: 'string' },
     { label: "TimeTable", href: "/", icon: Calendar, className: 'string' },

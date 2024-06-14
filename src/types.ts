@@ -95,16 +95,16 @@ export interface MedicalInfo {
 // //////////////////////////////////////////////////////////////////////////////////////////////////
 // staff information types
 export interface BasicStaffInfo {
-    bloodGroup: string;
+    bloodGroup:  "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
     dateOfBirth: string;
     emailID: string;
     employeeID: string;
     firstName: string;
-    gender: string;
+    gender: "Male" | "Female" | "Other";
     lastName: string;
     middleName: string;
     mobileNumber: string;
-    userRole: string;
+    userRole: "Owner"|"Teacher"|"Non-Teaching";
 }
 
 export interface AddressStaffInfo {

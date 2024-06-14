@@ -11,74 +11,21 @@ import {
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RegistrationState {
-	basicInfo: BasicStaffInfo;
-	addressInfo: AddressStaffInfo;
-	employmentDetails: EmploymentDetails;
-	additionalDetails: AdditionalDetails;
-	previousExperience: PreviousExperience;
-	bankDetails: BankDetails;
+	basicInfo: Partial<BasicStaffInfo>;
+	addressInfo: Partial<AddressStaffInfo>;
+	employmentDetails: Partial<EmploymentDetails>;
+	additionalDetails: Partial<AdditionalDetails>;
+	previousExperience: Partial<PreviousExperience>;
+	bankDetails: Partial<BankDetails>;
 }
 
 const initialState: RegistrationState = {
-	basicInfo: {
-		bloodGroup: "",
-		dateOfBirth: "",
-		emailID: "",
-		employeeID: "",
-		firstName: "",
-		gender: "",
-		lastName: "",
-		middleName: "",
-		mobileNumber: "",
-		userRole: "",
-	},
-	addressInfo: {
-		addressLine1: "",
-		addressLine2: "",
-		cityTown: "",
-		country: "",
-		pincode: "",
-		state: "",
-	},
-	employmentDetails: {
-		appointmentDate: "",
-		department: "",
-		designation: "",
-		employmentType: "",
-		esiCodeNumber: "",
-		experience: "",
-		highestQualification: "",
-		jobTitle: "",
-		pfAccountNumber: "",
-		reportingManager: "",
-		uan: "",
-	},
-	additionalDetails: {
-		aadharNumber: "",
-		category: "Hindu",
-		emergencyMobileNumber: "",
-		fatherName: "",
-		maritalStatus: "unmarried",
-		motherName: "",
-		panNumber: "",
-		religion: "GEN",
-		spouseName: "",
-	},
-	previousExperience: {
-		instituteName: "",
-		jobTitle: "",
-		joiningDate: "",
-		location: "",
-		referenceName: "",
-		referenceNumber: "",
-		relievingDate: "",
-	},
-	bankDetails: {
-		accountNo: "",
-		bankName: "",
-		holderName: "",
-		ifscCode: "",
-	},
+	basicInfo: {},
+	addressInfo: {},
+	employmentDetails: {},
+	additionalDetails: {},
+	previousExperience: {},
+	bankDetails: {},
 };
 
 const staffRegistrationSlice = createSlice({

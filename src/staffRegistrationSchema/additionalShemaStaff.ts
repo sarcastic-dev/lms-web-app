@@ -33,7 +33,6 @@ const additionalEmployeeDetailsSchema = z.object({
 	motherName: z.string().trim().optional(),
 	maritalStatus: z.enum(["married", "unmarried"]).optional(),
 	spouseName: z.string().trim().optional(),
-	countryCode: z.string().trim().optional(),
 	emergencyMobileNumber: z.string().trim().optional(),
 });
 

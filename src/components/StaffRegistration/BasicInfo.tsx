@@ -1,14 +1,12 @@
 "use client";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "../ui/tooltip";
-import { Info } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
@@ -16,7 +14,9 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
@@ -34,6 +34,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 dayjs.extend(customParseFormat);
 
@@ -44,6 +46,9 @@ const BasicInfo = ({
 }: {
 	onNext: (data: any) => void;
 }): ReactElement => {
+	const basicStaffInfo = useSelector(
+		(state: RootState) => state.staffRegistration.basicInfo
+	);
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
 
@@ -54,23 +59,26 @@ const BasicInfo = ({
 	const form = useForm<BasicInfoSchemaStaffType>({
 		resolver: zodResolver(basicSchemaStaff),
 		defaultValues: {
-			mobileNumber: "",
-			emailID: "",
-			employeeID: "",
-			firstName: "",
-			middleName: "",
-			lastName: "",
-			dateOfBirth: "",
-			gender: "Male",
-			bloodGroup: "A+",
-			userRole: "owner",
+			bloodGroup: basicStaffInfo?.bloodGroup || undefined,
+			dateOfBirth: basicStaffInfo?.dateOfBirth || "",
+			emailID: basicStaffInfo?.emailID || "",
+			employeeID: basicStaffInfo?.employeeID || "",
+			firstName: basicStaffInfo?.firstName || "",
+			gender: basicStaffInfo?.gender || undefined,
+			lastName: basicStaffInfo?.lastName || "",
+			middleName: basicStaffInfo?.middleName || "",
+			mobileNumber: basicStaffInfo?.mobileNumber || "",
+			userRole: basicStaffInfo?.userRole || undefined,
 		},
 	});
 
 	const onSubmit = (value: BasicInfoSchemaStaffType) => {
 		onNext(value);
-		// console.log(value);
 	};
+	const { reset } = form;
+	useEffect(() => {
+		reset(basicStaffInfo || {});
+	}, [basicStaffInfo, reset]);
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -139,7 +147,7 @@ const BasicInfo = ({
 								name='employeeID'
 								render={({ field }) => (
 									<FormItem>
-										<div className='flex items-center justify-between'>
+										<div className=''>
 											<FormLabel
 												htmlFor='employeeID'
 												className='pl-1 text-blue-500 font-semibold'
@@ -167,9 +175,11 @@ const BasicInfo = ({
 
 													<TooltipProvider>
 														<Tooltip>
-															<TooltipTrigger onClick={(e) =>
+															<TooltipTrigger
+																onClick={(e) =>
 																	e.preventDefault()
-																}>
+																}
+															>
 																<span>
 																	@TES2097
 																</span>
@@ -314,24 +324,37 @@ const BasicInfo = ({
 										<FormControl>
 											<Select
 												onValueChange={field.onChange}
-												defaultValue={field.value}
+												value={field.value || undefined}
 											>
-												<SelectTrigger className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'>
+												<SelectTrigger
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
+												>
 													<SelectValue placeholder='Select Gender' />
 												</SelectTrigger>
 												<SelectContent className='bg-white text-md tracking-wider'>
-													{Gender.map(
-														(option, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	option.value
-																}
-															>
-																{option.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Gender
+														</SelectLabel>
+														{Gender.map(
+															(option, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		option.value
+																	}
+																>
+																	{
+																		option.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -353,24 +376,85 @@ const BasicInfo = ({
 										<FormControl>
 											<Select
 												onValueChange={field.onChange}
-												defaultValue={field.value}
+												value={field.value || undefined}
 											>
-												<SelectTrigger className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'>
+												<SelectTrigger
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
+												>
 													<SelectValue placeholder='Select Blood Group' />
 												</SelectTrigger>
+
 												<SelectContent className='bg-white text-md tracking-wider'>
-													{BloodGroups.map(
-														(option, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	option.value
-																}
-															>
-																{option.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Blood Groups
+														</SelectLabel>
+														{BloodGroups.map(
+															(option, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		option.value
+																	}
+																>
+																	{
+																		option.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
+												</SelectContent>
+											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='userRole'
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											htmlFor='userRole'
+											className='pl-1 text-blue-500 font-semibold'
+										>
+											Role
+										</FormLabel>
+										<FormControl>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value || undefined}
+											>
+												<SelectTrigger
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
+												>
+													<SelectValue placeholder='Select Role' />
+												</SelectTrigger>
+												<SelectContent className='bg-white text-md tracking-wider'>
+													<SelectGroup>
+														<SelectLabel>
+															User Role
+														</SelectLabel>
+														<SelectItem value='User'>
+															User
+														</SelectItem>
+														<SelectItem value='Teacher'>
+															Teacher
+														</SelectItem>
+														<SelectItem value='Non-Teaching'>
+															Non-Teacher
+														</SelectItem>
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>

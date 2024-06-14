@@ -20,11 +20,21 @@ import { RootState } from "@/context/store";
 
 
 const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactElement => {
-	const additionalDetails = useSelector((state: RootState) => state.staffRegistration.additionalDetails);
+	const additionalEmployeeInfo = useSelector((state: RootState) => state.staffRegistration.additionalDetails);
 
     const form = useForm<AdditionalEmployeeDetailsSchemaType>({
         resolver: zodResolver(additionalEmployeeDetailsSchema),
-        defaultValues: additionalDetails
+        defaultValues: {
+            aadharNumber: additionalEmployeeInfo?.aadharNumber || "",
+            panNumber: additionalEmployeeInfo?.panNumber || "",
+            religion: (additionalEmployeeInfo?.religion || undefined) as AdditionalEmployeeDetailsSchemaType["religion"],
+            category: (additionalEmployeeInfo?.category || undefined) as AdditionalEmployeeDetailsSchemaType["category"],
+            fatherName: additionalEmployeeInfo?.fatherName || "",
+            motherName: additionalEmployeeInfo?.motherName || "",
+            maritalStatus: (additionalEmployeeInfo?.maritalStatus || undefined) as AdditionalEmployeeDetailsSchemaType["maritalStatus"],
+            spouseName: additionalEmployeeInfo?.spouseName || "",
+            emergencyMobileNumber: additionalEmployeeInfo?.emergencyMobileNumber || "",
+        },
     });
 
     const onSubmit = (value: AdditionalEmployeeDetailsSchemaType) => {

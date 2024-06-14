@@ -1,30 +1,51 @@
 "use client";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { addressSchema } from "@/staffRegistrationSchema/addressSchemaStaff";
 import { AddressSchemaStaffType } from "@/staffRegistrationSchema/addressSchemaStaff";
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
-const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement => {
+const AddressInfo = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const addressStaffInfo = useSelector(
+		(state: RootState) => state.staffRegistration.addressInfo
+	);
 	const form = useForm<AddressSchemaStaffType>({
 		resolver: zodResolver(addressSchema),
 		defaultValues: {
-			addressLine1: "",
-			addressLine2: "",
-			cityTown: "",
-			state: "",
-			pincode: "",
-			country: "",
+			addressLine1: addressStaffInfo?.addressLine1 || "",
+			addressLine2: addressStaffInfo?.addressLine2 || "",
+			cityTown: addressStaffInfo?.cityTown || "",
+			state: addressStaffInfo?.state || "",
+			pincode: addressStaffInfo?.pincode || "",
+			country: addressStaffInfo?.country || "",
 		},
 	});
+
 
 	const onSubmit = (values: AddressSchemaStaffType) => {
 		// console.log(values);
 		onNext(values);
 	};
+	const { reset } = form;
+	useEffect(() => {
+		reset(addressStaffInfo, {})
+	},[addressStaffInfo,reset])
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -34,16 +55,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
 							<FormField
 								control={form.control}
-								name="addressLine1"
+								name='addressLine1'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="addressLine1" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='addressLine1'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Address Line 1
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="addressLine1"
-												type="text"
+												id='addressLine1'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Abc near xyz'
 												{...field}
@@ -55,16 +79,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 							/>
 							<FormField
 								control={form.control}
-								name="addressLine2"
+								name='addressLine2'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="addressLine2" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='addressLine2'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Address Line 2
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="addressLine2"
-												type="text"
+												id='addressLine2'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Flat/House No, Landmark'
 												{...field}
@@ -76,16 +103,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 							/>
 							<FormField
 								control={form.control}
-								name="cityTown"
+								name='cityTown'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="cityTown" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='cityTown'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											City/Town
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="cityTown"
-												type="text"
+												id='cityTown'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Mumbai'
 												{...field}
@@ -97,16 +127,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 							/>
 							<FormField
 								control={form.control}
-								name="state"
+								name='state'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="state" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='state'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											State
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="state"
-												type="text"
+												id='state'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Maharashtra'
 												{...field}
@@ -118,16 +151,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 							/>
 							<FormField
 								control={form.control}
-								name="pincode"
+								name='pincode'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="pincode" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='pincode'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											PIN Code
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="pincode"
-												type="text"
+												id='pincode'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='123456'
 												{...field}
@@ -139,16 +175,19 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 							/>
 							<FormField
 								control={form.control}
-								name="country"
+								name='country'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="country" className='pl-1 text-blue-500 font-semibold'>
+										<FormLabel
+											htmlFor='country'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Country
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="country"
-												type="text"
+												id='country'
+												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='India'
 												{...field}
@@ -159,10 +198,10 @@ const AddressInfo = ({ onNext }: { onNext: (data: any) => void; }): ReactElement
 								)}
 							/>
 						</div>
-						<div className="flex justify-center mt-8">
+						<div className='flex justify-center mt-8'>
 							<Button
-								type="submit"
-								className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+								type='submit'
+								className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md'
 							>
 								Next
 							</Button>
