@@ -57,10 +57,10 @@ const MedicalInfoForm = ({
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
-								name='weight'
+								name='weightKg'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -84,7 +84,7 @@ const MedicalInfoForm = ({
 							/>
 							<FormField
 								control={form.control}
-								name='height'
+								name='heightCm'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -204,7 +204,7 @@ const MedicalInfoForm = ({
 							/>
 							<FormField
 								control={form.control}
-								name='issuedDate'
+								name='issueDateOfReport'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel

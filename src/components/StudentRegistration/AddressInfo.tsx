@@ -46,7 +46,7 @@ const AddressInfoForm = ({
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
 								name='addressLine1'
@@ -57,9 +57,6 @@ const AddressInfoForm = ({
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Address Line 1{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -100,7 +97,7 @@ const AddressInfoForm = ({
 							/>
 							<FormField
 								control={form.control}
-								name='cityTown'
+								name='city'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -108,9 +105,6 @@ const AddressInfoForm = ({
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											City/Town{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -135,9 +129,6 @@ const AddressInfoForm = ({
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											State{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -186,9 +177,6 @@ const AddressInfoForm = ({
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Country{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input

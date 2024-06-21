@@ -85,7 +85,7 @@ const BasicInfo = ({
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
 								name='mobileNumber'
@@ -109,8 +109,8 @@ const BasicInfo = ({
 													placeholder='Mobile Number'
 													{...field}
 												/>
-												<span className='absolute left-3.5 top-[13.5px] flex items-center space-x-2 text-gray-500'>
-													<span>+91</span>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+													<span>+91-</span>
 												</span>
 											</div>
 										</FormControl>
@@ -205,7 +205,10 @@ const BasicInfo = ({
 											htmlFor='first_name'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											First Name
+											First Name{" "}
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -445,14 +448,14 @@ const BasicInfo = ({
 														<SelectLabel>
 															User Role
 														</SelectLabel>
-														<SelectItem value='User'>
-															User
+														<SelectItem value='Owner'>
+															Owner
 														</SelectItem>
 														<SelectItem value='Teacher'>
 															Teacher
 														</SelectItem>
 														<SelectItem value='Non-Teaching'>
-															Non-Teacher
+															Non-Teaching
 														</SelectItem>
 													</SelectGroup>
 												</SelectContent>

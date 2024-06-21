@@ -46,7 +46,7 @@ const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
             <div className='w-full tracking-wide'>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="grid grid-cols-3 gap-x-8 gap-y-3">
+                        <div className="grid grid-cols-3 gap-x-8 gap-y-3 text-sm">
                             <FormField
                                 control={form.control}
                                 name="aadharNumber"
@@ -261,7 +261,7 @@ const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
                             />
                         </div>
                         <div className='flex items-center justify-end space-x-2'>
-                            <Button type="submit" className="mt-8">
+                            <Button type="submit" className="mt-8 hidden">
                                 Next
                             </Button>
                         </div>

@@ -52,7 +52,7 @@ const AddressInfo = ({
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
 								name='addressLine1'
@@ -201,7 +201,7 @@ const AddressInfo = ({
 						<div className='flex justify-center mt-8'>
 							<Button
 								type='submit'
-								className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md'
+								className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hidden'
 							>
 								Next
 							</Button>

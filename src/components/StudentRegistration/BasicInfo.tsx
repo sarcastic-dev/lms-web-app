@@ -50,7 +50,7 @@ dayjs.extend(customParseFormat);
 
 const dateFormat = "YYYY-MM-DD";
 
-const TestComponent = ({
+const BasicInfo = ({
 	onNext,
 }: {
 	onNext: (data: any) => void;
@@ -62,46 +62,42 @@ const TestComponent = ({
 		return current && (current < minDate || current > maxDate);
 	};
 
-	const basicInfoStudent = useSelector(
-		(state: RootState) => state.studentRegistration.basicInfo
-	);
+	
+    const basicInfo = useSelector((state: RootState) => state.studentRegistration.basicInfo);
 
-	const form = useForm<BasicInfoSchemaType>({
-		resolver: zodResolver(BasicInfoSchema),
-		defaultValues: {
-			bloodGroup: basicInfoStudent?.bloodGroup || "A+",
-			classRollNumber: basicInfoStudent?.classRollNumber || "",
-			dateOfAdmission: basicInfoStudent?.dateOfAdmission || "",
-			dateOfBirth: basicInfoStudent?.dateOfBirth || "",
-			email: basicInfoStudent?.email || "",
-			enrolmentID: basicInfoStudent?.enrolmentID || "",
-			firstName: basicInfoStudent?.firstName || "",
-			gender: basicInfoStudent?.gender || "Male",
-			lastName: basicInfoStudent?.lastName || "",
-			middleName: basicInfoStudent?.middleName || "",
-			mobileNumber: basicInfoStudent?.mobileNumber || "",
-		},
-	});
+    const form = useForm<BasicInfoSchemaType>({
+        resolver: zodResolver(BasicInfoSchema),
+        defaultValues: {
+            bloodGroup: basicInfo?.user?.bloodGroup || undefined,
+            dob: basicInfo?.user?.dob || "",
+            email: basicInfo?.user?.email || "",
+            enrolmentID: basicInfo?.user?.enrolmentID || "",
+            firstName: basicInfo?.user?.firstName || "",
+            gender: basicInfo?.user?.gender || undefined,
+            lastName: basicInfo?.user?.lastName || "",
+            middleName: basicInfo?.user?.middleName || "",
+            phone: basicInfo?.user?.phone || "",
+        },
+    });
 
-	const onSubmit = (value: BasicInfoSchemaType) => {
-		onNext(value);
-	};
+    const onSubmit = (value: BasicInfoSchemaType) => {
+        onNext(value);
+    };
 
-	const { reset } = form;
+    const { reset } = form;
 
-	useEffect(() => {
-		reset(basicInfoStudent || {});
-	}, [basicInfoStudent, reset]);
-
+    useEffect(() => {
+        reset(basicInfo?.user || {});
+    }, [basicInfo, reset]);
 	return (
 		<div className='flex justify-center my-4'>
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
-								name='mobileNumber'
+								name='phone'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -122,8 +118,8 @@ const TestComponent = ({
 													placeholder='Mobile Number'
 													{...field}
 												/>
-												<span className='absolute left-3.5 top-[13.5px] flex items-center space-x-2 text-gray-500'>
-													<span>+91</span>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+													<span>+91-</span>
 												</span>
 											</div>
 										</FormControl>
@@ -289,76 +285,7 @@ const TestComponent = ({
 							/>
 							<FormField
 								control={form.control}
-								name='dateOfAdmission'
-								render={({ field }) => (
-									<FormItem className=''>
-										<FormLabel
-											htmlFor='dateOfAdmission'
-											className='pl-1 text-blue-500 font-semibold'
-										>
-											Date of Admission{" "}
-											<span className='text-red-500'>
-												*
-											</span>
-										</FormLabel>
-										<FormControl>
-											<DatePicker
-												id='dateOfAdmission'
-												size='large'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
-												}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='classRollNumber'
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											htmlFor='classRollNumber'
-											className='pl-1 text-blue-500 font-semibold'
-										>
-											Class Roll Number
-										</FormLabel>
-										<FormControl>
-											<Input
-												id='classRollNumber'
-												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												placeholder='Class Roll Number'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='dateOfBirth'
+								name='dob'
 								render={({ field }) => (
 									<FormItem className=''>
 										<FormLabel
@@ -366,9 +293,6 @@ const TestComponent = ({
 											className='pl-1 text-blue-500 font-semibold '
 										>
 											Date of Birth{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<DatePicker
@@ -411,9 +335,6 @@ const TestComponent = ({
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Gender{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Select
@@ -522,4 +443,4 @@ const TestComponent = ({
 	);
 };
 
-export default TestComponent;
+export default BasicInfo;

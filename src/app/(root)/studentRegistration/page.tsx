@@ -15,21 +15,17 @@ import {
 import { IconProps, StepProps, StepperProps } from "@/types";
 import BasicInfo from "@/components/StudentRegistration/BasicInfo";
 import AddressInfo from "@/components/StudentRegistration/AddressInfo";
-import FatherInfo from "@/components/StudentRegistration/FatherInfo";
-import MotherInfo from "@/components/StudentRegistration/MotherInfo";
-import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
+import ParentInfo from "@/components/StudentRegistration/ParentInfo";
 import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
 import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	setAcademicInfoData,
 	setAddressInfoData,
-	setBasicInfoData,
-	setFatherInfoData,
-	setGuardianInfoData,
+	setBasicInfoStudentData,
+	setBasicInfoUserData,
+	setParentInfoData,
 	setMedicalInfoData,
-	setMotherInfoDate,
-	// resetRegistrationData, // Add this action to reset the data
+	resetRegistrationData,
 } from "@/context/studentRegistrationSlice";
 import { RootState } from "@/context/store";
 import { useRouter } from "next/navigation";
@@ -42,29 +38,19 @@ export default function Page() {
 		(state: RootState) => state.studentRegistration
 	);
 
-	// Reset the state when the component unmounts
-	// useEffect(() => {
-	// 	return () => {
-	// 		dispatch(resetRegistrationData());
-	// 	};
-	// }, [dispatch]);
-
 	const handleNext = (data: any) => {
 		if (step === 1) {
-			dispatch(setBasicInfoData(data));
+			dispatch(setBasicInfoUserData(data));
 		} else if (step === 2) {
 			dispatch(setAddressInfoData(data));
 		} else if (step === 3) {
-			dispatch(setFatherInfoData(data));
+			dispatch(setParentInfoData(data));
 		} else if (step === 4) {
-			dispatch(setMotherInfoDate(data));
+			dispatch(setBasicInfoStudentData(data));
 		} else if (step === 5) {
-			dispatch(setGuardianInfoData(data));
-		} else if (step === 6) {
-			dispatch(setAcademicInfoData(data));
-		} else if(step === 7){
 			dispatch(setMedicalInfoData(data));
-			router.push('/studentRegistration'); 
+			dispatch(resetRegistrationData());
+			router.push('/studentInfo'); 
 			return; 
 		}
 		console.log(registrationData);
@@ -87,17 +73,15 @@ export default function Page() {
 				<div className='px-10 pb-8 '>
 					{step === 1 && <BasicInfo onNext={handleNext} />}
 					{step === 2 && <AddressInfo onNext={handleNext} />}
-					{step === 3 && <FatherInfo onNext={handleNext} />}
-					{step === 4 && <MotherInfo onNext={handleNext} />}
-					{step === 5 && <GuardianInfo onNext={handleNext} />}
-					{step === 6 && <AcademicInfo onNext={handleNext} />}
-					{step === 7 && <MedicalInfo onNext={handleNext} />}
+					{step === 3 && <ParentInfo onNext={handleNext} />}
+					{step === 4 && <AcademicInfo onNext={handleNext} />}
+					{step === 5 && <MedicalInfo onNext={handleNext} />}
 
 					<div className='2xl:mt-10 xl:mt-6 flex justify-between'>
 						<button
 							onClick={() => setStep(step < 2 ? step : step - 1)}
 							className={`${
-								step >= 8
+								step >= 6
 									? "pointer-events-none opacity-50"
 									: ""
 							} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
@@ -115,14 +99,12 @@ export default function Page() {
 								);
 							}}
 							className={`${
-								step >= 8
+								step >= 6
 									? "pointer-events-none opacity-50"
 									: ""
 							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
 						>
-							{step === 7
-								? "Finish"
-								: step === 8
+							{step === 5
 								? "Finish"
 								: "Next"}
 						</button>
@@ -137,11 +119,9 @@ function Stepper({ step }: StepperProps) {
 	const steps = [
 		{ number: 1, description: "Basic Info", icon: Info },
 		{ number: 2, description: "Address Info", icon: LocateFixed },
-		{ number: 3, description: "Father’s Info", icon: CircleUser },
-		{ number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
-		{ number: 5, description: "Guardian’s Info", icon: Shield },
-		{ number: 6, description: "Academic Info", icon: GraduationCap },
-		{ number: 7, description: "Medical Info", icon: ClipboardPlus },
+		{ number: 3, description: "Parent's Info", icon: CircleUser },
+		{ number: 4, description: "Academic Info", icon: GraduationCap },
+		{ number: 5, description: "Medical Info", icon: ClipboardPlus },
 	];
 
 	return (

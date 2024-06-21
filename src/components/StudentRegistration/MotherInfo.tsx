@@ -18,7 +18,7 @@ import { RootState } from "@/context/store";
 
 type MotherInfoSchemaType = z.infer<typeof motherInfoSchema>;
 
-const MotherInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement => {
+const ParentInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement => {
 	const motherInfoStudent = useSelector(
 		(state: RootState) => state.studentRegistration.motherInfo
 	);
@@ -259,4 +259,4 @@ const MotherInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement =>
 	);
 };
 
-export default MotherInfo;
+export default ParentInfo;

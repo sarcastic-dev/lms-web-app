@@ -1,74 +1,79 @@
 import {
-	AcademicInfo,
 	AddressInfo,
 	BasicInfo,
-	FatherInfo,
-	GuardianInfo,
+	ParentInfo,
 	MedicalInfo,
-	MotherInfo,
-} from "@/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface RegistrationState {
+  } from "@/types";
+  import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+  
+  interface RegistrationState {
 	basicInfo: Partial<BasicInfo>;
 	addressInfo: Partial<AddressInfo>;
-	fatherInfo: Partial<FatherInfo>;
-	motherInfo: Partial<MotherInfo>;
-	guardianInfo: Partial<GuardianInfo>;
-	academicInfo: Partial<AcademicInfo>;
+	parentInfo: Partial<ParentInfo>;
 	medicalInfo: Partial<MedicalInfo>;
-}
-
-const initialState: RegistrationState = {
-	basicInfo: {},
+  }
+  
+  const initialState: RegistrationState = {
+	basicInfo: {
+	  user: {
+		bloodGroup: undefined,
+		dob: "",
+		email: "",
+		enrolmentID: "",
+		firstName: "",
+		gender: undefined,
+		lastName: "",
+		middleName: "",
+		phone: "",
+	  },
+	  student: {
+		admissionDate: "",
+		boardUniversity: "",
+		class: "",
+		rollNumber:"",
+		section: "",
+	  },
+	},
 	addressInfo: {},
-	fatherInfo: {},
-	motherInfo: {},
-	guardianInfo: {},
-	academicInfo: {},
+	parentInfo: {},
 	medicalInfo: {},
-};
-
-const studentRegistrationSlice = createSlice({
+  };
+  
+  const studentRegistrationSlice = createSlice({
 	name: "registration",
 	initialState,
 	reducers: {
-		setBasicInfoData: (state, action: PayloadAction<BasicInfo>) => {
-			state.basicInfo = action.payload;
-		},
-		setAddressInfoData: (state, action: PayloadAction<AddressInfo>) => {
-			state.addressInfo = action.payload;
-		},
-		setFatherInfoData: (state, action: PayloadAction<FatherInfo>) => {
-			state.fatherInfo = action.payload;
-		},
-		setMotherInfoDate: (state, action: PayloadAction<MotherInfo>) => {
-			state.motherInfo = action.payload;
-		},
-		setGuardianInfoData: (state, action: PayloadAction<GuardianInfo>) => {
-			state.guardianInfo = action.payload;
-		},
-		setAcademicInfoData: (state, action: PayloadAction<AcademicInfo>) => {
-			state.academicInfo = action.payload;
-		},
-		setMedicalInfoData: (state, action: PayloadAction<MedicalInfo>) => {
-			state.medicalInfo = action.payload;
-		},
+	  setBasicInfoData: (state, action: PayloadAction<BasicInfo>) => {
+		state.basicInfo = action.payload;
+	  },
+	  setBasicInfoUserData: (state, action: PayloadAction<BasicInfo['user']>) => {
+		state.basicInfo.user = action.payload;
+	  },
+	  setBasicInfoStudentData: (state, action: PayloadAction<BasicInfo['student']>) => {
+		state.basicInfo.student = action.payload;
+	  },
+	  setAddressInfoData: (state, action: PayloadAction<AddressInfo>) => {
+		state.addressInfo = action.payload;
+	  },
+	  setParentInfoData: (state, action: PayloadAction<ParentInfo>) => {
+		state.parentInfo = action.payload;
+	  },
+	  setMedicalInfoData: (state, action: PayloadAction<MedicalInfo>) => {
+		state.medicalInfo = action.payload;
+	  },
+	  resetRegistrationData: () => initialState,
 	},
-});
-
-export const {
+  });
+  
+  export const {
 	setBasicInfoData,
+	setBasicInfoUserData,
+	setBasicInfoStudentData,
 	setAddressInfoData,
-	setFatherInfoData,
-	setMotherInfoDate,
-	setGuardianInfoData,
-	setAcademicInfoData,
+	setParentInfoData,
 	setMedicalInfoData,
-} = studentRegistrationSlice.actions;
-export default studentRegistrationSlice.reducer;
-
-
-// resetRegistrationData(state) {
-// 	return initialState;
-//   },
+	resetRegistrationData,
+  } = studentRegistrationSlice.actions;
+  
+  export default studentRegistrationSlice.reducer;
+  

@@ -1,15 +1,16 @@
 import { z } from 'zod';
 
 export const programInfoSchema = z.object({
-  programClass: z.string().trim().min(1, { message: 'Program/Class is required*' }),
-  section: z.string().trim().min(1, { message: 'Section is required*' }),
-  admissionYear: z
+  class: z.string().trim().optional(),
+  section: z.string().trim().optional(),
+  rollNumber: z.string().optional(),
+  admissionDate: z
     .string()
     .trim()
-    .regex(/^\d{4}$/, { message: 'Invalid admission year (YYYY)' })
-    .min(1, { message: 'Admission Year is required*' }),
+    .optional(),
   boardUniversity: z
     .string()
     .trim()
-    .min(1, { message: 'Board/University is required*' }),
+
+    .optional(),
 });
