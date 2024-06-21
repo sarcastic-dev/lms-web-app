@@ -1,482 +1,331 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-
-interface StepProps {
-	step: number;
-	currentStep: number;
-	description: string;
-}
-
-interface StepperProps {
-	step: number;
-}
-
-interface CheckIconProps {
-	className: string;
-}
+import {
+    ChevronRight,
+    CircleUser,
+    CircleUserRoundIcon,
+    ClipboardPlus,
+    GraduationCap,
+    Info,
+    LocateFixed,
+    Shield,
+    Users,
+} from "lucide-react";
+import { IconProps, StepProps, StepperProps } from "@/types";
+import BasicInfo from "@/components/StudentRegistration/BasicInfo";
+import AddressInfo from "@/components/StudentRegistration/AddressInfo";
+import FatherInfo from "@/components/StudentRegistration/FatherInfo";
+import MotherInfo from "@/components/StudentRegistration/MotherInfo";
+import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
+import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
+import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    setAcademicInfoData,
+    setAddressInfoData,
+    setBasicInfoData,
+    setFatherInfoData,
+    setGuardianInfoData,
+    setMedicalInfoData,
+    setMotherInfoDate,
+    resetRegistrationData, // Add this action to reset the data
+} from "@/context/studentRegistrationSlice";
+import { RootState } from "@/context/store";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-	const [step, setStep] = useState<number>(1);
+    const router = useRouter();
+    const [step, setStep] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const dispatch = useDispatch();
+    const registrationData = useSelector(
+        (state: RootState) => state.studentRegistration
+    );
 
-	return (
-		<div className="flex min-h-screen items-start justify-center bg-gradient-to-br pt-40">
-			<div className="mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-lg">
-				<div className="flex justify-between rounded p-8">
-					<Stepper step={step} />
-				</div>
-				<div className="px-8 pb-8">
-					{step === 1 && <div>
-						<div className="mt-2 h-6 w-40 rounded bg-slate-100" />
-						<div className="mt-4 space-y-2">
-							<div className="h-4 w-5/6 rounded bg-slate-100" />
-							<div className="h-4 rounded bg-slate-100" />
-							<div className="h-4 w-4/6 rounded bg-slate-100" />
-						</div>
-					</div>}
-					{step === 2 && <div>
-						<div className="mt-2 h-6 w-40 rounded bg-red-100" />
-						<div className="mt-4 space-y-2">
-							<div className="h-4 w-5/6 rounded bg-red-100" />
-							<div className="h-4 rounded bg-red-100" />
-							<div className="h-4 w-4/6 rounded bg-red-100" />
-						</div>
-					</div>}
-					{step === 3 && <div>
-						<div className="mt-2 h-6 w-40 rounded bg-blue-100" />
-						<div className="mt-4 space-y-2">
-							<div className="h-4 w-5/6 rounded bg-blue-100" />
-							<div className="h-4 rounded bg-blue-100" />
-							<div className="h-4 w-4/6 rounded bg-blue-100" />
-						</div>
-					</div>}
+    // Reset the state when the component unmounts
+    useEffect(() => {
+        return () => {
+            dispatch(resetRegistrationData());
+        };
+    }, [dispatch]);
 
+    const handleNext = async (data: any) => {
+        if (step === 1) {
+            dispatch(setBasicInfoData(data));
+        } else if (step === 2) {
+            dispatch(setAddressInfoData(data));
+        } else if (step === 3) {
+            dispatch(setFatherInfoData(data));
+        } else if (step === 4) {
+            dispatch(setMotherInfoDate(data));
+        } else if (step === 5) {
+            dispatch(setGuardianInfoData(data));
+        } else if (step === 6) {
+            dispatch(setAcademicInfoData(data));
+        } else if(step === 7){
+            dispatch(setMedicalInfoData(data));
 
-					<div className="mt-10 flex justify-between">
-						<button
-							onClick={() => setStep(step < 2 ? step : step - 1)}
-							className="rounded px-2 py-1 text-slate-400 hover:text-slate-700"
-						>
-							Back
-						</button>
-						<button
-							onClick={() => setStep(step >= 8 ? step : step + 1)}
-							className={`${step >= 8 ? "pointer-events-none opacity-50" : ""
-								} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
-						>
-							{step === 8 ? "Finish" : "Next"}
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+            // Show loader
+            setLoading(true);
+
+            // Make API call to save data
+            try {
+                const response = await fetch('/api/saveRegistration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registrationData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Handle successful response
+                const result = await response.json();
+                console.log('Data saved successfully:', result);
+
+                // Reset Redux state
+                dispatch(resetRegistrationData());
+
+                // Navigate after the last step
+                router.push('/studentRegistration');
+            } catch (error) {
+                console.error('Failed to save data:', error);
+                // Handle error (e.g., show error message to user)
+            } finally {
+                // Hide loader
+                setLoading(false);
+            }
+
+            return; // Return early to avoid increasing the step count
+        }
+
+        console.log(registrationData);
+        setStep(step + 1);
+    };
+
+    return (
+        <div className='flex min-h-screen items-start justify-center bg-gradient-to-br 2xl:pt-40 xl:pt-20 relative '>
+            <div className='flex font-semibold items-center text-blue-500 absolute 2xl:top-24 xl:top-6 gap-3'>
+                <Users
+                    size={35}
+                    strokeWidth='3'
+                />
+                <h1 className='text-4xl'>Student Registration</h1>
+            </div>
+            <div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark 2xl:mt-12 xl:mt-6'>
+                <div className='flex justify-between rounded py-8 px-10 flex-wrap'>
+                    <Stepper step={step} />
+                </div>
+                <div className='px-10 pb-8 '>
+                    {loading ? (
+                        <div className='flex justify-center items-center'>
+                            <div className='loader'></div> {/* Add a loader component */}
+                        </div>
+                    ) : (
+                        <>
+                            {step === 1 && <BasicInfo onNext={handleNext} />}
+                            {step === 2 && <AddressInfo onNext={handleNext} />}
+                            {step === 3 && <FatherInfo onNext={handleNext} />}
+                            {step === 4 && <MotherInfo onNext={handleNext} />}
+                            {step === 5 && <GuardianInfo onNext={handleNext} />}
+                            {step === 6 && <AcademicInfo onNext={handleNext} />}
+                            {step === 7 && <MedicalInfo onNext={handleNext} />}
+
+                            <div className='2xl:mt-10 xl:mt-6 flex justify-between'>
+                                <button
+                                    onClick={() => setStep(step < 2 ? step : step - 1)}
+                                    className={`${
+                                        step >= 8
+                                            ? "pointer-events-none opacity-50"
+                                            : ""
+                                    } rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        // Manually trigger the form submission of the current step
+                                        document.querySelector("form")?.dispatchEvent(
+                                            new Event("submit", {
+                                                cancelable: true,
+                                                bubbles: true,
+                                            })
+                                        );
+                                    }}
+                                    className={`${
+                                        step >= 8
+                                            ? "pointer-events-none opacity-50"
+                                            : ""
+                                    } flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
+                                >
+                                    {step === 7
+                                        ? "Finish"
+                                        : step === 8
+                                        ? "Finish"
+                                        : "Next"}
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 function Stepper({ step }: StepperProps) {
-	const steps = [
-		{ number: 1, description: "Basic Info" },
-		{ number: 2, description: "Address Info" },
-		{ number: 3, description: "Father’s Info" },
-		{ number: 4, description: "Mother’s Info" },
-		{ number: 5, description: "Guardian’s Info" },
-		{ number: 6, description: "Academic Info" },
-		{ number: 7, description: "Medical Records" },
-	];
+    const steps = [
+        { number: 1, description: "Basic Info", icon: Info },
+        { number: 2, description: "Address Info", icon: LocateFixed },
+        { number: 3, description: "Father’s Info", icon: CircleUser },
+        { number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
+        { number: 5, description: "Guardian’s Info", icon: Shield },
+        { number: 6, description: "Academic Info", icon: GraduationCap },
+        { number: 7, description: "Medical Info", icon: ClipboardPlus },
+    ];
 
-	return (
-		<div className="flex w-full items-center space-x-4">
-			{steps.map((s, index) => (
-				<div key={s.number} className="flex items-center">
-					<Step step={s.number} currentStep={step} description={s.description} />
-					{index < steps.length - 1 && (
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ delay: 0.2 }}
-							className="mx-2 text-slate-400"
-						>
-							<ChevronRight
-								color={step > s.number ? "var(--blue-500)" : "var(--slate-400)"}
-							/>
-						</motion.div>
-					)}
-				</div>
-			))}
-		</div>
-	);
-}
-
-function Step({ step, currentStep, description }: StepProps) {
-	let status =
-		currentStep === step
-			? "active"
-			: currentStep < step
-				? "inactive"
-				: "complete";
-
-	return (
-		<motion.div animate={status} className="flex items-center space-x-2">
-			<motion.div
-				variants={{
-					active: {
-						scale: 1,
-						transition: {
-							delay: 0,
-							duration: 0.2,
-						},
-					},
-					complete: {
-						scale: 1.25,
-					},
-				}}
-				transition={{
-					duration: 0.6,
-					delay: 0.2,
-					type: "tween",
-					ease: "circOut",
-				}}
-				className="relative"
-			>
-				<div className="absolute inset-0 rounded-full bg-blue-200"></div>
-				<motion.div
-					initial={false}
-					variants={{
-						inactive: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--slate-200)",
-							color: "var(--slate-400)",
-						},
-						active: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-						complete: {
-							backgroundColor: "var(--blue-500)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-					}}
-					transition={{ duration: 0.2 }}
-					className={`relative flex h-6 w-6 items-center justify-center rounded-full border-2 font-semibold`}
-				>
-					<div className="flex items-center justify-center">
-						{status === "complete" ? (
-							<CheckIcon className="h-4 w-4 text-white" />
-						) : (
-							<span>{step}</span>
-						)}
-					</div>
-				</motion.div>
-			</motion.div>
-
-			<div className="ml-2 text-sm">{description}</div>
-		</motion.div>
-	);
-}
-
-function CheckIcon({ className }: CheckIconProps) {
-	return (
-		<svg
-			className={className}
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
-			strokeWidth={3}
-		>
-			<motion.path
-				initial={{ pathLength: 0 }}
-				animate={{ pathLength: 1 }}
-				transition={{
-					delay: 0.2,
-					type: "tween",
-					ease: "easeOut",
-					duration: 0.3,
-				}}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M5 13l4 4L19 7"
-			/>
-		</svg>
-	);
-}
-
-
-
-
-/*
-function ErrorIcon(props) {
-  return (
-    <svg
-      {...props}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={3}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
- */
-
-
-
-
-
-
-
- "use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-
-interface StepProps {
-  step: number;
-  currentStep: number;
-  description: string;
-  icon: JSX.Element;
-}
-
-interface StepperProps {
-  step: number;
-}
-
-interface IconProps {
-  className: string;
-}
-
-export default function Page() {
-  const [step, setStep] = useState<number>(1);
-
-  return (
-    <div className="flex min-h-screen items-start justify-center bg-gradient-to-br pt-40">
-      <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-lg">
-        <div className="flex justify-between rounded p-8">
-          <Stepper step={step} />
+    return (
+        <div className='flex w-full items-center flex-wrap 2xl:gap-y-10 2xl:gap-x-4  xl:gap-y-5 xl:gap-x-4 '>
+            {steps.map((s, index) => (
+                <div
+                    key={s.number}
+                    className='flex items-center'
+                >
+                    <Step
+                        step={s.number}
+                        currentStep={step}
+                        description={s.description}
+                        icon={s.icon}
+                    />
+                    {index < steps.length - 1 && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className=' text-slate-400 ml-2'
+                        >
+                            <ChevronRight
+                                color={
+                                    step > s.number
+                                        ? "var(--blue-500)"
+                                        : "var(--slate-400)"
+                                }
+                            />
+                        </motion.div>
+                    )}
+                </div>
+            ))}
         </div>
-        <div className="px-8 pb-8">
-          {step === 1 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-slate-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-slate-100" />
-              <div className="h-4 rounded bg-slate-100" />
-              <div className="h-4 w-4/6 rounded bg-slate-100" />
-            </div>
-          </div>}
-          {step === 2 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-red-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-red-100" />
-              <div className="h-4 rounded bg-red-100" />
-              <div className="h-4 w-4/6 rounded bg-red-100" />
-            </div>
-          </div>}
-          {step === 3 && <div>
-            <div className="mt-2 h-6 w-40 rounded bg-blue-100" />
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-5/6 rounded bg-blue-100" />
-              <div className="h-4 rounded bg-blue-100" />
-              <div className="h-4 w-4/6 rounded bg-blue-100" />
-            </div>
-          </div>}
-
-          <div className="mt-10 flex justify-between">
-            <button
-              onClick={() => setStep(step < 2 ? step : step - 1)}
-              className="rounded px-2 py-1 text-slate-400 hover:text-slate-700"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => setStep(step >= 8 ? step : step + 1)}
-              className={`${step >= 8 ? "pointer-events-none opacity-50" : ""
-                } flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
-            >
-              {step === 8 ? "Finish" : "Next"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
-function Stepper({ step }: StepperProps) {
-	const steps = [
-	  { number: 1, description: "Basic Info", icon: <InfoIcon className="h-4 w-4 text-white" /> },
-	  { number: 2, description: "Address Info", icon: <AddressIcon className="h-4 w-4 text-white" /> },
-	  { number: 3, description: "Father’s Info", icon: <UserIcon className="h-4 w-4 text-white" /> },
-	  { number: 4, description: "Mother’s Info", icon: <FemaleIcon className="h-4 w-4 text-white" /> },
-	  { number: 5, description: "Guardian’s Info", icon: <ShieldIcon className="h-4 w-4 text-white" /> },
-	  { number: 6, description: "Academic Info", icon: <GraduationIcon className="h-4 w-4 text-white" /> },
-	  { number: 7, description: "Medical Records", icon: <MedicalIcon className="h-4 w-4 text-white" /> },
-	];
-  
-	return (
-	  <div className="flex w-full items-center space-x-4">
-		{steps.map((s, index) => (
-		  <div key={s.number} className="flex items-center">
-			<Step step={s.number} currentStep={step} description={s.description} icon={s.icon} />
-			{index < steps.length - 1 && (
-			  <motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 0.2 }}
-				className="mx-2 text-slate-400"
-			  >
-				<ChevronRight
-				  color={step > s.number ? "var(--blue-500)" : "var(--slate-400)"}
-				/>
-			  </motion.div>
-			)}
-		  </div>
-		))}
-	  </div>
-	);
-  }
-  
+function Step({ step, currentStep, description, icon: Icon }: StepProps) {
+    let status =
+        currentStep === step
+            ? "active"
+            : currentStep < step
+            ? "inactive"
+            : "complete";
 
-function Step({ step, currentStep, description, icon }: StepProps) {
-	let status =
-	  currentStep === step
-		? "active"
-		: currentStep < step
-		  ? "inactive"
-		  : "complete";
-  
-	return (
-	  <motion.div animate={status} className="flex items-center space-x-2">
-		<motion.div
-		  variants={{
-			active: {
-			  scale: 1,
-			  transition: {
-				delay: 0,
-				duration: 0.2,
-			  },
-			},
-			complete: {
-			  scale: 1.25,
-			},
-		  }}
-		  transition={{
-			duration: 0.6,
-			delay: 0.2,
-			type: "tween",
-			ease: "circOut",
-		  }}
-		  className="relative"
-		>
-		  <div className="absolute inset-0 rounded-full bg-blue-200"></div>
-		  <motion.div
-			initial={false}
-			variants={{
-			  inactive: {
-				backgroundColor: "var(--white)",
-				borderColor: "var(--slate-200)",
-				color: "var(--slate-400)",
-			  },
-			  active: {
-				backgroundColor: "var(--white)",
-				borderColor: "var(--blue-500)",
-				color: "var(--blue-500)",
-			  },
-			  complete: {
-				backgroundColor: "var(--blue-500)",
-				borderColor: "var(--blue-500)",
-				color: "var(--blue-500)",
-			  },
-			}}
-			transition={{ duration: 0.2 }}
-			className={`relative flex h-6 w-6 items-center justify-center rounded-full border-2 font-semibold`}
-		  >
-			<div className="flex items-center justify-center">
-			  {status === "complete" ? (
-				<CheckIcon className="h-4 w-4 text-white" />
-			  ) : (
-				icon
-			  )}
-			</div>
-		  </motion.div>
-		</motion.div>
-  
-		<div className="ml-2 text-sm">{description}</div>
-	  </motion.div>
-	);
-  }
-  
+    return (
+        <motion.div
+            animate={status}
+            className='flex items-center space-x-2'
+        >
+            <motion.div
+                variants={{
+                    active: {
+                        scale: 1,
+                        transition: {
+                            delay: 0,
+                            duration: 0.2,
+                        },
+                    },
+                    complete: {
+                        scale: 1.25,
+                    },
+                }}
+                transition={{
+                    duration: 0.6,
+                    delay: 0.2,
+                    type: "tween",
+                    ease: "circOut",
+                }}
+                className='relative'
+            >
+                <div className='absolute inset-0 rounded-full bg-blue-200'></div>
+                <motion.div
+                    initial={false}
+                    variants={{
+                        inactive: {
+                            backgroundColor: "var(--white)",
+                            borderColor: "var(--slate-200)",
+                            color: "var(--slate-400)",
+                        },
+                        active: {
+                            backgroundColor: "var(--white)",
+                            borderColor: "var(--blue-500)",
+                            color: "var(--blue-500)",
+                        },
+                        complete: {
+                            backgroundColor: "var(--blue-500)",
+                            borderColor: "var(--blue-500)",
+                            color: "var(--blue-500)",
+                        },
+                    }}
+                    transition={{ duration: 0.2 }}
+                    className={`relative flex h-6 w-6 items-center justify-center rounded-full border-1 font-semibold`}
+                >
+                    <div className='flex items-center justify-center'>
+                        {status === "complete" ? (
+                            <CheckIcon className='h-3.5 w-3.5 text-white' />
+                        ) : (
+                            <Icon />
+                        )}
+                    </div>
+                </motion.div>
+            </motion.div>
+
+            <motion.div
+                variants={{
+                    complete: {
+                        color: "var(--blue-500)",
+                    },
+                }}
+                className={`ml-2 text-sm font-medium complete`}
+            >
+                {description}
+            </motion.div>
+        </motion.div>
+    );
+}
 
 function CheckIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<motion.path
-		  initial={{ pathLength: 0 }}
-		  animate={{ pathLength: 1 }}
-		  transition={{ delay: 0.2, type: "tween", ease: "easeOut", duration: 0.3 }}
-		  strokeLinecap="round"
-		  strokeLinejoin="round"
-		  d="M5 13l4 4L19 7"
-		/>
-	  </svg>
-	);
-  }
-  
-  function InfoIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01m-6.938 2A9.98 9.98 0 0112 2a9.98 9.98 0 016.938 16H5.062z" />
-	  </svg>
-	);
-  }
-  
-  function AddressIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7zM12 11a2 2 0 110-4 2 2 0 010 4z" />
-	  </svg>
-	);
-  }
-  
-  function UserIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M5 20h14M12 15a7 7 0 100-14 7 7 0 000 14zM12 15v6" />
-	  </svg>
-	);
-  }
-  
-  function FemaleIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 14a5 5 0 100-10 5 5 0 000 10zm0 0v6m-3-3h6" />
-	  </svg>
-	);
-  }
-  
-  function ShieldIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4.64 8-10V5l-8-3-8 3v7c0 5.36 8 10 8 10z" />
-	  </svg>
-	);
-  }
-  
-  function GraduationIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 2l7 4-7 4-7-4 7-4zm0 8v8m-4-4h8" />
-	  </svg>
-	);
-  }
-  
-  function MedicalIcon({ className }: IconProps) {
-	return (
-	  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m4-4H8m8-4H8m8 8H8" />
-	  </svg>
-	);
-  }
-  
+    return (
+        <svg
+            className={className}
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+            strokeWidth={3}
+        >
+            <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                    delay: 0.2,
+                    type: "tween",
+                    ease: "easeOut",
+                    duration: 0.3,
+                }}
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M5 13l4 4L19 7'
+            />
+        </svg>
+    );
+}

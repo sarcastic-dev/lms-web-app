@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
 	ChevronRight,
@@ -15,74 +15,74 @@ import {
 import { IconProps, StepProps, StepperProps } from "@/types";
 import BasicInfo from "@/components/StudentRegistration/BasicInfo";
 import AddressInfo from "@/components/StudentRegistration/AddressInfo";
-import FatherInfo from "@/components/StudentRegistration/FatherInfo";
-import MotherInfo from "@/components/StudentRegistration/MotherInfo";
-import GuardianInfo from "@/components/StudentRegistration/GuardianInfo";
+import ParentInfo from "@/components/StudentRegistration/ParentInfo";
 import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
 import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
-import { useDispatch, useSelector } from 'react-redux';
-import { setAcademicInfoData, setAddressInfoData, setBasicInfoData, setFatherInfoData, setGuardianInfoData, setMedicalInfoData, setMotherInfoDate } from "@/context/studentRegistrationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	setAddressInfoData,
+	setBasicInfoStudentData,
+	setBasicInfoUserData,
+	setParentInfoData,
+	setMedicalInfoData,
+	resetRegistrationData,
+} from "@/context/studentRegistrationSlice";
 import { RootState } from "@/context/store";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const router = useRouter();
 	const [step, setStep] = useState<number>(1);
 	const dispatch = useDispatch();
-	const registrationData = useSelector((state: RootState) => state.studentRegistration);
+	const registrationData = useSelector(
+		(state: RootState) => state.studentRegistration
+	);
 
 	const handleNext = (data: any) => {
 		if (step === 1) {
-		  dispatch(setBasicInfoData(data)); 
-		}
-		else if (step===2) {
+			dispatch(setBasicInfoUserData(data));
+		} else if (step === 2) {
+			dispatch(setBasicInfoStudentData(data));
+		} else if (step === 3) {
+			dispatch(setParentInfoData(data));
+		} else if (step === 4) {
 			dispatch(setAddressInfoData(data));
+		} else if (step === 5) {
+			dispatch(setMedicalInfoData(data));
+			dispatch(resetRegistrationData());
+			console.log(registrationData);
+			router.push("/studentInfo");
+			return;
 		}
-		else if (step===3) {
-			dispatch(setFatherInfoData(data));
-		}
-		else if (step===4) {
-			dispatch(setMotherInfoDate(data));
-		}
-		else if (step===5) {
-			dispatch(setGuardianInfoData(data));
-		}
-		else if (step===6) {
-			dispatch(setAcademicInfoData(data));
-		}
-		else {
-			dispatch(setMedicalInfoData(data))
-		}
-		console.log(registrationData)
+		
 		setStep(step + 1);
-	  };
+	};
 
 	return (
-		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br pt-40 relative'>
-			<div className='flex font-semibold items-center text-blue-500 absolute top-24 gap-3'>
+		<div className='flex min-h-screen items-start justify-center bg-gradient-to-br 2xl:pt-40 xl:pt-20 relative '>
+			<div className='flex font-semibold items-center text-blue-500 absolute 2xl:top-24 xl:top-6 gap-3'>
 				<Users
 					size={35}
 					strokeWidth='3'
 				/>
 				<h1 className='text-4xl'>Student Registration</h1>
 			</div>
-			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark mt-12'>
-				<div className='flex justify-between rounded p-8'>
+			<div className='mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-custom-dark 2xl:mt-12 xl:mt-6'>
+				<div className='flex justify-between rounded py-8 px-10 flex-wrap'>
 					<Stepper step={step} />
 				</div>
-				<div className='px-8 pb-8'>
-					{step === 1 && <BasicInfo onNext={handleNext}/>}
-					{step === 2 && <AddressInfo onNext={handleNext}/>}
-					{step === 3 && <FatherInfo onNext={handleNext}/>}
-					{step === 4 && <MotherInfo onNext={handleNext}/>}
-					{step === 5 && <GuardianInfo onNext={handleNext}/>}
-					{step === 6 && <AcademicInfo onNext={handleNext}/>}
-					{step === 7 && <MedicalInfo onNext={handleNext}/>}
-					{step === 8 && "Hello"}
+				<div className='px-10 pb-8 '>
+					{step === 1 && <BasicInfo onNext={handleNext} />}
+					{step === 2 && <AcademicInfo onNext={handleNext} />}
+					{step === 3 && <ParentInfo onNext={handleNext} />}
+					{step === 4 && <AddressInfo onNext={handleNext} />}
+					{step === 5 && <MedicalInfo onNext={handleNext} />}
 
-					<div className='mt-10 flex justify-between'>
+					<div className='2xl:mt-10 xl:mt-6 flex justify-between'>
 						<button
 							onClick={() => setStep(step < 2 ? step : step - 1)}
 							className={`${
-								step >= 8
+								step >= 6
 									? "pointer-events-none opacity-50"
 									: ""
 							} rounded px-2 py-1 text-slate-400 hover:text-slate-700`}
@@ -92,26 +92,20 @@ export default function Page() {
 						<button
 							onClick={() => {
 								// Manually trigger the form submission of the current step
-								document
-									.querySelector("form")
-									?.dispatchEvent(
-										new Event("submit", {
-											cancelable: true,
-											bubbles: true,
-										})
-									);
+								document.querySelector("form")?.dispatchEvent(
+									new Event("submit", {
+										cancelable: true,
+										bubbles: true,
+									})
+								);
 							}}
 							className={`${
-								step >= 8
+								step >= 6
 									? "pointer-events-none opacity-50"
 									: ""
 							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
 						>
-							{step === 7
-								? "Finish"
-								: step === 8
-								? "Finish"
-								: "Next"}
+							{step === 5 ? "Create" : "Next"}
 						</button>
 					</div>
 				</div>
@@ -123,16 +117,14 @@ export default function Page() {
 function Stepper({ step }: StepperProps) {
 	const steps = [
 		{ number: 1, description: "Basic Info", icon: Info },
-		{ number: 2, description: "Address Info", icon: LocateFixed },
-		{ number: 3, description: "Father’s Info", icon: CircleUser },
-		{ number: 4, description: "Mother’s Info", icon: CircleUserRoundIcon },
-		{ number: 5, description: "Guardian’s Info", icon: Shield },
-		{ number: 6, description: "Academic Info", icon: GraduationCap },
-		{ number: 7, description: "Medical Info", icon: ClipboardPlus },
+		{ number: 2, description: "Academic Info", icon: LocateFixed },
+		{ number: 3, description: "Parent's Info", icon: CircleUser },
+		{ number: 4, description: "Address Info", icon: GraduationCap },
+		{ number: 5, description: "Medical Info", icon: ClipboardPlus },
 	];
 
 	return (
-		<div className='flex w-full items-center space-x-4'>
+		<div className='flex w-full items-center flex-wrap 2xl:gap-y-10 2xl:gap-x-4  xl:gap-y-5 xl:gap-x-4 '>
 			{steps.map((s, index) => (
 				<div
 					key={s.number}
@@ -149,7 +141,7 @@ function Stepper({ step }: StepperProps) {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ delay: 0.2 }}
-							className='mx-2 text-slate-400'
+							className=' text-slate-400 ml-2'
 						>
 							<ChevronRight
 								color={

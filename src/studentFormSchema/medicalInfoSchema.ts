@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
 export const healthInfoSchema = z.object({
-  weight: z
+  weightKg: z
     .string()
     .trim()
     .regex(/^\d+(\.\d+)?$/, { message: 'Invalid weight format (positive number)' })
     .optional(), // Optional field
-  height: z
+    heightCm: z
     .string()
     .trim()
     .regex(/^\d+$/, { message: 'Invalid height format (positive integer)' })
@@ -23,7 +23,7 @@ export const healthInfoSchema = z.object({
     .regex(/^\d+(\.\d+)?$/, { message: 'Invalid haemoglobin format (positive number)' })
     .optional(), // Optional field
   allergies: z.string().trim().optional(), // Optional field
-  issuedDate: z
+  issueDateOfReport: z
     .string()
     .trim()
     .regex(/^\d{4}-\d{2}-\d{2}$/, { message: 'Invalid issued date format (YYYY-MM-DD)' })

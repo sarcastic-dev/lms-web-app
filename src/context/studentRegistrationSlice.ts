@@ -1,92 +1,37 @@
-import {
-	AcademicInfo,
-	AddressInfo,
-	BasicInfo,
-	FatherInfo,
-	GuardianInfo,
-	MedicalInfo,
-	MotherInfo,
-} from "@/types";
+import { AddressInfo, BasicInfo, ParentInfo, MedicalInfo } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RegistrationState {
-	basicInfo: BasicInfo;
-	addressInfo: AddressInfo;
-	fatherInfo: FatherInfo;
-	motherInfo: MotherInfo;
-	guardianInfo: GuardianInfo;
-	academicInfo: AcademicInfo;
-	medicalInfo: MedicalInfo;
+	basicInfo: Partial<BasicInfo>;
+	addressInfo: Partial<AddressInfo>;
+	parentInfo: Partial<ParentInfo>;
+	medicalInfo: Partial<MedicalInfo>;
 }
 
 const initialState: RegistrationState = {
 	basicInfo: {
-		bloodGroup: "",
-		classRollNumber: "",
-		dateOfAdmission: "",
-		dateOfBirth: "",
-		email: "",
-		enrolmentID: "",
-		firstName: "",
-		gender: "",
-		lastName: "",
-		middleName: "",
-		mobileNumber: "",
+		user: {
+			bloodGroup: undefined,
+			dob: "",
+			email: "",
+			firstName: "",
+			gender: undefined,
+			lastName: "",
+			middleName: "",
+			phone: "",
+		},
+		student: {
+			enrolmentID: "",
+			admissionDate: "",
+			boardUniversity: "",
+			class: "",
+			rollNumber: "",
+			section: "",
+		},
 	},
-	addressInfo: {
-		addressLine1: "",
-		addressLine2: "",
-		cityTown: "",
-		country: "",
-		pincode: "",
-		state: "",
-	},
-	fatherInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		workOrganizationName: "",
-	},
-	motherInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		workOrganizationName: "",
-	},
-	guardianInfo: {
-		annualIncome: "",
-		designation: "",
-		educationalQualification: "",
-		emailID: "",
-		mobileNumber: "",
-		name: "",
-		occupation: "",
-		relationship: "",
-		workOrganizationName: "",
-	},
-	academicInfo: {
-		admissionYear: "",
-		boardUniversity: "",
-		programClass: "",
-		section: "",
-	},
-	medicalInfo: {
-		allergies: "",
-		bmi: "",
-		haemoglobin: "",
-		height: "",
-		issuedDate: "",
-		pulseRate: "",
-		weight: "",
-	},
+	addressInfo: {},
+	parentInfo: {},
+	medicalInfo: {},
 };
 
 const studentRegistrationSlice = createSlice({
@@ -96,34 +41,39 @@ const studentRegistrationSlice = createSlice({
 		setBasicInfoData: (state, action: PayloadAction<BasicInfo>) => {
 			state.basicInfo = action.payload;
 		},
+		setBasicInfoUserData: (
+			state,
+			action: PayloadAction<BasicInfo["user"]>
+		) => {
+			state.basicInfo.user = action.payload;
+		},
+		setBasicInfoStudentData: (
+			state,
+			action: PayloadAction<BasicInfo["student"]>
+		) => {
+			state.basicInfo.student = action.payload;
+		},
 		setAddressInfoData: (state, action: PayloadAction<AddressInfo>) => {
 			state.addressInfo = action.payload;
 		},
-		setFatherInfoData: (state, action: PayloadAction<FatherInfo>) => {
-			state.fatherInfo = action.payload;
-		},
-		setMotherInfoDate: (state, action: PayloadAction<MotherInfo>) => {
-			state.motherInfo = action.payload;
-		},
-		setGuardianInfoData: (state, action: PayloadAction<GuardianInfo>) => {
-			state.guardianInfo = action.payload;
-		},
-		setAcademicInfoData: (state, action: PayloadAction<AcademicInfo>) => {
-			state.academicInfo = action.payload;
+		setParentInfoData: (state, action: PayloadAction<ParentInfo>) => {
+			state.parentInfo = action.payload;
 		},
 		setMedicalInfoData: (state, action: PayloadAction<MedicalInfo>) => {
 			state.medicalInfo = action.payload;
 		},
+		resetRegistrationData: () => initialState,
 	},
 });
 
 export const {
 	setBasicInfoData,
+	setBasicInfoUserData,
+	setBasicInfoStudentData,
 	setAddressInfoData,
-	setFatherInfoData,
-	setMotherInfoDate,
-	setGuardianInfoData,
-	setAcademicInfoData,
+	setParentInfoData,
 	setMedicalInfoData,
+	resetRegistrationData,
 } = studentRegistrationSlice.actions;
+
 export default studentRegistrationSlice.reducer;

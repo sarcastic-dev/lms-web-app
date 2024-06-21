@@ -1,10 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { addressSchema } from "@/studentFormSchema/addressInfoSchema";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import {
 	Form,
@@ -14,48 +13,40 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-
-const AddressInfoSchema = z.object({
-	addressLine1: z
-		.string()
-		.trim()
-		.min(1, { message: "Address Line 1 is required" }),
-	addressLine2: z.string().trim().optional(),
-	cityTown: z.string().trim().min(1, { message: "City/Town is required" }),
-	state: z.string().trim().min(1, { message: "State is required" }),
-	pincode: z
-		.string()
-		.trim()
-		.regex(/^\d{6}$/, { message: "Invalid pincode (6 digits)" })
-		.optional(),
-	country: z.string().trim().min(1, { message: "Country is required" }),
-});
+import { useSelector } from "react-redux";
+import { RootState } from "@/context/store";
 
 type AddressInfoSchemaType = z.infer<typeof addressSchema>;
 
-const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const AddressInfoForm = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
+	const addressInfoStudent = useSelector(
+		(state: RootState) => state.studentRegistration.addressInfo
+	);
 	const form = useForm<AddressInfoSchemaType>({
 		resolver: zodResolver(addressSchema),
-		defaultValues: {
-			addressLine1: "",
-			addressLine2: "",
-			cityTown: "",
-			state: "",
-			pincode: "",
-			country: "",
-		},
+		defaultValues: addressInfoStudent || {},
 	});
 
 	const onSubmit = (values: AddressInfoSchemaType) => {
 		onNext(values);
 	};
 
+	const { reset } = form;
+
+	useEffect(() => {
+		reset(addressInfoStudent || {});
+	}, [addressInfoStudent, reset]);
+
 	return (
 		<div className='flex justify-center my-8'>
-			<div className='w-3/4 tracking-wide'>
+			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
 								name='addressLine1'
@@ -66,9 +57,6 @@ const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElem
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Address Line 1{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -109,7 +97,7 @@ const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElem
 							/>
 							<FormField
 								control={form.control}
-								name='cityTown'
+								name='city'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -117,9 +105,6 @@ const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElem
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											City/Town{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -144,9 +129,6 @@ const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElem
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											State{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -195,9 +177,6 @@ const AddressInfoForm = ({ onNext }: { onNext: (data: any) => void }): ReactElem
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Country{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<Input

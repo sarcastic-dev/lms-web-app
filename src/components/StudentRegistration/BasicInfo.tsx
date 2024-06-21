@@ -1,14 +1,15 @@
-import React, { ReactElement, FocusEvent, ChangeEvent, useState } from "react";
+import React, {
+	ReactElement,
+	FocusEvent,
+	ChangeEvent,
+	useState,
+	useEffect,
+} from "react";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "../ui/tooltip";
-import { Info } from "lucide-react";
-import { Separator } from "../ui/separator";
+
+
+
+
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -22,7 +23,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { BloodGroups, Gender } from "@/Constant";
-import { useDispatch } from 'react-redux';
+import { useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -32,81 +33,65 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import { setBasicInfoData } from "@/context/studentRegistrationSlice";
-
+import { RootState } from "@/context/store";
 
 dayjs.extend(customParseFormat);
 
 const dateFormat = "YYYY-MM-DD";
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElement => {
+const BasicInfo = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
-	const dispatch = useDispatch();
 
 	const disabledDate = (current: any) => {
 		return current && (current < minDate || current > maxDate);
 	};
 
-	const [inputValue, setInputValue] = useState("+91 ");
+	
+    const basicInfo = useSelector((state: RootState) => state.studentRegistration.basicInfo);
 
-	const handleFocus = (event: FocusEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (input.value === "+91 ") {
-			input.setSelectionRange(4, 4);
-		}
-	};
+    const form = useForm<BasicInfoSchemaType>({
+        resolver: zodResolver(BasicInfoSchema),
+        defaultValues: {
+            bloodGroup: basicInfo?.user?.bloodGroup || undefined,
+            dob: basicInfo?.user?.dob || "",
+            email: basicInfo?.user?.email || "",
+            firstName: basicInfo?.user?.firstName || "",
+            gender: basicInfo?.user?.gender || undefined,
+            lastName: basicInfo?.user?.lastName || "",
+            middleName: basicInfo?.user?.middleName || "",
+            phone: basicInfo?.user?.phone || "",
+        },
+    });
 
-	const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		const input = event.target;
-		if (!input.value.startsWith("+91 ")) {
-			setInputValue("+91 " + input.value.slice(4));
-		} else {
-			setInputValue(input.value);
-		}
-	};
+    const onSubmit = (value: BasicInfoSchemaType) => {
+        onNext(value);
+    };
 
-	const form = useForm<BasicInfoSchemaType>({
-		resolver: zodResolver(BasicInfoSchema),
-		defaultValues: {
-			mobileNumber: "",
-			email: "",
-			enrolmentID: "",
-			firstName: "",
-			middleName: "",
-			lastName: "",
-			dateOfAdmission: "",
-			classRollNumber: "",
-			dateOfBirth: "",
-			gender: "Male",
-			bloodGroup: "A+",
-		},
-	});
+    const { reset } = form;
 
-	const onSubmit = (value: BasicInfoSchemaType) => {
-		onNext(value);
-	};
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    useEffect(() => {
+        reset(basicInfo?.user || {});
+    }, [basicInfo, reset]);
 	return (
-		<div className='flex justify-center my-8'>
-			<div className='w-[90%] tracking-wide'>
+		<div className='flex justify-center my-4'>
+			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
-								name='mobileNumber'
+								name='phone'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -127,8 +112,8 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 													placeholder='Mobile Number'
 													{...field}
 												/>
-												<span className='absolute left-3.5 top-[13.5px] flex items-center space-x-2 text-gray-500'>
-													<span>+91</span>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+													<span>+91-</span>
 												</span>
 											</div>
 										</FormControl>
@@ -163,55 +148,7 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name='enrolmentID'
-								render={({ field }) => (
-									<FormItem>
-										<div className='flex items-center justify-between'>
-											<FormLabel
-												htmlFor='enrolmentID'
-												className='pl-1 text-blue-500 font-semibold'
-											>
-												Enrolment ID{" "}
-												<span className='text-red-500'>
-													*
-												</span>
-											</FormLabel>
-											<TooltipProvider>
-												<Tooltip>
-													<TooltipTrigger>
-														<Info className='h-4 w-4 text-blue-500' />
-													</TooltipTrigger>
-													<TooltipContent className='text-xs text-white bg-blue-500'>
-														<p>Last Used</p>
-													</TooltipContent>
-												</Tooltip>
-											</TooltipProvider>
-										</div>
 
-										<FormControl>
-											<div className='relative'>
-												<Input
-													id='enrolmentID'
-													type='text'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
-													placeholder='Enrolment ID'
-													{...field}
-												/>
-												<span className='absolute right-3 top-3.5 flex items-center space-x-2 text-gray-500'>
-													<Separator
-														orientation='vertical'
-														className='h-6 border-l border-gray-300'
-													/>
-													<span>@TES2097</span>
-												</span>
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
 							<FormField
 								control={form.control}
 								name='firstName'
@@ -289,76 +226,7 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 							/>
 							<FormField
 								control={form.control}
-								name='dateOfAdmission'
-								render={({ field }) => (
-									<FormItem className=''>
-										<FormLabel
-											htmlFor='dateOfAdmission'
-											className='pl-1 text-blue-500 font-semibold'
-										>
-											Date of Admission{" "}
-											<span className='text-red-500'>
-												*
-											</span>
-										</FormLabel>
-										<FormControl>
-											<DatePicker
-												id='dateOfAdmission'
-												size='large'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
-												}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='classRollNumber'
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel
-											htmlFor='classRollNumber'
-											className='pl-1 text-blue-500 font-semibold'
-										>
-											Class Roll Number
-										</FormLabel>
-										<FormControl>
-											<Input
-												id='classRollNumber'
-												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												placeholder='Class Roll Number'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='dateOfBirth'
+								name='dob'
 								render={({ field }) => (
 									<FormItem className=''>
 										<FormLabel
@@ -366,9 +234,6 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 											className='pl-1 text-blue-500 font-semibold '
 										>
 											Date of Birth{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
 											<DatePicker
@@ -411,28 +276,41 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Gender{" "}
-											<span className='text-red-500'>
-												*
-											</span>
 										</FormLabel>
 										<FormControl>
-											<Select>
-												<SelectTrigger className='border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 '>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value}
+											>
+												<SelectTrigger
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
+												>
 													<SelectValue placeholder='Select Gender' />
 												</SelectTrigger>
 												<SelectContent>
-													{Gender.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Gender
+														</SelectLabel>
+														{Gender.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -454,29 +332,37 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 										<FormControl>
 											<Select
 												onValueChange={field.onChange}
+												value={field.value}
 											>
 												<SelectTrigger
-													id='gender'
-													className='border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 '
+													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+														!field.value
+															? "text-gray-400"
+															: ""
+													}`}
 												>
-													<SelectValue
-														placeholder='Select Blood Group'
-														className='text-gray-400'
-													/>
+													<SelectValue placeholder='Select Blood Group' />
 												</SelectTrigger>
 												<SelectContent>
-													{BloodGroups.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Blood Groups
+														</SelectLabel>
+														{BloodGroups.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -498,4 +384,4 @@ const TestComponent = ({ onNext }: { onNext: (data: any) => void }): ReactElemen
 	);
 };
 
-export default TestComponent;
+export default BasicInfo;

@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import studentRegistrationReducer from '@/context/studentRegistrationSlice';
+import staffRegistrationSlice from '@/context/staffRegistrationSlice'
+
 const store = configureStore({
     reducer: {
-        studentRegistration:studentRegistrationReducer
+        studentRegistration: studentRegistrationReducer,
+        staffRegistration:staffRegistrationSlice
     }
 })
 export default store;

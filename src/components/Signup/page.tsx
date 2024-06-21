@@ -150,9 +150,9 @@ const AuthPage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="relative w-96 mb-4 mt-6">
-                    <div
-                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${
-                        isFocused || input ? "text-xs -top-2 mt-4" : ""
+                    <label
+                      className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out ${
+                        isFocused || input ? "text-xs -top-1 -mt-1.5" : ""
                       }`}
                     >
                       Email Address or Phone Number

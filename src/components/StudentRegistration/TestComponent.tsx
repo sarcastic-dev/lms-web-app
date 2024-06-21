@@ -93,7 +93,7 @@ const TestComponent = (): ReactElement => {
 
 	return (
 		<div className='flex justify-center my-8'>
-			<div className='w-3/4 tracking-wide'>
+			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3'>
