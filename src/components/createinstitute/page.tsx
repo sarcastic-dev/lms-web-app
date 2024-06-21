@@ -65,7 +65,7 @@ const CreateInstitute: React.FC = () => {
   };
 
   const getLabelClasses = (field: string, value: string) =>
-    `absolute left-3 top-3 text-gray-500 font-medium transition-all duration-200 ease-in-out ${
+    `absolute left-3 top-3 text-gray-500 font-medium transition-all duration-200 ease-in-out pointer-events-none ${
       isFocused[field] || value ? "text-xs -top-1 left-1 bg-white px-1" : ""
     }`;
 
@@ -86,6 +86,7 @@ const CreateInstitute: React.FC = () => {
             value={city}
             onChange={(e) => handleSelectChange(e, setCity)}
             onFocus={() => handleFocus("city")}
+            onBlur={() => handleBlur("city")}
             required
           >
             <option value="" disabled></option>
@@ -95,7 +96,7 @@ const CreateInstitute: React.FC = () => {
             <option value="Bangalore">Bangalore</option>
             {/* Add other options here */}
           </select>
-          <label className={getLabelClasses("city", city)}>Select City</label>
+          <div className={getLabelClasses("city", city)}>Select City</div>
         </div>
         <div className="relative mb-4">
           <select
@@ -104,6 +105,7 @@ const CreateInstitute: React.FC = () => {
             value={instituteType}
             onChange={(e) => handleSelectChange(e, setInstituteType)}
             onFocus={() => handleFocus("instituteType")}
+            onBlur={() => handleBlur("instituteType")}
             required
           >
             <option value="" disabled></option>
@@ -113,7 +115,7 @@ const CreateInstitute: React.FC = () => {
             <option value="Others">Others</option>
             {/* Add other options here */}
           </select>
-          <label className={getLabelClasses("instituteType", instituteType)}>Select your institute type</label>
+          <div className={getLabelClasses("instituteType", instituteType)}>Select your institute type</div>
         </div>
         <div className="relative mb-4">
           <input
@@ -127,7 +129,7 @@ const CreateInstitute: React.FC = () => {
             onBlur={() => handleBlur("instituteName")}
             required
           />
-          <label className={getLabelClasses("instituteName", instituteName)}>Enter your institute name</label>
+          <div className={getLabelClasses("instituteName", instituteName)}>Enter your institute name</div>
           {errors.instituteName && <p className="text-red-500 text-sm mt-1">{errors.instituteName}</p>}
         </div>
         <div className="relative mb-4">
@@ -142,7 +144,7 @@ const CreateInstitute: React.FC = () => {
             onBlur={() => handleBlur("address")}
             required
           />
-          <label className={getLabelClasses("address", address)}>Address</label>
+          <div className={getLabelClasses("address", address)}>Address</div>
           {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
         </div>
         <div className="relative mb-4">
@@ -157,7 +159,7 @@ const CreateInstitute: React.FC = () => {
             onBlur={() => handleBlur("phoneNumber")}
             required
           />
-          <label className={getLabelClasses("phoneNumber", phoneNumber)}>Phone Number</label>
+          <div className={getLabelClasses("phoneNumber", phoneNumber)}>Phone Number</div>
           {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
         </div>
         <button

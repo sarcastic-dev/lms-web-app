@@ -81,9 +81,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
       <form onSubmit={handleSubmit}>
         <div className="p-8">
           <div className="relative mb-4">
-            <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.name || name ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+            <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.name || name ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
               Name<span className="text-red-500"> *</span>
-            </label>
+            </div>
             <input
               type="text"
               className={`w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'} pt-6`}
@@ -99,9 +99,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
           {isEmail ? (
             <>
               <div className="relative mb-4">
-                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.email || email ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
+                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
                   Email
-                </label>
+                </div>
                 <input
                   type="email"
                   className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
@@ -110,9 +110,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
                 />
               </div>
               <div className="relative mb-4">
-                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
                   Phone Number
-                </label>
+                </div>
                 <input
                   type="tel"
                   className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
@@ -126,9 +126,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
           ) : (
             <>
               <div className="relative mb-4">
-                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
+                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
                   Phone Number
-                </label>
+                </div>
                 <input
                   type="tel"
                   className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
@@ -137,9 +137,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
                 />
               </div>
               <div className="relative mb-4">
-                <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.email || email ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
                   Email
-                </label>
+                </div>
                 <input
                   type="email"
                   className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
@@ -153,9 +153,9 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
           )}
 
           <div className="relative mb-4">
-            <label className={`absolute left-4 transition-all duration-200 ease-in-out ${isFocused.password || password ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
+            <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.password || password ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
               Password<span className="text-red-500"> *</span>
-            </label>
+            </div>
             <input
               type="password"
               className={`w-full p-2 font-medium pl-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'} pt-6`}
