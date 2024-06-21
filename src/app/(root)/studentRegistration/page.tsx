@@ -42,18 +42,19 @@ export default function Page() {
 		if (step === 1) {
 			dispatch(setBasicInfoUserData(data));
 		} else if (step === 2) {
-			dispatch(setAddressInfoData(data));
+			dispatch(setBasicInfoStudentData(data));
 		} else if (step === 3) {
 			dispatch(setParentInfoData(data));
 		} else if (step === 4) {
-			dispatch(setBasicInfoStudentData(data));
+			dispatch(setAddressInfoData(data));
 		} else if (step === 5) {
 			dispatch(setMedicalInfoData(data));
 			dispatch(resetRegistrationData());
-			router.push('/studentInfo'); 
-			return; 
+			console.log(registrationData);
+			router.push("/studentInfo");
+			return;
 		}
-		console.log(registrationData);
+		
 		setStep(step + 1);
 	};
 
@@ -72,9 +73,9 @@ export default function Page() {
 				</div>
 				<div className='px-10 pb-8 '>
 					{step === 1 && <BasicInfo onNext={handleNext} />}
-					{step === 2 && <AddressInfo onNext={handleNext} />}
+					{step === 2 && <AcademicInfo onNext={handleNext} />}
 					{step === 3 && <ParentInfo onNext={handleNext} />}
-					{step === 4 && <AcademicInfo onNext={handleNext} />}
+					{step === 4 && <AddressInfo onNext={handleNext} />}
 					{step === 5 && <MedicalInfo onNext={handleNext} />}
 
 					<div className='2xl:mt-10 xl:mt-6 flex justify-between'>
@@ -104,9 +105,7 @@ export default function Page() {
 									: ""
 							} flex items-center justify-center rounded-full bg-blue-500 py-1.5 px-3.5 font-medium tracking-tight text-white hover:bg-blue-600 active:bg-blue-700`}
 						>
-							{step === 5
-								? "Finish"
-								: "Next"}
+							{step === 5 ? "Create" : "Next"}
 						</button>
 					</div>
 				</div>
@@ -118,9 +117,9 @@ export default function Page() {
 function Stepper({ step }: StepperProps) {
 	const steps = [
 		{ number: 1, description: "Basic Info", icon: Info },
-		{ number: 2, description: "Address Info", icon: LocateFixed },
+		{ number: 2, description: "Academic Info", icon: LocateFixed },
 		{ number: 3, description: "Parent's Info", icon: CircleUser },
-		{ number: 4, description: "Academic Info", icon: GraduationCap },
+		{ number: 4, description: "Address Info", icon: GraduationCap },
 		{ number: 5, description: "Medical Info", icon: ClipboardPlus },
 	];
 

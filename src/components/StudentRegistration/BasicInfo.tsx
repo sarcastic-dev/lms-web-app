@@ -7,14 +7,9 @@ import React, {
 } from "react";
 import { Input } from "../ui/input";
 
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "../ui/tooltip";
 
-import { Separator } from "../ui/separator";
+
+
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -71,7 +66,6 @@ const BasicInfo = ({
             bloodGroup: basicInfo?.user?.bloodGroup || undefined,
             dob: basicInfo?.user?.dob || "",
             email: basicInfo?.user?.email || "",
-            enrolmentID: basicInfo?.user?.enrolmentID || "",
             firstName: basicInfo?.user?.firstName || "",
             gender: basicInfo?.user?.gender || undefined,
             lastName: basicInfo?.user?.lastName || "",
@@ -154,60 +148,7 @@ const BasicInfo = ({
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name='enrolmentID'
-								render={({ field }) => (
-									<FormItem>
-										<div className=''>
-											<FormLabel
-												htmlFor='enrolmentID'
-												className='pl-1 text-blue-500 font-semibold mr-[120px]'
-											>
-												Enrolment ID{" "}
-												<span className='text-red-500'>
-													*
-												</span>
-											</FormLabel>
-										</div>
 
-										<FormControl>
-											<div className='relative'>
-												<Input
-													id='enrolmentID'
-													type='text'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
-													placeholder='Enrolment ID'
-													{...field}
-												/>
-												<span className='absolute right-3 top-3.5 flex items-center space-x-2 text-gray-500'>
-													<Separator
-														orientation='vertical'
-														className='h-6 border-l border-gray-300'
-													/>
-													<TooltipProvider>
-														<Tooltip>
-															<TooltipTrigger
-																onClick={(e) =>
-																	e.preventDefault()
-																}
-															>
-																<span>
-																	@TES2097
-																</span>
-															</TooltipTrigger>
-															<TooltipContent className='text-xs text-white bg-blue-500'>
-																<p>Last Used</p>
-															</TooltipContent>
-														</Tooltip>
-													</TooltipProvider>
-												</span>
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
 							<FormField
 								control={form.control}
 								name='firstName'

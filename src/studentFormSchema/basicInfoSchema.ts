@@ -7,9 +7,6 @@ export const BasicInfoSchema = z.object({
     email: z.string().email("Invalid email address").refine(value => value.trim() !== '', {
         message: "Email is required",
     }),
-    enrolmentID: z.string().refine(value => value.trim() !== '', {
-        message: "Enrolment ID is required",
-    }),
     firstName: z.string().refine(value => value.trim() !== '', {
         message: "First Name is required",
     }),
