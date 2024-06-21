@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import CreateInstitute from '../createinstitute/page';
+import CreateInstitute from '../components/CreateInstitute';
+import axios from 'axios';
 
 type Field = 'name' | 'email' | 'phone' | 'password';
 
@@ -22,6 +23,8 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
     password: false
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isCreating, setIsCreating] = useState(false); // State to track if form is being submitted
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (
@@ -62,11 +65,29 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', { name, email: isEmail ? input : email, phoneNumber: isEmail ? phoneNumber : input, password });
-      setShowInstituteCreation(true);
+      setIsCreating(true); // Set submitting state to true
+      try {
+        const response = await axios.post('http://16.16.25.41:3300/api/users', {
+          name,
+          email: isEmail ? input : email,
+          phone: isEmail ? phoneNumber : input,
+          password,
+        });
+        console.log('Form submitted:', response.data);
+
+        // Simulate a delay for UX purposes
+        setTimeout(() => {
+          setIsCreating(false); // Reset submitting state after 2 seconds
+          setShowInstituteCreation(true);
+        }, 2000);
+      } catch (error) {
+        console.error('Error creating user:', error);
+        setErrorMessage('Error creating user. Please try again.');
+        setIsCreating(false); // Reset submitting state in case of error
+      }
     }
   };
 
@@ -171,11 +192,11 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
         <button
           type="submit"
           className={`w-96 ml-8 py-2 font-semibold text-blue-500 border-2 border-blue-500 rounded-xl ${
-            isButtonDisabled ? 'bg-white cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+            isButtonDisabled || isCreating ? 'bg-white cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
-          disabled={isButtonDisabled}
+          disabled={isButtonDisabled || isCreating}
         >
-          Create Account
+          {isCreating ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
     </div>

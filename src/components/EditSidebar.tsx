@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import EditProfile from '../editprofile/page';
+import EditProfile from '../components/EditProfile';
 
 interface SidebarProps {
   isOpen: boolean;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ProfileSelect from '../profileselect/page';
-import ProfileCreation from '../createprofile/page';
+// import ProfileSelect from '../profileselect/page';
+import ProfileCreation from '../components/CreateProfile';
 
 interface OTPComponentProps {
   input: string;
@@ -12,6 +12,7 @@ const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}
   const [otp, setOTP] = useState(Array(6).fill(''));
   const [resendTimer, setResendTimer] = useState(30);
   const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
+  const [isSubmitting, setIsSubmitting] = useState(false); // State to track if OTP is being submitted
   const firstInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,10 +38,16 @@ const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}
 
   const handleOTPSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true); // Set submitting state to true
     const otpValue = otp.join('');
     console.log('OTP submitted:', otpValue);
-    setSubmitted(true); // Set submitted to true to render ProfileSelect component
-    onSubmitOTP(); // Call parent function to handle OTP submission
+
+    // Simulate an async operation (e.g., API call)
+    setTimeout(() => {
+      setIsSubmitting(false); // Reset submitting state after 2 seconds
+      setSubmitted(true); // Set submitted to true to render ProfileCreation component
+      onSubmitOTP(); // Call parent function to handle OTP submission
+    }, 2000);
   };
 
   // Render ProfileSelect component if submitted is true
@@ -82,9 +89,9 @@ const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}
         <button
           type="submit"
           className="w-96 text-white font-semibold py-2 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:bg-white disabled:text-blue-500 border-2 border-blue-400"
-          disabled={otp.some(digit => digit === '')}
+          disabled={otp.some((digit) => digit === '') || isSubmitting}
         >
-          Submit OTP
+          {isSubmitting ? 'Submitting OTP...' : 'Submit OTP'}
         </button>
       </form>
       </div>

@@ -93,3 +93,17 @@ body {
   font-size: 5rem; /* Adjust the font size as needed */
   /* Add any other custom placeholder styles here */
 }
+
+/* Add this in your global CSS file (e.g., styles/globals.css) */
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent url('/dropdown1.png') no-repeat right 0.75rem center;
+  background-size: 3rem;
+}
+
+.custom-select-left-icon {
+  background-position: right center;
+  padding-left: 1rem;
+}

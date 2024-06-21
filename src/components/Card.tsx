@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaCog } from 'react-icons/fa';
-import Sidebar from '../editsidebar/page';
+import Sidebar from '../components/EditSidebar';
 
 const ExpandedCard: React.FC = () => {
 
