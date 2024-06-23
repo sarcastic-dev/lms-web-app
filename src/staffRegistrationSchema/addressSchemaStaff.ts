@@ -5,7 +5,7 @@ export const addressSchema = z.object({
 		.string()
 		.trim(),
 	addressLine2: z.string().trim().optional(),
-	cityTown: z.string().trim(),
+	city: z.string().trim(),
 	state: z.string().trim(),
 	pincode: z
 		.string()

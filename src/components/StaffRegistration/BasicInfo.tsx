@@ -1,13 +1,7 @@
 "use client";
 import React, { ReactElement, useEffect } from "react";
 import { Input } from "../ui/input";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "../ui/tooltip";
-import { Separator } from "../ui/separator";
+
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -59,25 +53,25 @@ const BasicInfo = ({
 	const form = useForm<BasicInfoSchemaStaffType>({
 		resolver: zodResolver(basicSchemaStaff),
 		defaultValues: {
-			bloodGroup: basicStaffInfo?.bloodGroup || undefined,
-			dateOfBirth: basicStaffInfo?.dateOfBirth || "",
-			emailID: basicStaffInfo?.emailID || "",
-			employeeID: basicStaffInfo?.employeeID || "",
-			firstName: basicStaffInfo?.firstName || "",
-			gender: basicStaffInfo?.gender || undefined,
-			lastName: basicStaffInfo?.lastName || "",
-			middleName: basicStaffInfo?.middleName || "",
-			mobileNumber: basicStaffInfo?.mobileNumber || "",
-			userRole: basicStaffInfo?.userRole || undefined,
+			bloodGroup: basicStaffInfo?.user?.bloodGroup || "",
+			dob: basicStaffInfo?.user?.dob || "",
+			email: basicStaffInfo?.user?.email || "",
+			firstName: basicStaffInfo?.user?.firstName || "",
+			gender: basicStaffInfo?.user?.gender || "",
+			lastName: basicStaffInfo?.user?.lastName || "",
+			middleName: basicStaffInfo?.user?.middleName || "",
+			phone: basicStaffInfo?.user?.phone || "",
+			role: basicStaffInfo?.user?.role ||"teacher",
 		},
 	});
 
 	const onSubmit = (value: BasicInfoSchemaStaffType) => {
 		onNext(value);
 	};
+
 	const { reset } = form;
 	useEffect(() => {
-		reset(basicStaffInfo || {});
+		reset(basicStaffInfo.user || {});
 	}, [basicStaffInfo, reset]);
 
 	return (
@@ -88,14 +82,14 @@ const BasicInfo = ({
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
-								name='mobileNumber'
+								name='phone'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
-											htmlFor='student_mobile_number'
+											htmlFor='employee_mobile_number'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Student Mobile Number{" "}
+											Employee Mobile Number{" "}
 											<span className='text-red-500'>
 												*
 											</span>
@@ -103,7 +97,7 @@ const BasicInfo = ({
 										<FormControl>
 											<div className='relative'>
 												<Input
-													id='student_mobile_number'
+													id='employee_mobile_number'
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
@@ -120,14 +114,17 @@ const BasicInfo = ({
 							/>
 							<FormField
 								control={form.control}
-								name='emailID'
+								name='email'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
 											htmlFor='emailID'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Employee Email ID
+											Employee Email ID{" "}
+											<span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Input
@@ -142,60 +139,7 @@ const BasicInfo = ({
 									</FormItem>
 								)}
 							/>
-							<FormField
-								control={form.control}
-								name='employeeID'
-								render={({ field }) => (
-									<FormItem>
-										<div className=''>
-											<FormLabel
-												htmlFor='employeeID'
-												className='pl-1 text-blue-500 font-semibold'
-											>
-												Enrolment ID{" "}
-												<span className='text-red-500'>
-													*
-												</span>
-											</FormLabel>
-										</div>
-										<FormControl>
-											<div className='relative'>
-												<Input
-													id='employeeID'
-													type='text'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
-													placeholder='Enrollment No.'
-													{...field}
-												/>
-												<span className='absolute right-3 top-3 flex items-center space-x-2 text-gray-500'>
-													<Separator
-														orientation='vertical'
-														className='h-6 border-l border-gray-300'
-													/>
 
-													<TooltipProvider>
-														<Tooltip>
-															<TooltipTrigger
-																onClick={(e) =>
-																	e.preventDefault()
-																}
-															>
-																<span>
-																	@TES2097
-																</span>
-															</TooltipTrigger>
-															<TooltipContent className='text-xs text-white bg-blue-500'>
-																<p>Last Used</p>
-															</TooltipContent>
-														</Tooltip>
-													</TooltipProvider>
-												</span>
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
 							<FormField
 								control={form.control}
 								name='firstName'
@@ -273,7 +217,7 @@ const BasicInfo = ({
 							/>
 							<FormField
 								control={form.control}
-								name='dateOfBirth'
+								name='dob'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -285,7 +229,7 @@ const BasicInfo = ({
 										<FormControl>
 											<DatePicker
 												id='dob'
-												size='large'
+												size='middle'
 												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
@@ -420,14 +364,16 @@ const BasicInfo = ({
 							/>
 							<FormField
 								control={form.control}
-								name='userRole'
+								name='role'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
 											htmlFor='userRole'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Role
+											Role <span className='text-red-500'>
+												*
+											</span>
 										</FormLabel>
 										<FormControl>
 											<Select
@@ -448,13 +394,13 @@ const BasicInfo = ({
 														<SelectLabel>
 															User Role
 														</SelectLabel>
-														<SelectItem value='Owner'>
+														<SelectItem value='owner'>
 															Owner
 														</SelectItem>
-														<SelectItem value='Teacher'>
+														<SelectItem value='teacher'>
 															Teacher
 														</SelectItem>
-														<SelectItem value='Non-Teaching'>
+														<SelectItem value='non-teaching'>
 															Non-Teaching
 														</SelectItem>
 													</SelectGroup>

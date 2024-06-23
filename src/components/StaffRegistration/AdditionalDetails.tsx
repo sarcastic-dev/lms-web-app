@@ -20,7 +20,7 @@ import { RootState } from "@/context/store";
 
 
 const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactElement => {
-	const additionalEmployeeInfo = useSelector((state: RootState) => state.staffRegistration.additionalDetails);
+	const additionalEmployeeInfo = useSelector((state: RootState) => state.staffRegistration.additionalInfo);
 
     const form = useForm<AdditionalEmployeeDetailsSchemaType>({
         resolver: zodResolver(additionalEmployeeDetailsSchema),
@@ -33,7 +33,7 @@ const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
             motherName: additionalEmployeeInfo?.motherName || "",
             maritalStatus: (additionalEmployeeInfo?.maritalStatus || undefined) as AdditionalEmployeeDetailsSchemaType["maritalStatus"],
             spouseName: additionalEmployeeInfo?.spouseName || "",
-            emergencyMobileNumber: additionalEmployeeInfo?.emergencyMobileNumber || "",
+            emergencyContactNumber: additionalEmployeeInfo?.emergencyContactNumber || "",
         },
     });
 
@@ -236,29 +236,36 @@ const AdditionalDetails = ({ onNext }: { onNext: (data: any) => void; }): ReactE
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="emergencyMobileNumber"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel htmlFor="emergency_mobile_number" className="pl-1 text-blue-500 font-semibold">
-                                            Emergency Mobile Number
-                                        </FormLabel>
-                                        <FormControl>
-                                            <div className='relative tracking-wider'>
-                                                <Input
-                                                    id='emergency_mobile_number'
-                                                    type='tel'
-                                                    className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-                                                    placeholder='+91 9876543210'
-                                                    {...field}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            							<FormField
+								control={form.control}
+								name="emergencyContactNumber"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel
+											htmlFor='emergency_mobile_number'
+											className='pl-1 text-blue-500 font-semibold'
+										>
+											Emergency Mobile Number
+
+										</FormLabel>
+										<FormControl>
+											<div className='relative'>
+												<Input
+													id='emergency_mobile_number'
+													type='tel'
+													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
+													placeholder='Mobile Number'
+													{...field}
+												/>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+													<span>+91-</span>
+												</span>
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
                         </div>
                         <div className='flex items-center justify-end space-x-2'>
                             <Button type="submit" className="mt-8 hidden">

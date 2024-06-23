@@ -18,16 +18,16 @@ import { RootState } from "@/context/store";
 
 const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 	const bankDetails = useSelector(
-		(state: RootState) => state.staffRegistration.bankDetails
+		(state: RootState) => state.staffRegistration.bankDetailInfo
 	);
 
 	const form = useForm<BankDetailsSchemaType>({
 		resolver: zodResolver(bankDetailsSchema),
 		defaultValues: {
 			bankName: bankDetails?.bankName || "",
-			accountNo: bankDetails?.accountNo || "",
+			bankAccountNumber: bankDetails?.bankAccountNumber || "",
 			ifscCode: bankDetails?.ifscCode || "",
-			holderName: bankDetails?.holderName || "",
+			accountHolderName: bankDetails?.accountHolderName || "",
 		},
 	});
 
@@ -35,9 +35,9 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 	useEffect(() => {
 		reset({
 			bankName: bankDetails?.bankName || "",
-			accountNo: bankDetails?.accountNo || "",
+			bankAccountNumber: bankDetails?.bankAccountNumber || "",
 			ifscCode: bankDetails?.ifscCode || "",
-			holderName: bankDetails?.holderName || "",
+			accountHolderName: bankDetails?.accountHolderName || "",
 		});
 	}, [bankDetails, reset]);
 
@@ -78,7 +78,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 							/>
 							<FormField
 								control={form.control}
-								name='accountNo'
+								name='bankAccountNumber'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -126,7 +126,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 							/>
 							<FormField
 								control={form.control}
-								name='holderName'
+								name='accountHolderName'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
