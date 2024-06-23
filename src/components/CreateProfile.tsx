@@ -1,5 +1,6 @@
+"use client"
 import React, { useState, useEffect } from 'react';
-import CreateInstitute from '../components/CreateInstitute';
+import CreateInstitute from '../components/createInstitute';
 import axios from 'axios';
 
 type Field = 'name' | 'email' | 'phone' | 'password';
@@ -8,30 +9,39 @@ interface ProfileCreationProps {
   input: string;
 }
 
-const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ name?: string; email?: string; phoneNumber?: string; password?: string }>({});
   const [showInstituteCreation, setShowInstituteCreation] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
   const [isFocused, setIsFocused] = useState({
     name: false,
     email: false,
     phone: false,
-    password: false
+    password: false,
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [isCreating, setIsCreating] = useState(false); // State to track if form is being submitted
+  const [isCreating, setIsCreating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (
       name.trim() &&
       password.trim() &&
       (isEmail ? input.trim() : phoneNumber.trim() ? input.trim() : email.trim())
-    ) {
+     ) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
@@ -65,34 +75,59 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const parseName = (name: string) => {
+    const nameParts = name.trim().split(' ');
+    const parsedName: { firstName: string; middleName?: string; lastName?: string } = { firstName: nameParts[0] };
+
+    if (nameParts.length === 2) {
+      parsedName.lastName = nameParts[1];
+    } else if (nameParts.length >= 3) {
+      parsedName.middleName = nameParts.slice(1, -1).join(' ');
+      parsedName.lastName = nameParts[nameParts.length - 1];
+    }
+
+    return parsedName;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      setIsCreating(true); // Set submitting state to true
+      setIsCreating(true);
+      const parsedName = parseName(name);
       try {
-        const response = await axios.post('http://16.16.25.41:3300/api/users', {
-          name,
+        const response = await axios.post('http://16.170.155.154:3300/api/users', {
+          ...parsedName,
           email: isEmail ? input : email,
           phone: isEmail ? phoneNumber : input,
           password,
+          role: "admin"
         });
         console.log('Form submitted:', response.data);
+        setUserId(response.data.id); // Store the user_id
 
-        // Simulate a delay for UX purposes
         setTimeout(() => {
-          setIsCreating(false); // Reset submitting state after 2 seconds
+          setIsCreating(false);
           setShowInstituteCreation(true);
         }, 2000);
       } catch (error) {
         console.error('Error creating user:', error);
         setErrorMessage('Error creating user. Please try again.');
-        setIsCreating(false); // Reset submitting state in case of error
+        setIsCreating(false);
       }
     }
   };
 
-  if (showInstituteCreation) {
-    return <CreateInstitute />;
+  const handleUserSelect = async (userId: string) => {
+    try {
+      const response = await axios.get<User>(`http://16.170.155.154:3300/api/users/${userId}`);
+      setSelectedUser(response.data);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
+
+  if (showInstituteCreation && userId) {
+    return <CreateInstitute userId={userId} />;
   }
 
   return (
@@ -199,8 +234,16 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ input }) => {
           {isCreating ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
+      {selectedUser && (
+        <div className="mt-8">
+          <h2 className="text-xl text-center text-blue-500 font-bold mb-3">Selected User Details</h2>
+          <p>Name: {selectedUser.name}</p>
+          <p>Email: {selectedUser.email}</p>
+          <p>Phone: {selectedUser.phone}</p>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ProfileCreation;
+export default CreateProfile;

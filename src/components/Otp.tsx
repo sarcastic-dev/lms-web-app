@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import ProfileSelect from '../profileselect/page';
-import ProfileCreation from '../components/CreateProfile';
+import ProfileCreation from '../components/createProfile';
 
 interface OTPComponentProps {
   input: string;
@@ -8,7 +8,7 @@ interface OTPComponentProps {
   onSubmitOTP: () => void; // Function to handle OTP submit
 }
 
-const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}) => {
+const Otp:React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}) => {
   const [otp, setOTP] = useState(Array(6).fill(''));
   const [resendTimer, setResendTimer] = useState(30);
   const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
@@ -97,4 +97,4 @@ const OTPComponent: React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}
       </div>
   );
 };
-  export default OTPComponent;
+  export default Otp;
