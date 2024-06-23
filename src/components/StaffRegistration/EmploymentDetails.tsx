@@ -4,6 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "../ui/tooltip";
+import { Separator } from "../ui/separator";
+import {
 	Select,
 	SelectContent,
 	SelectItem,
@@ -38,22 +45,23 @@ const EmploymentDetails = ({
 	onNext: (data: any) => void;
 }): ReactElement => {
 	const employeeInfo = useSelector(
-		(state: RootState) => state.staffRegistration.employmentDetails
+		(state: RootState) => state.staffRegistration.basicInfo
 	);
     const form = useForm<EmploymentStaffSchemaType>({
         resolver: zodResolver(employmentSchema),
-        defaultValues: {
-            jobTitle: employeeInfo?.jobTitle || "",
-            designation: (employeeInfo?.designation || undefined) as EmploymentStaffSchemaType["designation"],
-            department: (employeeInfo?.department || undefined) as EmploymentStaffSchemaType["department"],
-            employmentType: employeeInfo?.employmentType || "",
-            appointmentDate: employeeInfo?.appointmentDate || "",
-            experience: employeeInfo?.experience || "",
-            highestQualification: employeeInfo?.highestQualification || "",
-            uan: employeeInfo?.uan || "",
-            pfAccountNumber: employeeInfo?.pfAccountNumber || "",
-            esiCodeNumber: employeeInfo?.esiCodeNumber || "",
-            reportingManager: (employeeInfo?.reportingManager || undefined) as EmploymentStaffSchemaType["reportingManager"],
+		defaultValues: {
+			employeeID: employeeInfo?.staff?.employeeID || "",
+            jobTitle: employeeInfo?.staff?.jobTitle || "",
+            designation: (employeeInfo?.staff?.designation || "") as EmploymentStaffSchemaType["designation"],
+            department: (employeeInfo?.staff?.department || "") as EmploymentStaffSchemaType["department"],
+            employmentType: employeeInfo?.staff?.employmentType || "",
+            appointmentDate: employeeInfo?.staff?.appointmentDate || "",
+            experienceYears: employeeInfo?.staff?.experienceYears || "",
+            highestQualification: employeeInfo?.staff?.highestQualification || "",
+            uan: employeeInfo?.staff?.uan || "",
+            pfAccountNumber: employeeInfo?.staff?.pfAccountNumber || "",
+            esiCodeNumber: employeeInfo?.staff?.esiCodeNumber || "",
+            reportingManager: (employeeInfo?.staff?.reportingManager || "") as EmploymentStaffSchemaType["reportingManager"],
         },
     });
 
@@ -75,6 +83,60 @@ const EmploymentDetails = ({
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
+						<FormField
+								control={form.control}
+								name='employeeID'
+								render={({ field }) => (
+									<FormItem>
+										<div className=''>
+											<FormLabel
+												htmlFor='employeeID'
+												className='pl-1 text-blue-500 font-semibold'
+											>
+												Enrolment ID{" "}
+												<span className='text-red-500'>
+													*
+												</span>
+											</FormLabel>
+										</div>
+										<FormControl>
+											<div className='relative'>
+												<Input
+													id='employeeID'
+													type='text'
+													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
+													placeholder='Enrollment No.'
+													{...field}
+												/>
+												<span className='absolute right-3 top-3 flex items-center space-x-2 text-gray-500'>
+													<Separator
+														orientation='vertical'
+														className='h-6 border-l border-gray-300'
+													/>
+
+													<TooltipProvider>
+														<Tooltip>
+															<TooltipTrigger
+																onClick={(e) =>
+																	e.preventDefault()
+																}
+															>
+																<span>
+																	@TES2097
+																</span>
+															</TooltipTrigger>
+															<TooltipContent className='text-xs text-white bg-blue-500'>
+																<p>Last Used</p>
+															</TooltipContent>
+														</Tooltip>
+													</TooltipProvider>
+												</span>
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							<FormField
 								control={form.control}
 								name='jobTitle'
@@ -224,7 +286,7 @@ const EmploymentDetails = ({
 											htmlFor='appointmentDate'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Issued Date
+											Appointment Date
 										</FormLabel>
 										<FormControl>
 											<DatePicker
@@ -254,7 +316,7 @@ const EmploymentDetails = ({
 							/>
 							<FormField
 								control={form.control}
-								name='experience'
+								name='experienceYears'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel

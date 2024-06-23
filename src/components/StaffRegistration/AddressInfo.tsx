@@ -30,7 +30,7 @@ const AddressInfo = ({
 		defaultValues: {
 			addressLine1: addressStaffInfo?.addressLine1 || "",
 			addressLine2: addressStaffInfo?.addressLine2 || "",
-			cityTown: addressStaffInfo?.cityTown || "",
+			city: addressStaffInfo?.city || "",
 			state: addressStaffInfo?.state || "",
 			pincode: addressStaffInfo?.pincode || "",
 			country: addressStaffInfo?.country || "",
@@ -103,7 +103,7 @@ const AddressInfo = ({
 							/>
 							<FormField
 								control={form.control}
-								name='cityTown'
+								name='city'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel

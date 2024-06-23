@@ -1,22 +1,17 @@
 import { z } from "zod";
 
 const basicSchemaStaff = z.object({
-	mobileNumber: z
+	phone: z
 		.string()
 		.regex(
 			/^\+?([0-9]{0,2})?(91)?(0)?([3-9])[0-9]{9}$/,
 			"Invalid mobile number format (10 digits only)"
 		), // Phone number pattern
-	emailID: z
+	email: z
 		.string()
 		.email()
 		.refine((value) => value.trim() !== "", {
 			message: "Email is required",
-		}),
-	employeeID: z
-		.string()
-		.refine((value) => value.trim() !== "", {
-			message: "Employee ID is required",
 		}),
 	firstName: z
 		.string()
@@ -25,10 +20,17 @@ const basicSchemaStaff = z.object({
 		}),
 	middleName: z.string().optional(),
 	lastName: z.string().optional(),
-	dateOfBirth: z.string().optional(), // Assuming date validation is not required here
+	dob: z.string().optional(), // Assuming date validation is not required here
     gender: z.string().optional(),
     bloodGroup: z.string().optional(),
-	userRole: z.string().optional(),
+	role: z
+		.enum(["owner", "teacher", "non-teaching"], {
+			message:
+				'Invalid user role. Choose "owner", "teacher", or "non-teaching"',
+		})
+		.refine((value) => value?.trim() !== "", {
+			message: "User Role is required",
+		}), // Ensures non-empty role
 });
 
 export default basicSchemaStaff;

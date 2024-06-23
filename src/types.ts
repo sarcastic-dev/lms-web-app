@@ -93,46 +93,67 @@ export interface MedicalInfo {
 }
 
 // Staff information types
-export interface BasicStaffInfo {
-	bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
-	dateOfBirth: string;
-	emailID: string;
-	employeeID: string;
+export interface BasicInfoStaffUser {
+	bloodGroup: string;
+	dob: string;
+	email: string;
 	firstName: string;
-	gender: "Male" | "Female" | "Other";
+	gender?: string;
 	lastName: string;
 	middleName: string;
-	mobileNumber: string;
-	userRole: "Owner" | "Teacher" | "Non-Teaching";
-}
-
-export interface AddressStaffInfo {
-	addressLine1: string;
-	addressLine2: string;
-	cityTown: string;
-	country: string;
-	pincode: string;
-	state: string;
-}
-
-export interface EmploymentDetails {
+	phone: string;
+	role: "owner" | "teacher" | "non-teaching" ;
+  }
+  
+  export interface BasicInfoStaff {
 	appointmentDate: string;
 	department: string;
 	designation: string;
+	employeeID: string;
 	employmentType: string;
 	esiCodeNumber: string;
-	experience: string;
+	experienceYears: string;
 	highestQualification: string;
 	jobTitle: string;
 	pfAccountNumber: string;
 	reportingManager: string;
 	uan: string;
+  }
+  
+  export interface BasicInfoEmployee {
+	user: BasicInfoStaffUser;
+	staff: BasicInfoStaff;
+  }
+  
+
+export interface AddressStaffInfo {
+	addressLine1: string;
+	addressLine2: string;
+	city: string;
+	country: string;
+	pincode: string;
+	state: string;
 }
+
+// export interface EmploymentDetails {
+// 	appointmentDate: string;
+// 	department: string;
+// 	designation: string;
+// 	employeeID: string;
+// 	employmentType: string;
+// 	esiCodeNumber: string;
+// 	experienceYears: string;
+// 	highestQualification: string;
+// 	jobTitle: string;
+// 	pfAccountNumber: string;
+// 	reportingManager: string;
+// 	uan: string;
+// }
 
 export interface AdditionalDetails {
 	aadharNumber: string;
 	category: string;
-	emergencyMobileNumber: string;
+	emergencyContactNumber: string;
 	fatherName: string;
 	maritalStatus: string;
 	motherName: string;
@@ -147,13 +168,13 @@ export interface PreviousExperience {
 	joiningDate: string;
 	location: string;
 	referenceName: string;
-	referenceNumber: string;
+	referenceMobileNumber: string;
 	relievingDate: string;
 }
 
 export interface BankDetails {
-	accountNo: string;
+	bankAccountNumber: string;
 	bankName: string;
-	holderName: string;
+	accountHolderName: string;
 	ifscCode: string;
 }

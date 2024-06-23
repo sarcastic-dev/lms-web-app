@@ -1,7 +1,31 @@
 import { z } from "zod";
 
 const employmentSchema = z.object({
+	employeeID: z
+	.string()
+	.refine((value) => value.trim() !== "", {
+		message: "Employee ID is required",
+	}),
 	jobTitle: z.string().trim().optional(),
+	designation: z.string().optional(),
+	department: z.string().optional(),
+	employmentType: z.string().trim().optional(),
+	appointmentDate: z.string().trim().optional(), // Assuming date validation is not required here
+	experienceYears: z.string().optional(), // Non-negative years of experience
+	highestQualification: z.string().trim().optional(),
+	uan: z.string().trim().optional(),
+	pfAccountNumber: z.string().trim().optional(),
+	esiCodeNumber: z.string().trim().optional(),
+	reportingManager: z.string().optional(),
+});
+
+export default employmentSchema;
+export type EmploymentStaffSchemaType = z.infer<typeof employmentSchema>;
+
+
+
+
+/*
 	designation: z.enum([
 		"Teacher",
 		"Vice-Principal",
@@ -40,15 +64,4 @@ const employmentSchema = z.object({
 		"Health and Safety",
 		"Communications",
 	]).optional(),
-	employmentType: z.string().trim().optional(),
-	appointmentDate: z.string().trim().optional(), // Assuming date validation is not required here
-	experience: z.string().optional(), // Non-negative years of experience
-	highestQualification: z.string().trim().optional(),
-	uan: z.string().trim().optional(),
-	pfAccountNumber: z.string().trim().optional(),
-	esiCodeNumber: z.string().trim().optional(),
-	reportingManager: z.enum(["owner", "teacher"]).optional(),
-});
-
-export default employmentSchema;
-export type EmploymentStaffSchemaType = z.infer<typeof employmentSchema>;
+*/

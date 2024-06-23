@@ -2,9 +2,9 @@ import { z } from "zod";
 
 const bankDetailsSchema = z.object({
   bankName: z.string().trim(),
-  accountNo: z.string().trim(),
+  bankAccountNumber: z.string().trim(),
   ifscCode: z.string().trim(),
-  holderName: z.string().trim(),
+  accountHolderName: z.string().trim(),
 });
 
 export default bankDetailsSchema;

@@ -26,7 +26,7 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 		return current && (current < minDate || current > maxDate);
 	};
 
-	const previousExperienceInfo = useSelector((state:RootState)=> state.staffRegistration.previousExperience)
+	const previousExperienceInfo = useSelector((state:RootState)=> state.staffRegistration.previousExperienceInfo)
 	const form = useForm<PreviousExperienceSchemaStaffType>({
 		resolver: zodResolver(previousExperienceSchema),
 		defaultValues: {
@@ -36,7 +36,7 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 			relievingDate: previousExperienceInfo?.relievingDate || "",
 			location: previousExperienceInfo?.location || "",
 			referenceName: previousExperienceInfo?.referenceName || "",
-			referenceNumber: previousExperienceInfo?.referenceNumber || "",
+			referenceMobileNumber: previousExperienceInfo?.referenceMobileNumber || "",
 		},
 	});
 	const onSubmit = (value: PreviousExperienceSchemaStaffType) => {
@@ -188,29 +188,27 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="referenceNumber"
+								name="referenceMobileNumber"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
-											htmlFor='student_mobile_number'
+											htmlFor='reference_mobile_number'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Student Mobile Number{" "}
-											<span className='text-red-500'>
-												*
-											</span>
+											Reference Mobile Number{" "}
+
 										</FormLabel>
 										<FormControl>
 											<div className='relative'>
 												<Input
-													id='student_mobile_number'
+													id='reference_mobile_number'
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
 													{...field}
 												/>
-												<span className='absolute left-3.5 top-[13.5px] flex items-center space-x-2 text-gray-500'>
-													<span>+91</span>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+													<span>+91-</span>
 												</span>
 											</div>
 										</FormControl>
