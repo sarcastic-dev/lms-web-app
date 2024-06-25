@@ -6,7 +6,14 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Button } from "../ui/button";
 import previousExperienceSchema from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
 import { PreviousExperienceSchemaStaffType } from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
@@ -18,7 +25,11 @@ dayjs.extend(customParseFormat);
 
 const dateFormat = "YYYY-MM-DD";
 
-const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): ReactElement => {
+const PreviousExperience = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
 
@@ -26,7 +37,9 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 		return current && (current < minDate || current > maxDate);
 	};
 
-	const previousExperienceInfo = useSelector((state:RootState)=> state.staffRegistration.previousExperienceInfo)
+	const previousExperienceInfo = useSelector(
+		(state: RootState) => state.staffRegistration.previousExperienceInfo
+	);
 	const form = useForm<PreviousExperienceSchemaStaffType>({
 		resolver: zodResolver(previousExperienceSchema),
 		defaultValues: {
@@ -36,34 +49,40 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 			relievingDate: previousExperienceInfo?.relievingDate || "",
 			location: previousExperienceInfo?.location || "",
 			referenceName: previousExperienceInfo?.referenceName || "",
-			referenceMobileNumber: previousExperienceInfo?.referenceMobileNumber || "",
+			referenceMobileNumber:
+				previousExperienceInfo?.referenceMobileNumber || "",
 		},
 	});
 	const onSubmit = (value: PreviousExperienceSchemaStaffType) => {
 		onNext(value);
 		// console.log(value);
 	};
+	const { viewState } = useSelector((state: RootState) => state.staff);
 
 	return (
-		<div className="flex justify-center my-8">
-			<div className="w-full tracking-wide">
+		<div className='flex justify-center my-8'>
+			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className="grid grid-cols-3 gap-x-8 gap-y-3 text-sm">
+						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
 							<FormField
 								control={form.control}
-								name="instituteName"
+								name='instituteName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="institute_name" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='institute_name'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Institute Name
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="institute_name"
-												type="text"
-												className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-												placeholder="Previous Institute Name"
+												id='institute_name'
+												type='text'
+												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												placeholder='Previous Institute Name'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -73,18 +92,22 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="jobTitle"
+								name='jobTitle'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="job_title" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='job_title'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Job Title
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="job_title"
-												type="text"
-												className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-												placeholder="Previous Job Title"
+												id='job_title'
+												type='text'
+												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												placeholder='Previous Job Title'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -94,24 +117,41 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="joiningDate"
+								name='joiningDate'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="join_date" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='join_date'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Joining Date
 										</FormLabel>
 										<FormControl>
 											<DatePicker
-												id="join_date"
-												size="large"
-												className="border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+												id='join_date'
+												size='large'
+												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
-												placeholder="Select Date"
+												placeholder='Select Date'
+												disabled={viewState === "view"}
 												onChange={(date) => {
-													field.onChange(date ? date.format(dateFormat) : "");
+													field.onChange(
+														date
+															? date.format(
+																	dateFormat
+															  )
+															: ""
+													);
 												}}
-												value={field.value ? dayjs(field.value, dateFormat) : null}
+												value={
+													field.value
+														? dayjs(
+																field.value,
+																dateFormat
+														  )
+														: null
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -120,24 +160,41 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="relievingDate"
+								name='relievingDate'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="relieving_date" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='relieving_date'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Relieving Date
 										</FormLabel>
 										<FormControl>
 											<DatePicker
-												id="relieving_date"
-												size="large"
-												className="border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+												id='relieving_date'
+												size='large'
+												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
-												placeholder="Select Date"
+												placeholder='Select Date'
+												disabled={viewState === "view"}
 												onChange={(date) => {
-													field.onChange(date ? date.format(dateFormat) : "");
+													field.onChange(
+														date
+															? date.format(
+																	dateFormat
+															  )
+															: ""
+													);
 												}}
-												value={field.value ? dayjs(field.value, dateFormat) : null}
+												value={
+													field.value
+														? dayjs(
+																field.value,
+																dateFormat
+														  )
+														: null
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -146,18 +203,22 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="location"
+								name='location'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="location" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='location'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Location
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="location"
-												type="text"
-												className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-												placeholder="Previous Institute Location"
+												id='location'
+												type='text'
+												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												placeholder='Previous Institute Location'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -167,18 +228,22 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="referenceName"
+								name='referenceName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="ref_name" className="pl-1 text-blue-500 font-semibold">
+										<FormLabel
+											htmlFor='ref_name'
+											className='pl-1 text-blue-500 font-semibold'
+										>
 											Reference Name
 										</FormLabel>
 										<FormControl>
 											<Input
-												id="ref_name"
-												type="text"
-												className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-												placeholder="Reference Name"
+												id='ref_name'
+												type='text'
+												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												placeholder='Reference Name'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -188,7 +253,7 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 							/>
 							<FormField
 								control={form.control}
-								name="referenceMobileNumber"
+								name='referenceMobileNumber'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -196,7 +261,6 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 											className='pl-1 text-blue-500 font-semibold'
 										>
 											Reference Mobile Number{" "}
-
 										</FormLabel>
 										<FormControl>
 											<div className='relative'>
@@ -205,6 +269,9 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
@@ -217,10 +284,10 @@ const PreviousExperience = ({ onNext }: { onNext: (data: any) => void; }): React
 								)}
 							/>
 						</div>
-						<div className="flex justify-center mt-8">
+						<div className='flex justify-center mt-8'>
 							<Button
-								type="submit"
-								className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hidden"
+								type='submit'
+								className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hidden'
 							>
 								Next
 							</Button>

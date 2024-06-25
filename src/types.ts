@@ -25,11 +25,20 @@ export interface IconProps {
 }
 
 export interface BasicInfoUser {
-	bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-" | undefined;
+	bloodGroup:
+		| "A+"
+		| "A-"
+		| "B+"
+		| "B-"
+		| "O+"
+		| "O-"
+		| "AB+"
+		| "AB-"
+		| undefined;
 	dob: string;
 	email: string;
 	firstName: string;
-	gender?: "Male" | "Female" | "Other"|undefined;
+	gender?: "Male" | "Female" | "Other" | undefined;
 	lastName: string;
 	middleName: string;
 	phone: string;
@@ -60,7 +69,7 @@ export interface AddressInfo {
 
 export interface ParentInfo {
 	parentName: string;
-	relation:  "Father" | "Mother" | "Guardian";
+	relation: "Father" | "Mother" | "Guardian";
 	parentEmail: string;
 	parentPhone: string;
 	parentQualification: string;
@@ -102,14 +111,14 @@ export interface BasicInfoStaffUser {
 	lastName: string;
 	middleName: string;
 	phone: string;
-	role: "owner" | "teacher" | "non-teaching" ;
-  }
-  
-  export interface BasicInfoStaff {
+	role: "owner" | "teacher" | "non-teaching";
+}
+
+export interface BasicInfoStaff {
+	employeeId: string;
 	appointmentDate: string;
 	department: string;
 	designation: string;
-	employeeID: string;
 	employmentType: string;
 	esiCodeNumber: string;
 	experienceYears: string;
@@ -118,20 +127,19 @@ export interface BasicInfoStaffUser {
 	pfAccountNumber: string;
 	reportingManager: string;
 	uan: string;
-  }
-  
-  export interface BasicInfoEmployee {
+}
+
+export interface BasicInfoEmployee {
 	user: BasicInfoStaffUser;
 	staff: BasicInfoStaff;
-  }
-  
+}
 
 export interface AddressStaffInfo {
 	addressLine1: string;
 	addressLine2: string;
 	city: string;
 	country: string;
-	pincode: string;
+	pinCode: string;
 	state: string;
 }
 
@@ -177,4 +185,24 @@ export interface BankDetails {
 	bankName: string;
 	accountHolderName: string;
 	ifscCode: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// STAFF SLICE
+export interface Staff {
+	basicInfo: {
+		user: BasicInfoStaffUser,
+		staff:BasicInfoStaff
+	},
+	addressInfo: AddressStaffInfo,
+	additionalInfo: AdditionalDetails,
+	previousExperienceInfo: PreviousExperience,
+	bankDetailInfo:BankDetails
+}
+
+export interface StaffState {
+	staffData: Staff | null;
+	status: "idle" | "loading" | "succeeded" | "failed";
+	error: string | null;
+	viewState: "view" | "edit" | null;
 }

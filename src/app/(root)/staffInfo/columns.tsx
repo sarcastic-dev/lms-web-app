@@ -2,38 +2,70 @@
 
 // import { Teacher } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EllipsisVertical } from "lucide-react";
+import Link from "next/link";
+import ActionCell from "@/components/ActionCell";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Teacher = {
 	id: string;
 	name: string;
 	contact: string;
-	class: string;
 	role: string;
-	status: "Active" | "Inactive";
+	designation: string;
+	department: string;
 };
 
 const columns: ColumnDef<Teacher>[] = [
 	{
 		accessorKey: "name",
-		header: "Name",
+		header: ({ column }) => {
+			return (
+			  <Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+			  >
+				Name
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			  </Button>
+			)
+		  },
 	},
 	{
 		accessorKey: "contact",
 		header: "Contact",
 	},
 	{
-		accessorKey: "class",
-		header: "Class",
+		accessorKey: "email",
+		header: "Email",
 	},
 	{
-		accessorKey: "role",
-		header: "Role",
+		accessorKey: "designation",
+		header: "Designation",
 	},
 	{
-		accessorKey: "status",
-		header: "Status",
+		accessorKey: "department",
+		header: "Department",
 	},
+	{
+		id: "actions",
+		enableHiding: false,
+		cell: ({ row }) => <ActionCell id={row.original.id} />,
+	  },
 ];
 export default columns;
+
+
+
+
+

@@ -47,23 +47,27 @@ const EmploymentDetails = ({
 	const employeeInfo = useSelector(
 		(state: RootState) => state.staffRegistration.basicInfo
 	);
-    const form = useForm<EmploymentStaffSchemaType>({
-        resolver: zodResolver(employmentSchema),
+	const form = useForm<EmploymentStaffSchemaType>({
+		resolver: zodResolver(employmentSchema),
 		defaultValues: {
-			employeeID: employeeInfo?.staff?.employeeID || "",
-            jobTitle: employeeInfo?.staff?.jobTitle || "",
-            designation: (employeeInfo?.staff?.designation || "") as EmploymentStaffSchemaType["designation"],
-            department: (employeeInfo?.staff?.department || "") as EmploymentStaffSchemaType["department"],
-            employmentType: employeeInfo?.staff?.employmentType || "",
-            appointmentDate: employeeInfo?.staff?.appointmentDate || "",
-            experienceYears: employeeInfo?.staff?.experienceYears || "",
-            highestQualification: employeeInfo?.staff?.highestQualification || "",
-            uan: employeeInfo?.staff?.uan || "",
-            pfAccountNumber: employeeInfo?.staff?.pfAccountNumber || "",
-            esiCodeNumber: employeeInfo?.staff?.esiCodeNumber || "",
-            reportingManager: (employeeInfo?.staff?.reportingManager || "") as EmploymentStaffSchemaType["reportingManager"],
-        },
-    });
+			employeeId: employeeInfo?.staff?.employeeId || "",
+			jobTitle: employeeInfo?.staff?.jobTitle || "",
+			designation: (employeeInfo?.staff?.designation ||
+				"") as EmploymentStaffSchemaType["designation"],
+			department: (employeeInfo?.staff?.department ||
+				"") as EmploymentStaffSchemaType["department"],
+			employmentType: employeeInfo?.staff?.employmentType || "",
+			appointmentDate: employeeInfo?.staff?.appointmentDate || "",
+			experienceYears: employeeInfo?.staff?.experienceYears || "",
+			highestQualification:
+				employeeInfo?.staff?.highestQualification || "",
+			uan: employeeInfo?.staff?.uan || "",
+			pfAccountNumber: employeeInfo?.staff?.pfAccountNumber || "",
+			esiCodeNumber: employeeInfo?.staff?.esiCodeNumber || "",
+			reportingManager: (employeeInfo?.staff?.reportingManager ||
+				"") as EmploymentStaffSchemaType["reportingManager"],
+		},
+	});
 
 	const minDate = dayjs("2019-08-01", dateFormat);
 	const maxDate = dayjs().endOf("day");
@@ -76,6 +80,9 @@ const EmploymentDetails = ({
 		onNext(value);
 		// console.log(value);
 	};
+	// const { staffData } = useSelector((state: RootState) => state.staff);
+
+	const { viewState } = useSelector((state: RootState) => state.staff);
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -83,9 +90,9 @@ const EmploymentDetails = ({
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='grid grid-cols-3 gap-x-8 gap-y-3 text-sm'>
-						<FormField
+							<FormField
 								control={form.control}
-								name='employeeID'
+								name='employeeId'
 								render={({ field }) => (
 									<FormItem>
 										<div className=''>
@@ -93,7 +100,7 @@ const EmploymentDetails = ({
 												htmlFor='employeeID'
 												className='pl-1 text-blue-500 font-semibold'
 											>
-												Enrolment ID{" "}
+												Employee ID{" "}
 												<span className='text-red-500'>
 													*
 												</span>
@@ -105,7 +112,10 @@ const EmploymentDetails = ({
 													id='employeeID'
 													type='text'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
-													placeholder='Enrollment No.'
+													placeholder='Employee ID'
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute right-3 top-3 flex items-center space-x-2 text-gray-500'>
@@ -154,6 +164,7 @@ const EmploymentDetails = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Primary Teacher'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -178,6 +189,7 @@ const EmploymentDetails = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Full-Time'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -200,6 +212,7 @@ const EmploymentDetails = ({
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													id='designation'
@@ -246,6 +259,7 @@ const EmploymentDetails = ({
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													id='department'
@@ -291,11 +305,12 @@ const EmploymentDetails = ({
 										<FormControl>
 											<DatePicker
 												id='appointmentDate'
-												size='large'
-												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400 w-full'
+												size='middle'
+												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500  placeholder:text-gray-400 w-full'
 												format={dateFormat}
 												disabledDate={disabledDate}
 												placeholder='Select Date'
+												disabled={viewState === "view"}
 												{...field}
 												value={
 													field.value
@@ -329,8 +344,9 @@ const EmploymentDetails = ({
 											<Input
 												id='experience_years'
 												type='number'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500  placeholder:text-gray-400'
 												placeholder='5'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -355,6 +371,7 @@ const EmploymentDetails = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='MBA'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -379,6 +396,7 @@ const EmploymentDetails = ({
 												type='number'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder=''
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -403,6 +421,7 @@ const EmploymentDetails = ({
 												type='number'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder=''
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -427,6 +446,7 @@ const EmploymentDetails = ({
 												type='number'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder=''
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -449,6 +469,7 @@ const EmploymentDetails = ({
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													id='reporting_manager'

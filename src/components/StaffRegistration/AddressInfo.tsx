@@ -25,6 +25,8 @@ const AddressInfo = ({
 	const addressStaffInfo = useSelector(
 		(state: RootState) => state.staffRegistration.addressInfo
 	);
+	const { viewState } = useSelector((state: RootState) => state.staff);
+
 	const form = useForm<AddressSchemaStaffType>({
 		resolver: zodResolver(addressSchema),
 		defaultValues: {
@@ -32,20 +34,19 @@ const AddressInfo = ({
 			addressLine2: addressStaffInfo?.addressLine2 || "",
 			city: addressStaffInfo?.city || "",
 			state: addressStaffInfo?.state || "",
-			pincode: addressStaffInfo?.pincode || "",
+			pinCode: addressStaffInfo?.pinCode || "",
 			country: addressStaffInfo?.country || "",
 		},
 	});
-
 
 	const onSubmit = (values: AddressSchemaStaffType) => {
 		// console.log(values);
 		onNext(values);
 	};
-	const { reset } = form;
-	useEffect(() => {
-		reset(addressStaffInfo, {})
-	},[addressStaffInfo,reset])
+	// const { reset } = form;
+	// useEffect(() => {
+	// 	reset(addressStaffInfo, {})
+	// },[addressStaffInfo,reset])
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -70,6 +71,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Abc near xyz'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -94,6 +96,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Flat/House No, Landmark'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -118,6 +121,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Mumbai'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -142,6 +146,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Maharashtra'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -151,7 +156,7 @@ const AddressInfo = ({
 							/>
 							<FormField
 								control={form.control}
-								name='pincode'
+								name='pinCode'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -166,6 +171,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='123456'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -190,6 +196,7 @@ const AddressInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='India'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>

@@ -49,6 +49,7 @@ const BasicInfo = ({
 	const disabledDate = (current: any) => {
 		return current && (current < minDate || current > maxDate);
 	};
+	const { viewState } = useSelector((state: RootState) => state.staff);
 
 	const form = useForm<BasicInfoSchemaStaffType>({
 		resolver: zodResolver(basicSchemaStaff),
@@ -61,13 +62,14 @@ const BasicInfo = ({
 			lastName: basicStaffInfo?.user?.lastName || "",
 			middleName: basicStaffInfo?.user?.middleName || "",
 			phone: basicStaffInfo?.user?.phone || "",
-			role: basicStaffInfo?.user?.role ||"teacher",
+			role: basicStaffInfo?.user?.role || "teacher",
 		},
 	});
 
 	const onSubmit = (value: BasicInfoSchemaStaffType) => {
 		onNext(value);
 	};
+	console.log(viewState)
 
 	const { reset } = form;
 	useEffect(() => {
@@ -101,6 +103,9 @@ const BasicInfo = ({
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
@@ -132,6 +137,7 @@ const BasicInfo = ({
 												type='email'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Email ID'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -160,6 +166,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='First Name'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -184,6 +191,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Middle Name'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -208,6 +216,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Last Name'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -230,10 +239,11 @@ const BasicInfo = ({
 											<DatePicker
 												id='dob'
 												size='middle'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 text-foreground placeholder:text-gray-400 disabled:bg-black'
 												format={dateFormat}
 												disabledDate={disabledDate}
 												placeholder='Select Date'
+												disabled={viewState === "view"}
 												onChange={(date) => {
 													field.onChange(
 														date
@@ -272,6 +282,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value || undefined}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
@@ -324,6 +335,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value || undefined}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
@@ -371,7 +383,8 @@ const BasicInfo = ({
 											htmlFor='userRole'
 											className='pl-1 text-blue-500 font-semibold'
 										>
-											Role <span className='text-red-500'>
+											Role{" "}
+											<span className='text-red-500'>
 												*
 											</span>
 										</FormLabel>
@@ -379,6 +392,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value || undefined}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${

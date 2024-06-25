@@ -16,7 +16,7 @@ import { BankDetailsSchemaType } from "@/staffRegistrationSchema/bankDetailsSche
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
-const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
+const BankDetails = ({ onNext }: { onNext: (data: any) => void;}) => {
 	const bankDetails = useSelector(
 		(state: RootState) => state.staffRegistration.bankDetailInfo
 	);
@@ -45,7 +45,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 		onNext(value);
 		// console.log(value);
 	};
-
+	const { viewState } = useSelector((state: RootState) => state.staff);
 	return (
 		<div className='flex justify-center my-8'>
 			<div className='w-full tracking-wide'>
@@ -69,6 +69,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='ABC Bank'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -93,6 +94,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='9898 98XXXX 98XXXX'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -117,6 +119,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='ABC0909021'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -141,6 +144,7 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='John Doe'
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>

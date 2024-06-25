@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const employmentSchema = z.object({
-	employeeID: z
+	employeeId: z
 	.string()
 	.refine((value) => value.trim() !== "", {
 		message: "Employee ID is required",

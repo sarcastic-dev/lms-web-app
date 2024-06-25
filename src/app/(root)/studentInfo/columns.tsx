@@ -84,7 +84,16 @@ const columns: ColumnDef<Teacher>[] = [
               </Link>
 
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <Link
+                href={{
+                  pathname: `/students`,
+                  query: {
+                    id: row.original.id,
+                  },
+                }}
+              >
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+              </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600">
                 Delete
