@@ -129,7 +129,7 @@ const PreviousExperience = ({
 										<FormControl>
 											<DatePicker
 												id='join_date'
-												size='large'
+												size='small'
 												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
@@ -172,7 +172,7 @@ const PreviousExperience = ({
 										<FormControl>
 											<DatePicker
 												id='relieving_date'
-												size='large'
+												size='small'
 												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}

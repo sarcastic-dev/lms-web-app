@@ -7,7 +7,6 @@ import { Pencil, UserPlus, CloudUpload, Download } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -17,15 +16,18 @@ import columns from "./columns";
 import { DataTable } from "./data-table";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import axiosInstance from "@/lib/axiosInstance";
 
 axios.defaults.baseURL = "http://16.170.155.154:3300/api";
 
 const Page = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string>(""); // State for file name
 
   const fetchStaffList = async () => {
-    setLoading(true); 
+    setLoading(true);
     const { data } = await axios.get("/staffs");
     const filteredStaffData = data.map((obj:any) => {
       const staffObj: any = {};
@@ -43,12 +45,41 @@ const Page = () => {
       return staffObj;
     });
     setData(filteredStaffData);
-    setLoading(false); 
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchStaffList();
   }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setFileName(e.target.files[0].name); // Set file name
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axiosInstance.post("/staffs/bulk", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("File upload response:", response.data);
+      fetchStaffList(); // Optionally refresh the staff list after upload
+    } catch (error) {
+      console.error("File upload error:", error);
+    }
+  };
 
   return (
     <div className='flex flex-col w-full h-screen space-y-8'>
@@ -77,12 +108,22 @@ const Page = () => {
                   <div className='border border-dashed border-blue-500 rounded-lg bg-blue-50'>
                     <label className='col-span-3 w-full h-52 flex flex-col justify-center items-center cursor-pointer'>
                       <CloudUpload className='text-blue-500 mb-2 z-40' size={40} />
-                      <span className="text-gray-500">Click <span className="text-blue-500">here</span> to upload file</span>
-                      <Input id='file' type='file' className='hidden' />
+                      <span className="text-gray-500">
+                        {fileName ? (
+                          <>
+                            Selected file: <span className="text-blue-500">{fileName}</span>
+                          </>
+                        ) : (
+                          <>
+                            Click <span className="text-blue-500">here</span> to upload file
+                          </>
+                        )}
+                      </span>
+                      <Input id='file' type='file' className='hidden' accept=".xlsx, .csv" onChange={handleFileChange} />
                     </label>
                   </div>
                   <DialogFooter className="mt-10 flex justify-between items-center relative">
-                    <Button type='submit'>Upload File</Button>
+                    <Button type='submit' onClick={handleFileUpload}>Upload File</Button>
                     <Button variant="link" className="absolute -left-5">Download Sample List <Download className="ml-2" size={15}/></Button>
                   </DialogFooter>
                 </DialogContent>
@@ -98,7 +139,7 @@ const Page = () => {
             <DataTable columns={columns} data={data} isLoading={loading} />
           </TabsContent>
           <TabsContent value='non-teaching'>
-          <DataTable columns={columns} data={data} isLoading={loading} />
+            <DataTable columns={columns} data={data} isLoading={loading} />
           </TabsContent>
         </Tabs>
       </div>

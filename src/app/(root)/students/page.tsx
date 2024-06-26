@@ -28,6 +28,7 @@ import {
 import { RootState } from "@/context/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
+axios.defaults.baseURL = "http://16.170.155.154:3300/api";
 
 export default function Page() {
   const router = useRouter();

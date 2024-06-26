@@ -16,6 +16,7 @@ import { EllipsisVertical, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { AppDispatch } from "@/context/store";
 import { fetchStaffById, setViewState } from "@/context/staffSlice";
+import { resetRegistrationData } from "@/context/staffRegistrationSlice";
 
 interface ActionCellProps {
 	id: string;

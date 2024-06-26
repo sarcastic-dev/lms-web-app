@@ -1,26 +1,87 @@
 import { Staff, StaffState } from '@/types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosInstance from '@/lib/axiosInstance';
+
+const initialStaffData: Staff = {
+  basicInfo: {
+    user: {
+      bloodGroup: "",
+      dob: "",
+      email: "",
+      firstName: "",
+      gender: "",
+      lastName: "",
+      middleName: "",
+      phone: "",
+      role: "teacher",
+    },
+    staff: {
+      employeeId: "",
+      appointmentDate: "",
+      department: "",
+      designation: "",
+      employmentType: "",
+      esiCodeNumber: "",
+      experienceYears: "",
+      highestQualification: "",
+      jobTitle: "",
+      pfAccountNumber: "",
+      reportingManager: "",
+      uan: "",
+    },
+  },
+  addressInfo: {
+    addressLine1: "",
+		addressLine2: "",
+		city: "",
+		country: "",
+		pinCode: "",
+		state: "",
+  },
+  additionalInfo: {
+    aadharNumber: "",
+    category: "",
+    emergencyContactNumber: "",
+    fatherName: "",
+    maritalStatus: "",
+    motherName: "",
+    panNumber: "",
+    religion: "",
+    spouseName: "",
+  },
+  previousExperienceInfo: {
+    instituteName: "",
+    jobTitle: "",
+    joiningDate: "",
+    location: "",
+    referenceName: "",
+    referenceMobileNumber: "",
+    relievingDate: "",
+  },
+  bankDetailInfo: {
+    bankAccountNumber: "",
+    bankName: "",
+    accountHolderName: "",
+    ifscCode: "",
+  },
+};
 
 const initialState: StaffState = {
-  staffData: null,
+  staffData: initialStaffData,
   status: 'idle',
   error: null,
   viewState: null,
 };
 
 export const fetchStaffById = createAsyncThunk<Staff, string>('staff/fetchStaffById', async (id) => {
-  const {data} = await axios.get(`/staffs/${id}`);
+  const { data } = await axiosInstance.get(`/staffs/${id}`);
   const modifiedData = {
     ...data,
     basicInfo: {
       ...data.basicInfo,
       staff: {
         ...data.basicInfo.staff,
-        experienceYears: String(
-          data.basicInfo.staff
-            ?.experienceYears
-        ),
+        experienceYears: String(data.basicInfo.staff?.experienceYears),
       },
     },
   };
@@ -35,6 +96,9 @@ const staffSlice = createSlice({
     setViewState: (state, action: PayloadAction<'view' | 'edit' | null>) => {
       state.viewState = action.payload;
       console.log(state.viewState);
+    },
+    resetStaffData: (state) => {
+      state.staffData = initialStaffData;
     },
   },
   extraReducers: (builder) => {
@@ -56,6 +120,6 @@ const staffSlice = createSlice({
   },
 });
 
-export const { setViewState } = staffSlice.actions;
+export const { setViewState, resetStaffData } = staffSlice.actions;
 
 export default staffSlice.reducer;

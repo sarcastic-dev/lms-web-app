@@ -69,7 +69,7 @@ const BasicInfo = ({
 	const onSubmit = (value: BasicInfoSchemaStaffType) => {
 		onNext(value);
 	};
-	console.log(viewState)
+
 
 	const { reset } = form;
 	useEffect(() => {

@@ -143,20 +143,7 @@ export interface AddressStaffInfo {
 	state: string;
 }
 
-// export interface EmploymentDetails {
-// 	appointmentDate: string;
-// 	department: string;
-// 	designation: string;
-// 	employeeID: string;
-// 	employmentType: string;
-// 	esiCodeNumber: string;
-// 	experienceYears: string;
-// 	highestQualification: string;
-// 	jobTitle: string;
-// 	pfAccountNumber: string;
-// 	reportingManager: string;
-// 	uan: string;
-// }
+
 
 export interface AdditionalDetails {
 	aadharNumber: string;
@@ -201,7 +188,7 @@ export interface Staff {
 }
 
 export interface StaffState {
-	staffData: Staff | null;
+	staffData: Staff ;
 	status: "idle" | "loading" | "succeeded" | "failed";
 	error: string | null;
 	viewState: "view" | "edit" | null;
