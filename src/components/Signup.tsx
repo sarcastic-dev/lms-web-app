@@ -5,6 +5,7 @@ import ProfileCreation from "../components/createProfile";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 axios.defaults.baseURL = "http://16.170.155.154:3300/api";
 
@@ -24,18 +25,6 @@ const AuthPage: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (showPasswordInput) {
-      setIsButtonDisabled(password.trim() === "" || isSendingOTP);
-    } else {
-      setIsButtonDisabled(input.trim() === "" || isSendingOTP);
-    }
-  }, [input, password, showPasswordInput, isSendingOTP]);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
@@ -122,33 +111,67 @@ const AuthPage: React.FC = () => {
     setShowProfileCreation(true);
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (showPasswordInput) {
+      setIsButtonDisabled(password.trim() === "" || isSendingOTP);
+    } else {
+      setIsButtonDisabled(input.trim() === "" || isSendingOTP);
+    }
+  }, [input, password, showPasswordInput, isSendingOTP]);
+
   return (
-    <div className="relative flex-1 flex items-center justify-center bg-gradient-to-r from-blue-400 via-blue-200 to-blue-400 h-screen overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-        <div className="absolute top-16 right-80 w-48 h-48 bg-blue-300 rounded-full opacity-40 animate-ping"></div>
-        <div className="absolute bottom-16 left-80 w-48 h-48 bg-blue-300 rounded-full opacity-40 animate-ping"></div>
-      </div>
-      <div className="absolute border-8 border-white -top-20 -left-20 w-2/6 h-4/6 bg-blue-500 shadow-2xl rounded-full opacity-60"></div>
-      <div className="absolute border-8 border-white -bottom-40 -right-16 w-5/12 h-5/6 bg-blue-500 shadow-2xl rounded-full opacity-60"></div>
-      
+    <div className="relative flex-1 flex items-center justify-center h-screen overflow-hidden">
+       <motion.div
+        className="absolute inset-0"
+        style={{ backgroundImage: 'url("/NewAppBG2.png")', backgroundPosition: '0% 0%' }}
+        animate={{ backgroundPosition: ["0% 0%", "100% 0%"] }}
+        transition={{ duration: 30, ease: "linear", repeat: Infinity, repeatType: "loop" }}
+      ></motion.div>
+
+      <motion.div
+        className="absolute border-8 border-white -top-20 -left-20 w-96 h-96 bg-blue-500 rounded-full opacity-100"
+        animate={{
+          scale: [1, 1, 1.5, 1, 1],
+          rotate: [0, 270, 270, 270, 0],
+          borderRadius: ["40%", "45%", "50%", "45%", "40%"],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+      ></motion.div>
+      <motion.div
+        className="absolute border-8 border-white -bottom-20 -right-20 w-96 h-96 bg-blue-500 rounded-full opacity-100"
+        animate={{
+          scale: [1, 1, 1.5, 1, 1],
+          rotate: [0, 270, 270, 270, 0],
+          borderRadius: ["40%", "45%", "50%", "45%", "40%"],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+      ></motion.div>
+
       {showProfileCreation ? (
         <ProfileCreation input={input} />
       ) : showOTP ? (
         <OTPComponent input={input} onEdit={handleEdit} onSubmitOTP={handleOTPSubmit} />
       ) : (
-        <div className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10">
+        <motion.div className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}>
           <Image
             src="/dummyIcon.png"
             alt="companyImage"
             width={200}
             height={200}
-            className="ml-28"
+            className="ml-24"
             priority
           />
           <div className="flex flex-col items-center">
             <form onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit} className="w-full flex flex-col items-center">
               <div className="relative w-96 mb-4 mt-6">
-                <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isFocused || input ? "text-xs -top-5 mt-7" : ""}`}>
+                <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isFocused || input ? "text-xs -top-2 mt-4" : ""}`}>
                   Email Address or Phone Number
                 </div>
                 <input
@@ -166,7 +189,7 @@ const AuthPage: React.FC = () => {
               </div>
               {showPasswordInput && (
                 <div className="relative w-96 mb-4">
-                  <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isPasswordFocused || password ? "text-xs -top-5 mt-7" : ""}`}>
+                  <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isPasswordFocused || password ? "text-xs -top-2 mt-4" : ""}`}>
                     Password
                   </div>
                   <input
@@ -192,7 +215,7 @@ const AuthPage: React.FC = () => {
               </button>
             </form>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
