@@ -20,6 +20,7 @@ const AuthPage: React.FC = () => {
   const [hasAccount, setHasAccount] = useState(false);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [email, setEmail] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isSendingOTP, setIsSendingOTP] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,20 +30,23 @@ const AuthPage: React.FC = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
 
-  const validateInput = (input: string): boolean => {
-    return emailRegex.test(input) || phoneRegex.test(input);
+  const validateInput = (email: string): boolean => {
+    return emailRegex.test(email) || phoneRegex.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateInput(input.trim())) {
+    if (!validateInput(email.trim())) {
       setErrorMessage("Invalid email or mobile number.");
       return;
     }
     setErrorMessage("");
     setIsSendingOTP(true);
 
-    const userObj = emailRegex.test(input) || phoneRegex.test(input) ? { email: input } : { phone: input };
+    const userObj =
+      emailRegex.test(email) || phoneRegex.test(email)
+        ? { email: email }
+        : { phone: email };
 
     try {
       const { data } = await axios.post("/users/exists", userObj);
@@ -80,7 +84,7 @@ const AuthPage: React.FC = () => {
 
     try {
       const { data } = await axios.post("/users/login", {
-        ...(emailRegex.test(input) ? { email: input } : { phone: input }),
+        ...(emailRegex.test(email) ? { email: email } : { phone: email }),
         password,
       });
 
@@ -95,13 +99,13 @@ const AuthPage: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInput(e.target.value);
+  // };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+  // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setPassword(e.target.value);
+  // };
 
   const handleEdit = () => {
     setShowOTP(false);
@@ -119,17 +123,25 @@ const AuthPage: React.FC = () => {
     if (showPasswordInput) {
       setIsButtonDisabled(password.trim() === "" || isSendingOTP);
     } else {
-      setIsButtonDisabled(input.trim() === "" || isSendingOTP);
+      setIsButtonDisabled(email.trim() === "" || isSendingOTP);
     }
-  }, [input, password, showPasswordInput, isSendingOTP]);
+  }, [email, password, showPasswordInput, isSendingOTP]);
 
   return (
     <div className="relative flex-1 flex items-center justify-center h-screen overflow-hidden">
-       <motion.div
+      <motion.div
         className="absolute inset-0"
-        style={{ backgroundImage: 'url("/NewAppBG2.png")', backgroundPosition: '0% 0%' }}
+        style={{
+          backgroundImage: 'url("/NewAppBG2.png")',
+          backgroundPosition: "0% 0%",
+        }}
         animate={{ backgroundPosition: ["0% 0%", "100% 0%"] }}
-        transition={{ duration: 30, ease: "linear", repeat: Infinity, repeatType: "loop" }}
+        transition={{
+          duration: 30,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop",
+        }}
       ></motion.div>
 
       <motion.div
@@ -154,12 +166,18 @@ const AuthPage: React.FC = () => {
       {showProfileCreation ? (
         <ProfileCreation input={input} />
       ) : showOTP ? (
-        <OTPComponent input={input} onEdit={handleEdit} onSubmitOTP={handleOTPSubmit} />
+        <OTPComponent
+          input={input}
+          onEdit={handleEdit}
+          onSubmitOTP={handleOTPSubmit}
+        />
       ) : (
-        <motion.div className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10"
+        <motion.div
+          className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}>
+          transition={{ duration: 0.5 }}
+        >
           <Image
             src="/dummyIcon.png"
             alt="companyImage"
@@ -169,16 +187,27 @@ const AuthPage: React.FC = () => {
             priority
           />
           <div className="flex flex-col items-center">
-            <form onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit} className="w-full flex flex-col items-center">
+            <form
+              onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}
+              className="w-full flex flex-col items-center"
+            >
               <div className="relative w-96 mb-4 mt-6">
-                <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isFocused || input ? "text-xs -top-0 mt-2" : ""}`}>
+                <label
+                  htmlFor="input"
+                  className={`absolute left-5 top-2 transition-all transform ${
+                    isFocused || email
+                      ? "-translate-x-7 -translate-y-2 scale-75 text-blue-500"
+                      : "translate-y-1.5 text-gray-500"
+                  } pointer-events-none`}
+                >
                   Email Address or Phone Number
-                </div>
+                </label>
                 <input
                   type="text"
-                  className="w-full p-2 pt-6 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
-                  value={input}
-                  onChange={handleInputChange}
+                  id="input"
+                  className="w-full p-2 pt-5 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
+                  value={email}
+                  onChange={(e)=>setEmail(e.target.value)}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   ref={inputRef}
@@ -189,18 +218,26 @@ const AuthPage: React.FC = () => {
               </div>
               {showPasswordInput && (
                 <div className="relative w-96 mb-4">
-                  <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isPasswordFocused || password ? "text-xs -top-0 mt-" : ""}`}>
-                    Password
-                  </div>
-                  <input
-                    type="password"
-                    className="w-full p-2 pt-6 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    onFocus={() => setIsPasswordFocused(true)}
-                    onBlur={() => setIsPasswordFocused(false)}
-                    ref={passwordRef}
-                  />
+                  <label
+                  htmlFor="input"
+                  className={`absolute left-5 top-2 transition-all transform ${
+                    isFocused || password
+                      ? "-translate-x-7 -translate-y-2 scale-75 text-blue-500"
+                      : "translate-y-1.5 text-gray-500"
+                  } pointer-events-none`}
+                >
+                  Password
+                </label>
+                <input
+                  type="text"
+                  id="input"
+                  className="w-full p-2 pt-5 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
+                  value={password}
+                  onChange={(e)=>setEmail(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  ref={passwordRef}
+                />
                   {errorMessage && (
                     <p className="text-red-500 text-xs ml-2">{errorMessage}</p>
                   )}
@@ -208,7 +245,11 @@ const AuthPage: React.FC = () => {
               )}
               <button
                 type="submit"
-                className={`w-96 py-2 border-2 font-semibold border-blue-500 rounded-xl mb-8 ${isButtonDisabled || isSendingOTP ? "text-blue-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+                className={`w-96 py-2 border-2 font-semibold border-blue-500 rounded-xl mb-8 ${
+                  isButtonDisabled || isSendingOTP
+                    ? "text-blue-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
                 disabled={isButtonDisabled || isSendingOTP}
               >
                 {isSendingOTP && !showPasswordInput ? "Sending OTP..." : "Next"}
