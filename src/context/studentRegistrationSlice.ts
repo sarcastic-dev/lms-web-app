@@ -19,9 +19,10 @@ const initialState: RegistrationState = {
 			lastName: "",
 			middleName: "",
 			phone: "",
+			role:"student"
 		},
 		student: {
-			enrolmentID: "",
+			enrollmentId: "",
 			admissionDate: "",
 			boardUniversity: "",
 			class: "",

@@ -54,9 +54,8 @@ export default function Page() {
 
   const handleToggle = () => {
     const newState = viewState === "view" ? "edit" : "view";
-    setFormState(newState);
     dispatch(setViewState(newState));
-    localStorage.setItem("viewState", newState); // Save to localStorage
+
   };
 
   const setStaffData = useCallback(
@@ -73,9 +72,9 @@ export default function Page() {
   useEffect(() => {
     if (id) {
       dispatch(fetchStaffById(id));
-      dispatch(setViewState(formState));
+
     }
-  }, [dispatch, id, formState]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (staffData) {
@@ -113,12 +112,13 @@ export default function Page() {
       try {
         if (viewState === "view" || viewState === "edit") {
           await axiosInstance.put(
-            `http://16.170.155.154:3300/api/staffs/${searchParams.get("id")}`,
+            
+            `/staffs/${searchParams.get("id")}`,
             modifiedRegistrationData
           );
         } else {
           await axiosInstance.post(
-            "http://16.170.155.154:3300/api/staffs",
+            "/staffs",
             modifiedRegistrationData
           );
         }

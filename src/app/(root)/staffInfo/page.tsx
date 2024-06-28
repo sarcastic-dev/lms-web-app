@@ -15,20 +15,22 @@ import {
 import columns from "./columns";
 import { DataTable } from "./data-table";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import axiosInstance from "@/lib/axiosInstance";
-
-axios.defaults.baseURL = "http://16.170.155.154:3300/api";
+import { useDispatch } from "react-redux";
+import { resetStaffData, setViewState } from "@/context/staffSlice";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState<File | null>(null);
-  const [fileName, setFileName] = useState<string>(""); // State for file name
+  const [fileName, setFileName] = useState<string>("");
+  const dispatch = useDispatch();
+  const router = useRouter()
 
   const fetchStaffList = async () => {
     setLoading(true);
-    const { data } = await axios.get("/staffs");
+    const { data } = await axiosInstance.get("/staffs");
     const filteredStaffData = data.map((obj:any) => {
       const staffObj: any = {};
 
@@ -75,12 +77,17 @@ const Page = () => {
         },
       });
       console.log("File upload response:", response.data);
-      fetchStaffList(); // Optionally refresh the staff list after upload
+      fetchStaffList(); 
+      router.push('/staffInfo')
     } catch (error) {
       console.error("File upload error:", error);
     }
   };
 
+  const handleResetStaffData = () => {
+    dispatch(resetStaffData())
+    dispatch(setViewState(null))
+  }
   return (
     <div className='flex flex-col w-full h-screen space-y-8'>
       <div>
@@ -129,7 +136,7 @@ const Page = () => {
                 </DialogContent>
               </Dialog>
               <Link href={"/staffs"}>
-                <Button variant={"outline"}>
+                <Button variant={"outline"} onClick={handleResetStaffData}>
                   <UserPlus size={18} className='mr-2' /> Add Staff
                 </Button>
               </Link>

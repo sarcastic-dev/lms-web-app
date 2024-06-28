@@ -34,12 +34,18 @@ const AddressInfoForm = ({
 	const onSubmit = (values: AddressInfoSchemaType) => {
 		onNext(values);
 	};
+	const { viewState } = useSelector(
+		(state: RootState) => state.student
+	);
 
 	const { reset } = form;
 
 	useEffect(() => {
 		reset(addressInfoStudent || {});
 	}, [addressInfoStudent, reset]);
+
+
+
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -64,6 +70,7 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Address Line 1'
+												disabled={viewState==="view"}
 												{...field}
 											/>
 										</FormControl>
@@ -88,6 +95,8 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Address Line 2'
+												disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -112,6 +121,8 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='City/Town'
+												disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -136,6 +147,8 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='State'
+												disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -145,7 +158,7 @@ const AddressInfoForm = ({
 							/>
 							<FormField
 								control={form.control}
-								name='pincode'
+								name='pinCode'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -160,6 +173,8 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='PIN Code'
+												disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -184,6 +199,8 @@ const AddressInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Country'
+												disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
