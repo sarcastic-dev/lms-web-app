@@ -171,7 +171,7 @@ const AuthPage: React.FC = () => {
           <div className="flex flex-col items-center">
             <form onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit} className="w-full flex flex-col items-center">
               <div className="relative w-96 mb-4 mt-6">
-                <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isFocused || input ? "text-xs -top-2 mt-4" : ""}`}>
+                <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isFocused || input ? "text-xs -top-0 mt-2" : ""}`}>
                   Email Address or Phone Number
                 </div>
                 <input
@@ -189,7 +189,7 @@ const AuthPage: React.FC = () => {
               </div>
               {showPasswordInput && (
                 <div className="relative w-96 mb-4">
-                  <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isPasswordFocused || password ? "text-xs -top-2 mt-4" : ""}`}>
+                  <div className={`absolute left-5 top-4 text-gray-400 font-medium transition-all duration-200 ease-in-out pointer-events-none ${isPasswordFocused || password ? "text-xs -top-0 mt-" : ""}`}>
                     Password
                   </div>
                   <input
