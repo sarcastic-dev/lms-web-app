@@ -47,6 +47,7 @@ const MedicalInfoForm = ({
 	const onSubmit = (values: HealthInfoSchemaType) => {
 		onNext(values);
 	};
+	const {viewState} = useSelector((state:RootState)=>state.student)
 	const { reset } = form;
 	useEffect(() => {
 		reset(medicalInfoStudent || {});
@@ -75,6 +76,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='60'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -99,6 +102,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='162'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -123,6 +128,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='24.56'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -147,6 +154,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='72 BPM'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -171,6 +180,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='16'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -195,6 +206,8 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='"Asthma" , "Soy" etc.'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 											/>
 										</FormControl>
@@ -204,7 +217,7 @@ const MedicalInfoForm = ({
 							/>
 							<FormField
 								control={form.control}
-								name='issueDateOfReport'
+								name='reportIssueDate'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
@@ -216,11 +229,13 @@ const MedicalInfoForm = ({
 										<FormControl>
 											<DatePicker
 												id='issuedDate'
-												size='large'
-												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400 w-full'
+												size='small'
+												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500 text-foreground placeholder:text-gray-400 w-full'
 												format={dateFormat}
 												disabledDate={disabledDate}
 												placeholder='Select Date'
+                                                disabled={viewState === 'view'}
+											
 												{...field}
 												value={
 													field.value

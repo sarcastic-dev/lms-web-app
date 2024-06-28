@@ -63,20 +63,24 @@ const BasicInfo = ({
     const form = useForm<BasicInfoSchemaType>({
         resolver: zodResolver(BasicInfoSchema),
         defaultValues: {
-            bloodGroup: basicInfo?.user?.bloodGroup || undefined,
+            bloodGroup: basicInfo?.user?.bloodGroup || "",
             dob: basicInfo?.user?.dob || "",
             email: basicInfo?.user?.email || "",
             firstName: basicInfo?.user?.firstName || "",
-            gender: basicInfo?.user?.gender || undefined,
+            gender: basicInfo?.user?.gender || "",
             lastName: basicInfo?.user?.lastName || "",
             middleName: basicInfo?.user?.middleName || "",
-            phone: basicInfo?.user?.phone || "",
+			phone: basicInfo?.user?.phone || "",
+			role:basicInfo?.user?.role || "student",
         },
     });
 
     const onSubmit = (value: BasicInfoSchemaType) => {
         onNext(value);
-    };
+	};
+	const { viewState } = useSelector(
+		(state: RootState) => state.student
+	);
 
     const { reset } = form;
 
@@ -110,6 +114,7 @@ const BasicInfo = ({
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
+												disabled={viewState==="view"}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
@@ -141,6 +146,7 @@ const BasicInfo = ({
 												type='email'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Email ID'
+												disabled={viewState==="view"}
 												{...field}
 											/>
 										</FormControl>
@@ -169,6 +175,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='First Name'
+												disabled={viewState==="view"}
 												{...field}
 											/>
 										</FormControl>
@@ -193,6 +200,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Middle Name'
+												disabled={viewState==="view"}
 												{...field}
 											/>
 										</FormControl>
@@ -217,6 +225,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Last Name'
+												disabled={viewState==="view"}
 												{...field}
 											/>
 										</FormControl>
@@ -238,10 +247,11 @@ const BasicInfo = ({
 										<FormControl>
 											<DatePicker
 												id='dateOfBirth'
-												size='large'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												size='small'
+												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 text-foreground placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
+												disabled={viewState==="view"}
 												placeholder='Select Date'
 												onChange={(date) => {
 													field.onChange(
@@ -281,6 +291,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value}
+												disabled={viewState==="view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
@@ -333,6 +344,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value}
+												disabled={viewState==="view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${

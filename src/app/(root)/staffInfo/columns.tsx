@@ -1,21 +1,11 @@
-"use client";
+// src/components/columns.tsx
 
-// import { Teacher } from "@/types";
+"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { EllipsisVertical } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpDown } from "lucide-react";
 import ActionCell from "@/components/ActionCell";
+import { fetchStaffById, setViewState } from "@/context/staffSlice";
 
 export type Teacher = {
 	id: string;
@@ -31,15 +21,17 @@ const columns: ColumnDef<Teacher>[] = [
 		accessorKey: "name",
 		header: ({ column }) => {
 			return (
-			  <Button
-				variant="ghost"
-				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-			  >
-				Name
-				<ArrowUpDown className="ml-2 h-4 w-4" />
-			  </Button>
-			)
-		  },
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Name
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
 	},
 	{
 		accessorKey: "contact",
@@ -60,12 +52,15 @@ const columns: ColumnDef<Teacher>[] = [
 	{
 		id: "actions",
 		enableHiding: false,
-		cell: ({ row }) => <ActionCell id={row.original.id} />,
-	  },
+		cell: ({ row }) => (
+			<ActionCell
+				id={row.original.id}
+				fetchById={fetchStaffById}
+				setViewState={setViewState}
+				pathName="staffs"
+			/>
+		),
+	},
 ];
+
 export default columns;
-
-
-
-
-

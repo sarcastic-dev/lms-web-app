@@ -10,8 +10,7 @@ export const generalInfoSchema = z.object({
   emailID: z.string().trim().email({ message: 'Invalid email format' }).optional(),
   relationship: z
     .string()
-    .trim()
-    .min(1, { message: 'Relationship is required*' }),
+    .trim(),
   educationalQualification: z.string().trim().optional(),
   occupation: z.string().trim().optional(),
   workOrganizationName: z.string().trim().optional(),

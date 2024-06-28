@@ -1,109 +1,79 @@
+// src/app/(root)/studentInfo/columns.tsx
+
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpDown } from "lucide-react";
+import ActionCell from "@/components/ActionCell";
+import { fetchStudentById, setViewState } from "@/context/studentSlice"; // Adjust the import path based on your project structure
 
-// Set the default base URL for axios
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Teacher = {
-  id: string;
-  name: string;
-  contact: string;
-  class: string;
-  role: string;
-  status: "Active" | "Inactive";
+export type Student = {
+	id: string;
+	name: string;
+	class: string;
+	contact: string;
+	parentName: string;
+	status: string;
 };
 
-const columns: ColumnDef<Teacher>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "class",
-    header: "Class",
-  },
-  {
-    accessorKey: "contact",
-    header: "Contact",
-  },
-  {
-    accessorKey: "parentName",
-    header: "Parent name",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      // const viewStudent = async (id: string) => {
-      //   try {
-      //     const { data } = await axios.get(`/students/${id}`);
-      //     console.log("Student data:", data);
-      //     // Handle the data as needed, e.g., display it in a modal
-      //   } catch (error) {
-      //     console.error("Error fetching student data:", error);
-      //   }
-      // };
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
-              <EllipsisVertical size={20} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px] font-semibold">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <Link
-                href={{
-                  pathname: `/students`,
-                  query: {
-                    id: row.original.id,
-                  },
-                }}
-              >
-                <DropdownMenuItem>View</DropdownMenuItem>
-              </Link>
-
-              <DropdownMenuSeparator />
-              <Link
-                href={{
-                  pathname: `/students`,
-                  query: {
-                    id: row.original.id,
-                  },
-                }}
-              >
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-              </Link>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+const columns: ColumnDef<Student>[] = [
+	{
+		accessorKey: "name",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Name
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
+	},
+	{
+		accessorKey: "class",
+		header: "Class",
+	},
+	{
+		accessorKey: "contact",
+		header: "Contact",
+	},
+	{
+		accessorKey: "parentName",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Parent Name
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
+	},
+	{
+		accessorKey: "email",
+		header: "Email",
+	},
+	{
+		id: "actions",
+		enableHiding: false,
+		cell: ({ row }) => (
+			<ActionCell
+				id={row.original.id}
+				fetchById={fetchStudentById}
+				setViewState={setViewState}
+				pathName='students'
+			/>
+		),
+	},
 ];
 
 export default columns;

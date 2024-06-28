@@ -13,12 +13,9 @@ export const BasicInfoSchema = z.object({
     middleName: z.string().optional(),
     lastName: z.string().optional(),
     dob: z.string().optional(),
-    gender: z.enum(["Male", "Female", "Other"], {
-        required_error: "Gender is required"
-    }).optional(),
-    bloodGroup: z.enum(["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"], {
-        required_error: "Blood Group is required"
-    }).optional(),
+    gender: z.string().optional(),
+    bloodGroup: z.string().optional(),
+    role:z.string().optional()
 });
 
 export type BasicInfoSchemaType = z.infer<typeof BasicInfoSchema>;

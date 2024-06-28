@@ -25,27 +25,19 @@ export interface IconProps {
 }
 
 export interface BasicInfoUser {
-	bloodGroup:
-		| "A+"
-		| "A-"
-		| "B+"
-		| "B-"
-		| "O+"
-		| "O-"
-		| "AB+"
-		| "AB-"
-		| undefined;
+	bloodGroup: string;
 	dob: string;
 	email: string;
 	firstName: string;
-	gender?: "Male" | "Female" | "Other" | undefined;
+	gender?: string;
 	lastName: string;
 	middleName: string;
 	phone: string;
+	role:string
 }
 
 export interface BasicInfoStudent {
-	enrolmentID: string;
+	enrollmentId: string;
 	admissionDate: string;
 	boardUniversity: string;
 	class: string;
@@ -63,18 +55,18 @@ export interface AddressInfo {
 	addressLine2: string;
 	city: string;
 	country: string;
-	pincode: string;
+	pinCode: string;
 	state: string;
 }
 
 export interface ParentInfo {
-	parentName: string;
-	relation: "Father" | "Mother" | "Guardian";
-	parentEmail: string;
-	parentPhone: string;
-	parentQualification: string;
-	parentOccupation: string;
-	workOrganization: string;
+	name: string;
+	relation: string;
+	email: string;
+	phone: string;
+	qualification: string;
+	occupation: string;
+	workOrganizationName: string;
 	designation: string;
 	annualIncome: string;
 }
@@ -96,7 +88,7 @@ export interface MedicalInfo {
 	bmi: string;
 	haemoglobin: string;
 	heightCm: string;
-	issueDateOfReport: string;
+	reportIssueDate: string;
 	pulseRate: string;
 	weightKg: string;
 }
@@ -181,10 +173,10 @@ export interface Staff {
 		user: BasicInfoStaffUser,
 		staff:BasicInfoStaff
 	},
-	addressInfo: AddressStaffInfo,
-	additionalInfo: AdditionalDetails,
-	previousExperienceInfo: PreviousExperience,
-	bankDetailInfo:BankDetails
+	addressInfo: AddressStaffInfo;
+	additionalInfo: AdditionalDetails;
+	previousExperienceInfo: PreviousExperience;
+	bankDetailInfo: BankDetails;
 }
 
 export interface StaffState {
@@ -192,4 +184,23 @@ export interface StaffState {
 	status: "idle" | "loading" | "succeeded" | "failed";
 	error: string | null;
 	viewState: "view" | "edit" | null;
+}
+
+// STUDENT SLICE
+
+export interface Student {
+	basicInfo: {
+		user: BasicInfoUser,
+		student: BasicInfoStudent
+	};
+	addressInfo: AddressInfo;
+	parentInfo: ParentInfo;
+	medicalInfo: MedicalInfo;
+}
+
+export interface StudentState {
+	studentData: Student;
+	status: "idle" | "loading" | "succeeded" | "failed";
+	error: string | null;
+	viewState: "view" | "edit" | "add";
 }
