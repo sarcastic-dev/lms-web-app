@@ -11,7 +11,7 @@ interface RegistrationState {
 const initialState: RegistrationState = {
 	basicInfo: {
 		user: {
-			bloodGroup: undefined,
+			bloodGroup: "",
 			dob: "",
 			email: "",
 			firstName: "",

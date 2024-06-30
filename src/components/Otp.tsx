@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import ProfileSelect from '../profileselect/page';
 import ProfileCreation from '../components/createProfile';
 
 interface OTPComponentProps {
@@ -13,7 +12,6 @@ const Otp:React.FC<OTPComponentProps> = ({ input, onEdit, onSubmitOTP}) => {
   const [resendTimer, setResendTimer] = useState(30);
   const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
   const [isSubmitting, setIsSubmitting] = useState(false); // State to track if OTP is being submitted
-  const firstInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (resendTimer > 0) {
