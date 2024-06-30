@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import CreateInstitute from '../components/createInstitute';
-import axios from 'axios';
+import axiosInstance from '@/lib/axiosInstance';
 
 type Field = 'name' | 'email' | 'phone' | 'password';
 
@@ -24,29 +24,26 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
   const [errors, setErrors] = useState<{ name?: string; email?: string; phoneNumber?: string; password?: string }>({});
   const [showInstituteCreation, setShowInstituteCreation] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
   const [isFocused, setIsFocused] = useState({
     name: false,
     email: false,
     phone: false,
     password: false,
   });
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+
   useEffect(() => {
-    if (
-      name.trim() &&
-      password.trim() &&
-      (isEmail ? input.trim() : phoneNumber.trim() ? input.trim() : email.trim())
-     ) {
-      setIsButtonDisabled(false);
-    } else {
+    if (name.trim() && password.trim() && (isEmail ? email.trim() : phoneNumber.trim())) {
       setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
     }
-  }, [name, email, phoneNumber, password, input, isEmail]);
+  }, [name, email, phoneNumber, password, isEmail]);
 
   const handleFocus = (field: Field) => {
     setIsFocused((prev) => ({ ...prev, [field]: true }));
@@ -95,7 +92,7 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
       setIsCreating(true);
       const parsedName = parseName(name);
       try {
-        const response = await axios.post('http://16.170.155.154:3300/api/users', {
+        const response = await axiosInstance.post('/users', {
           ...parsedName,
           email: isEmail ? input : email,
           phone: isEmail ? phoneNumber : input,
@@ -119,7 +116,7 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
 
   const handleUserSelect = async (userId: string) => {
     try {
-      const response = await axios.get<User>(`http://16.170.155.154:3300/api/users/${userId}`);
+      const response = await axiosInstance.get<User>(`/users/${userId}`);
       setSelectedUser(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -234,6 +231,7 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
           {isCreating ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
+      {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
       {selectedUser && (
         <div className="mt-8">
           <h2 className="text-xl text-center text-blue-500 font-bold mb-3">Selected User Details</h2>

@@ -1,16 +1,13 @@
 import React from "react";
 
-import AuthPage from "../components/signup";
-import CreateInstitute from "@/components/createInstitute";
-import CreateProfile from "@/components/createProfile";
+import AuthPage from "../components/Signup";
+import Loader from "@/components/Loader";
 
 export default function Home() {
   return (
     <>
       <AuthPage />
-      {/* <CreateInstitute userId={null}/> */}
-      {/* <CreateProfile input={""}/> */}
-      
+      {/* <Loader/> */}
     </>
   );
 }
