@@ -1,4 +1,4 @@
-const BASE_API_URL = "http://192.168.1.7:3300"
+const BASE_API_URL = "http://192.168.1.7:3300";
 
 interface SelectType {
 	value: string;
@@ -87,40 +87,62 @@ export const Category = [
 interface EducationStage {
 	stage: string;
 	classes: string[];
-};
+}
 
 export const educationStages: EducationStage[] = [
 	{
 		stage: "Pre Primary Stage",
-		classes: ["Pre-Nursery", "Nursery", "LKG", "UKG"],
+		classes: ["UKG", "LKG", "Nursery", "Pre-Nursery"],
 	},
 	{
 		stage: "Primary Stage",
-		classes: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"],
+		classes: ["Class 5", "Class 4", "Class 3", "Class 2", "Class 1"],
 	},
 	{
 		stage: "Middle Stage",
-		classes: ["Class 5", "Class 6", "Class 7", "Class 8"],
+		classes: ["Class 8", "Class 7", "Class 6", "Class 5"],
 	},
 	{
 		stage: "Secondary Stage",
-		classes: ["Class 8", "Class 9", "Class 10"],
+		classes: ["Class 10", "Class 9"],
 	},
 	{
 		stage: "Senior Secondary Stage",
-		classes: ["Class 11", "Class 12"],
+		classes: ["Class 12", "Class 1"],
 	},
 ];
 
 interface Teachers {
-    id: string;
-    name: string;
+	id: string;
+	name: string;
 }
 
-export const Teachers:Teachers[] = [
-    { id: 'teacher1', name: 'Mr. Arun Sharma' },
-    { id: 'teacher2', name: 'Ms. Priya Singh' },
-    { id: 'teacher3', name: 'Dr. Neha Gupta' },
-    { id: 'teacher4', name: 'Mr. Rakesh Kumar' },
-    { id: 'teacher5', name: 'Ms. Anjali Mehta' },
-  ];
+export const Teachers: Teachers[] = [
+	{ id: "teacher1", name: "Mr. Arun Sharma" },
+	{ id: "teacher2", name: "Ms. Priya Singh" },
+	{ id: "teacher3", name: "Dr. Neha Gupta" },
+	{ id: "teacher4", name: "Mr. Rakesh Kumar" },
+	{ id: "teacher5", name: "Ms. Anjali Mehta" },
+];
+export const classStages: EducationStage[] = [
+	{
+		stage: "Senior Secondary Stage",
+		classes: ["Class 12", "Class 1"],
+	},
+	{
+		stage: "Secondary Stage",
+		classes: ["Class 10", "Class 9"],
+	},
+	{
+		stage: "Middle Stage",
+		classes: ["Class 8", "Class 7", "Class 6", "Class 5"],
+	},
+	{
+		stage: "Primary Stage",
+		classes: ["Class 5", "Class 4", "Class 3", "Class 2", "Class 1"],
+	},
+	{
+		stage: "Pre Primary Stage",
+		classes: ["UKG", "LKG", "Nursery", "Pre-Nursery"],
+	},
+];
