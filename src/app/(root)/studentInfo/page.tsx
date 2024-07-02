@@ -21,7 +21,6 @@ import { useDispatch } from "react-redux";
 import { resetStudentData, setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
 
-axios.defaults.baseURL = "http://16.170.155.154:3300/api";
 
 const Page = () => {
   const [data, setData] = useState([]);

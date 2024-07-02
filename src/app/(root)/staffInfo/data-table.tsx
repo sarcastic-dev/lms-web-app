@@ -103,6 +103,8 @@ export function DataTable<TData, TValue>({
     );
   }
 
+  console.log("This is a table", table.getAllColumns());
+
   return (
     <div className="rounded-md border border-gray-300 shadow-lg overflow-hidden">
       <div className="flex items-center py-4 mx-4 relative">
