@@ -1,0 +1,136 @@
+<form onSubmit={handleSubmit}>
+        <div className="relative mb-4">
+          <select
+            name="city"
+            className="custom-select custom-select-left-icon w-full font-medium pb-2 pt-7 pl-3 pr-8 border-2 rounded-xl bg-white focus:border-blue-500 outline-none"
+            value={city}
+            onChange={(e) => handleSelectChange(e, setCity)}
+            onFocus={() => handleFocus("city")}
+            onBlur={() => handleBlur("city")}
+            required
+          >
+            <option value="" disabled></option>
+            <option value="Firozabad">Firozabad</option>
+            <option value="New Delhi">New Delhi</option>
+            <option value="Gurugram">Gurugram</option>
+            <option value="Bangalore">Bangalore</option>
+            {/* Add other options here */}
+          </select>
+          <div className={getLabelClasses("city", city)}>Select City</div>
+        </div>
+        <div className="relative mb-4">
+          <select
+            name="instituteType"
+            className="custom-select custom-select-left-icon w-full font-medium pb-2 pt-7 pl-3 pr-8 border-2 rounded-xl bg-white focus:border-blue-500 outline-none"
+            value={instituteType}
+            onChange={(e) => handleSelectChange(e, setInstituteType)}
+            onFocus={() => handleFocus("instituteType")}
+            onBlur={() => handleBlur("instituteType")}
+            required
+          >
+            <option value="" disabled></option>
+            <option value="School">School</option>
+            <option value="College">College</option>
+            <option value="Tuition">Tuition</option>
+            <option value="Others">Others</option>
+            {/* Add other options here */}
+          </select>
+          <div className={getLabelClasses("instituteType", instituteType)}>
+            Select your institute type
+          </div>
+        </div>
+        <div className="relative mb-4">
+          <input
+            type="text"
+            className={`w-full font-medium pb-1 pt-7 pl-4 border-2 rounded-xl bg-white focus:border-blue-500 focus:border-2 outline-none ${
+              errors.instituteName ? "border-red-500" : "border-gray-300"
+            }`}
+            value={instituteName}
+            onChange={(e) => setInstituteName(e.target.value)}
+            onFocus={() => handleFocus("instituteName")}
+            onBlur={() => handleBlur("instituteName")}
+            required
+          />
+          <div className={getLabelClasses("instituteName", instituteName)}>
+            Enter your institute name
+          </div>
+          {errors.instituteName && (
+            <p className="text-red-500 text-sm mt-1">{errors.instituteName}</p>
+          )}
+        </div>
+        <div className="relative mb-4">
+          <input
+            type="text"
+            className={`w-full font-medium pb-1 pt-7 pl-4 border-2 rounded-xl bg-white focus:border-blue-500 focus:border-2 outline-none ${
+              errors.address ? "border-red-500" : "border-gray-300"
+            }`}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            onFocus={() => handleFocus("address")}
+            onBlur={() => handleBlur("address")}
+            required
+          />
+          <div className={getLabelClasses("address", address)}>
+            Email Address
+          </div>
+          {errors.address && (
+            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+          )}
+        </div>
+        <div className="relative mb-4">
+          <input
+            type="text"
+            className={`w-full font-medium pb-1 pt-7 pl-4 border-2 rounded-xl bg-white focus:border-blue-500 focus:border-2 outline-none ${
+              errors.phoneNumber ? "border-red-500" : "border-gray-300"
+            }`}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            onFocus={() => handleFocus("phoneNumber")}
+            onBlur={() => handleBlur("phoneNumber")}
+            required
+          />
+          <div className={getLabelClasses("phoneNumber", phoneNumber)}>
+            Phone Number
+          </div>
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+          )}
+        </div>
+        <div className="relative mb-4">
+          <input
+            type="text"
+            className={`w-full font-medium pb-1 pt-7 pl-4 border-2 rounded-xl bg-white focus:border-blue-500 focus:border-2 outline-none ${
+              errors.instituteAddress ? "border-red-500" : "border-gray-300"
+            }`}
+            value={instituteAddress}
+            onChange={(e) => setInstituteAddress(e.target.value)}
+            onFocus={() => handleFocus("instituteAddress")}
+            onBlur={() => handleBlur("instituteAddress")}
+            required
+          />
+          <div
+            className={getLabelClasses("instituteAddress", instituteAddress)}
+          >
+            Institute Address
+          </div>
+          {errors.instituteAddress && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.instituteAddress}
+            </p>
+          )}
+        </div>
+        {errors.general && (
+          <p className="text-red-500 text-sm mt-1">{errors.general}</p>
+        )}
+        <button
+          type="submit"
+          className={`w-full py-2 mt-5 font-semibold text-blue-500 border-blue-500 border-2 rounded-xl ${
+            isButtonDisabled || isCreating
+              ? "bg-white cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+          disabled={isButtonDisabled || isCreating}
+        >
+          {isCreating ? "Creating Institute..." : "Create Institute"}
+        </button>
+      </form>
