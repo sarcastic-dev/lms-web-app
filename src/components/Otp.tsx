@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ProfileCreation from '../components/createProfile';
+import ProfileCreation from '@/components/CreateProfile';
 
 interface OTPComponentProps {
   input: string;
