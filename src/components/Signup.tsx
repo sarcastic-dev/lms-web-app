@@ -1,12 +1,27 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import OTPComponent from "../components/Otp";
-import ProfileCreation from "../components/createProfile";
+import ProfileCreation from "@/components/CreateProfile";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { motion } from "framer-motion";
 import Loader from "./Loader";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+	AuthSchema,
+	AuthSchemaType,
+} from "@/authFormSchema/AuthSchema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "./ui/input";
 
 const AuthPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -95,7 +110,7 @@ const AuthPage: React.FC = () => {
     } catch (error) {
       console.error("Error logging in:", error);
       setErrorMessage("Error logging in. Please try again.");
-        }
+    }
   };
 
   const handleEdit = () => {
@@ -117,6 +132,10 @@ const AuthPage: React.FC = () => {
       setIsButtonDisabled(email.trim() === "" || isSendingOTP);
     }
   }, [email, password, showPasswordInput, isSendingOTP]);
+
+  const form = useForm<AuthSchemaType>({
+    resolver: zodResolver(AuthSchema),
+  });
 
   return (
     <div className="relative flex-1 flex items-center justify-center h-screen overflow-hidden">
@@ -185,74 +204,42 @@ const AuthPage: React.FC = () => {
                 priority
               />
               <div className="flex flex-col items-center">
-                <form
-                  onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}
-                  className="w-full flex flex-col items-center"
-                >
-                  <div className="relative w-96 mb-4 mt-6">
-                    <label
-                      htmlFor="email"
-                      className={`absolute left-5 top-2 transition-all transform ${
-                        isFocused || email
-                          ? "-translate-x-8 -translate-y-2 scale-75 text-blue-500"
-                          : "translate-y-1.5 text-gray-500"
-                      } pointer-events-none`}
-                    >
-                      Email Address or Phone Number
-                    </label>
-                    <input
-                      type="text"
-                      id="email"
-                      className="w-full p-2 pt-5 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                      ref={inputRef}
-                    />
-                    {errorMessage && (
-                      <p className="text-red-500 text-xs ml-2">{errorMessage}</p>
-                    )}
-                  </div>
-                  {showPasswordInput && (
-                    <div className="relative w-96 mb-4">
-                      <label
-                        htmlFor="password"
-                        className={`absolute left-5 top-2 transition-all transform ${
-                          isPasswordFocused || password
-                            ? "-translate-x-2 -translate-y-2 scale-75 text-blue-500"
-                            : "translate-y-1.5 text-gray-500"
-                        } pointer-events-none`}
-                      >
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        id="password"
-                        className="w-full p-2 pt-5 pl-5 font-medium focus:border-2 border-2 rounded-xl border-gray-400 mb-2 focus:border-blue-600 outline-none"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onFocus={() => setIsPasswordFocused(true)}
-                        onBlur={() => setIsPasswordFocused(false)}
-                        ref={passwordRef}
+                <Form {...form}>
+                  <form>
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel
+                              htmlFor="student_mobile_number"
+                              className="pl-1 text-blue-500 font-semibold"
+                            >
+                              Email or Phone Number{" "}
+                              {/* <span className="text-red-500">*</span> */}
+                            </FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Input
+                                  id="student_mobile_number"
+                                  type="tel"
+                                  className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400"
+                                  placeholder="Mobile Number"
+                                  {...field}
+                                />
+                                <span className="absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500">
+                                  <span>+91-</span>
+                                </span>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                      {errorMessage && (
-                        <p className="text-red-500 text-xs ml-2">{errorMessage}</p>
-                      )}
                     </div>
-                  )}
-                  <button
-                    type="submit"
-                    className={`w-96 py-2 border-2 font-semibold border-blue-500 rounded-xl mb-8 ${
-                      isButtonDisabled || isSendingOTP
-                        ? "text-blue-500 cursor-not-allowed"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                    disabled={isButtonDisabled || isSendingOTP}
-                  >
-                    {isSendingOTP && !showPasswordInput ? "Sending OTP..." : "Next"}
-                  </button>
-                </form>
+                  </form>
+                </Form>
               </div>
             </motion.div>
           )}
