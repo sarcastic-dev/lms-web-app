@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import CreateInstitute from '../components/createInstitute';
 import axiosInstance from '@/lib/axiosInstance';
+import { Input } from './ui/input';
 
 type Field = 'name' | 'email' | 'phone' | 'password';
 
@@ -137,9 +138,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
             <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.name || name ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
               Name<span className="text-red-500"> *</span>
             </div>
-            <input
+            <Input
               type="text"
-              className={`w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'} pt-6`}
+              className={`w-full font-medium pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'} py-2`}
               value={name}
               onChange={(e) => setName(e.target.value)}
               onFocus={() => handleFocus('name')}
@@ -155,9 +156,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
                 <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
                   Email
                 </div>
-                <input
+                <Input
                   type="email"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
                   value={input}
                   disabled
                 />
@@ -166,9 +167,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
                 <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
                   Phone Number
                 </div>
-                <input
+                <Input
                   type="tel"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   onFocus={() => handleFocus('phone')}
@@ -182,9 +183,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
                 <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
                   Phone Number
                 </div>
-                <input
+                <Input
                   type="tel"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
                   value={input}
                   disabled
                 />
@@ -193,9 +194,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
                 <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
                   Email
                 </div>
-                <input
+                <Input
                   type="email"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none pt-6"
+                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => handleFocus('email')}
@@ -209,9 +210,9 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
             <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.password || password ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
               Password<span className="text-red-500"> *</span>
             </div>
-            <input
+            <Input
               type="password"
-              className={`w-full p-2 font-medium pl-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'} pt-6`}
+              className={`w-full font-medium pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'} py-2`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onFocus={() => handleFocus('password')}
@@ -220,26 +221,20 @@ const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
+
+          <div className="text-center mt-6">
+            <button
+              type="submit"
+              className={`w-full p-2 bg-blue-500 text-white rounded-lg font-semibold ${isButtonDisabled ? '' : 'cursor-not-allowed opacity-50'}`}
+              disabled={!isButtonDisabled}
+            >
+              {isCreating ? 'Creating...' : 'Create Account'}
+            </button>
+          </div>
+
+          {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
         </div>
-        <button
-          type="submit"
-          className={`w-96 ml-8 py-2 font-semibold text-blue-500 border-2 border-blue-500 rounded-xl ${
-            isButtonDisabled || isCreating ? 'bg-white cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-          disabled={isButtonDisabled || isCreating}
-        >
-          {isCreating ? 'Creating Account...' : 'Create Account'}
-        </button>
       </form>
-      {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
-      {selectedUser && (
-        <div className="mt-8">
-          <h2 className="text-xl text-center text-blue-500 font-bold mb-3">Selected User Details</h2>
-          <p>Name: {selectedUser.name}</p>
-          <p>Email: {selectedUser.email}</p>
-          <p>Phone: {selectedUser.phone}</p>
-        </div>
-      )}
     </div>
   );
 };

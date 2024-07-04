@@ -95,6 +95,10 @@ const config = {
           '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
           '50%': { transform: 'none', animationTimingFunction: 'cubic-bezier(0,0,0.2,1)' },
         },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -105,6 +109,7 @@ const config = {
         fingerTap4: 'fingerTap4 1s infinite',
         fingerTap5: 'fingerTap5 1s infinite',
         bounce: 'bounce 1s infinite',
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
