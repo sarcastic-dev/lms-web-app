@@ -95,7 +95,7 @@ body {
 }
 
 /* Add this in your global CSS file (e.g., styles/globals.css) */
-.custom-select {
+/* .custom-select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -106,4 +106,4 @@ body {
 .custom-select-left-icon {
   background-position: right center;
   padding-left: 1rem;
-}
+} */

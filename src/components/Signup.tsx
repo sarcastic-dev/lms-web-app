@@ -9,10 +9,7 @@ import { motion } from "framer-motion";
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	AuthSchema,
-	AuthSchemaType,
-} from "@/authFormSchema/AuthSchema";
+import { AuthSchema, AuthSchemaType } from "@/schema/createInstitute/AuthSchema";
 import {
   Form,
   FormControl,
@@ -22,9 +19,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const AuthPage: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [isClient, setIsClient] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -33,24 +31,21 @@ const AuthPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isSendingOTP, setIsSendingOTP] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
 
-  const validateInput = (email: string): boolean => {
-    return emailRegex.test(email) || phoneRegex.test(email);
+  const validateInput = (emailOrPhoneNumber: string): boolean => {
+    return emailRegex.test(emailOrPhoneNumber) || phoneRegex.test(emailOrPhoneNumber);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateInput(email.trim())) {
+    if (!validateInput(emailOrPhoneNumber.trim())) {
       setErrorMessage("Invalid email or mobile number.");
       return;
     }
@@ -58,9 +53,9 @@ const AuthPage: React.FC = () => {
     setIsSendingOTP(true);
 
     const userObj =
-      emailRegex.test(email) || phoneRegex.test(email)
-        ? { email: email }
-        : { phone: email };
+      emailRegex.test(emailOrPhoneNumber) || phoneRegex.test(emailOrPhoneNumber)
+        ? { email: emailOrPhoneNumber }
+        : { phone: emailOrPhoneNumber };
 
     try {
       const { data } = await axiosInstance.post("/users/exists", userObj);
@@ -68,7 +63,6 @@ const AuthPage: React.FC = () => {
       if (data.exists) {
         setHasAccount(true);
         setShowPasswordInput(true);
-        setIsButtonDisabled(password.trim() === "");
         if (inputRef.current) {
           inputRef.current.blur();
         }
@@ -95,7 +89,7 @@ const AuthPage: React.FC = () => {
     try {
       setIsLoading(true); // Show the loader
       const { data } = await axiosInstance.post("/users/login", {
-        ...(emailRegex.test(email) ? { email: email } : { phone: email }),
+        ...(emailRegex.test(emailOrPhoneNumber) ? { email: emailOrPhoneNumber } : { phone: emailOrPhoneNumber }),
         password,
       });
 
@@ -104,12 +98,13 @@ const AuthPage: React.FC = () => {
 
       // Show loader for 5 seconds, then redirect to the dashboard
       setTimeout(() => {
-        setIsLoading(true);
         router.push("/dashboard");
+        setIsLoading(false); // Hide the loader
       }, 5000);
     } catch (error) {
       console.error("Error logging in:", error);
       setErrorMessage("Error logging in. Please try again.");
+      setIsLoading(false); // Hide the loader on error
     }
   };
 
@@ -129,9 +124,9 @@ const AuthPage: React.FC = () => {
     if (showPasswordInput) {
       setIsButtonDisabled(password.trim() === "" || isSendingOTP);
     } else {
-      setIsButtonDisabled(email.trim() === "" || isSendingOTP);
+      setIsButtonDisabled(emailOrPhoneNumber.trim() === "" || isSendingOTP);
     }
-  }, [email, password, showPasswordInput, isSendingOTP]);
+  }, [emailOrPhoneNumber, password, showPasswordInput, isSendingOTP]);
 
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(AuthSchema),
@@ -181,13 +176,12 @@ const AuthPage: React.FC = () => {
           ></motion.div>
 
           {showProfileCreation ? (
-            <ProfileCreation input={email} />
+            <ProfileCreation input={emailOrPhoneNumber} />
           ) : showOTP ? (
             <OTPComponent
-              input={email}
-              onEdit={handleEdit}
-              onSubmitOTP={handleOTPSubmit}
-            />
+                input={emailOrPhoneNumber}
+                onEdit={handleEdit}
+                onSubmitOTP={handleOTPSubmit}/>
           ) : (
             <motion.div
               className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10"
@@ -195,48 +189,83 @@ const AuthPage: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <Image
-                src="/dummyIcon.png"
-                alt="companyImage"
-                width={200}
-                height={200}
-                className="ml-24"
-                priority
-              />
-              <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center mb-5">
+                <Image
+                  src="/dummyIcon.png"
+                  alt="companyImage"
+                  width={200}
+                  height={200}
+                  priority
+                />
+              </div>
+              <div className="flex flex-col">
                 <Form {...form}>
-                  <form>
+                  <form onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}>
                     <div>
                       <FormField
                         control={form.control}
-                        name="phone"
+                        name="email_or_phone_number"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel
-                              htmlFor="student_mobile_number"
+                              htmlFor="email_or_phone_number"
                               className="pl-1 text-blue-500 font-semibold"
                             >
-                              Email or Phone Number{" "}
-                              {/* <span className="text-red-500">*</span> */}
+                              Email or Phone Number
                             </FormLabel>
                             <FormControl>
-                              <div className="relative">
+                              <div className="relative space-y-3">
                                 <Input
-                                  id="student_mobile_number"
-                                  type="tel"
-                                  className="border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400"
-                                  placeholder="Mobile Number"
+                                  id="email_or_phone_number"
+                                  type="text"
+                                  className="border w-80 border-gray-300 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                  placeholder="Email or Phone Number"
                                   {...field}
+                                  value={emailOrPhoneNumber}
+                                  onChange={(e) => setEmailOrPhoneNumber(e.target.value)}
+                                  ref={inputRef}
                                 />
-                                <span className="absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500">
-                                  <span>+91-</span>
-                                </span>
+                                {showPasswordInput && (
+                                  <>
+                                    <FormLabel
+                                      htmlFor="password"
+                                      className="pl-1 text-blue-500 font-semibold"
+                                    >
+                                      Password
+                                    </FormLabel>
+                                    <Input
+                                      id="password"
+                                      type="password"
+                                      className="border w-80 border-gray-300 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                                      placeholder="Password"
+                                      value={password}
+                                      onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                  </>
+                                )}
                               </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+                      <Button
+                        className={`w-80 py-2 border-2 mt-5 font-semibold border-blue-500 rounded-xl mb-8 ${
+                          isButtonDisabled || isSendingOTP
+                            ? "text-blue-500 cursor-not-allowed"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
+                        }`}
+                        disabled={isButtonDisabled || isSendingOTP}
+                      >
+                        {isSendingOTP && !showPasswordInput
+                          ? "Sending OTP..."
+                          : showPasswordInput
+                          ? "Login"
+                          : "Next"}
+                      </Button>
+                      {errorMessage && (
+                        <div className="text-red-500 mt-2">{errorMessage}</div>
+                      )}
                     </div>
                   </form>
                 </Form>
