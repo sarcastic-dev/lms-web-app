@@ -15,7 +15,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { healthInfoSchema } from "@/studentFormSchema/medicalInfoSchema";
+import { healthInfoSchema } from "@/schema/studentFormSchema/medicalInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
@@ -47,7 +47,7 @@ const MedicalInfoForm = ({
 	const onSubmit = (values: HealthInfoSchemaType) => {
 		onNext(values);
 	};
-	const {viewState} = useSelector((state:RootState)=>state.student)
+	const { viewState } = useSelector((state: RootState) => state.student);
 	const { reset } = form;
 	useEffect(() => {
 		reset(medicalInfoStudent || {});
@@ -76,8 +76,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='60'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -102,8 +101,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='162'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -128,8 +126,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='24.56'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -154,8 +151,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='72 BPM'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -180,8 +176,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='16'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -206,8 +201,7 @@ const MedicalInfoForm = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='"Asthma" , "Soy" etc.'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -234,8 +228,7 @@ const MedicalInfoForm = ({
 												format={dateFormat}
 												disabledDate={disabledDate}
 												placeholder='Select Date'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 												value={
 													field.value

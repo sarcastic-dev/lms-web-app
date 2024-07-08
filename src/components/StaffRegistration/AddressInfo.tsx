@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { addressSchema } from "@/staffRegistrationSchema/addressSchemaStaff";
-import { AddressSchemaStaffType } from "@/staffRegistrationSchema/addressSchemaStaff";
+import { addressSchema } from "@/schema/staffRegistrationSchema/addressSchemaStaff";
+import { AddressSchemaStaffType } from "@/schema/staffRegistrationSchema/addressSchemaStaff";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 

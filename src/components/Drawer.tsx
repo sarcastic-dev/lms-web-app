@@ -9,7 +9,7 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface AppProps {
@@ -30,10 +30,28 @@ const Drawer: React.FC<AppProps> = ({
 	return (
 		<div>
 			<Sheet>
-				<SheetTrigger asChild><Button variant='outline'>{triggerText}</Button></SheetTrigger>
+				<SheetTrigger asChild>
+					{triggerText === "Add Teacher" || triggerText === "Add Students" ? (
+						<Button
+							className='space-x-1 text-blue-500'
+							variant={"link"}
+						>
+							<span>
+								<Plus size={12} />
+							</span>
+							<p className='text-xs font-semibold'>
+								{triggerText}
+							</p>
+						</Button>
+					) : (
+						<Button variant='outline'>{triggerText}</Button>
+					)}
+				</SheetTrigger>
 				<SheetContent className='max-w-[400px] sm:max-w-[600px]'>
 					<SheetHeader>
-						<SheetTitle className="text-xl font-semibold text-gray-600">{title}</SheetTitle>
+						<SheetTitle className='text-2xl font-bold text-gray-600'>
+							{title}
+						</SheetTitle>
 					</SheetHeader>
 					{children}
 					{/* <SheetTitle onClick={onClick}>{title}</SheetTitle> */}

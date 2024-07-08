@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import {
 	BasicInfoSchema,
 	BasicInfoSchemaType,
-} from "@/studentFormSchema/basicInfoSchema";
+} from "@/schema/studentFormSchema/basicInfoSchema";
 import {
 	Form,
 	FormControl,
