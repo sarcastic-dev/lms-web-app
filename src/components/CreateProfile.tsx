@@ -1,242 +1,179 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import CreateInstitute from '../components/createInstitute';
-import axiosInstance from '@/lib/axiosInstance';
-import { Input } from './ui/input';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import axiosInstance from "@/lib/axiosInstance";
+import { useState } from "react";
+import CreateInstitute from "./CreateInstitute";
 
-type Field = 'name' | 'email' | 'phone' | 'password';
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
-interface ProfileCreationProps {
-  input: string;
-}
+type Props = {
+  input: {
+    email: string;
+    phone: string;
+  };
+};
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-}
-
-const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; email?: string; phoneNumber?: string; password?: string }>({});
-  const [showInstituteCreation, setShowInstituteCreation] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [isFocused, setIsFocused] = useState({
-    name: false,
-    email: false,
-    phone: false,
-    password: false,
+const CreateProfile = ({ input }: Props) => {
+  console.log("input", input.email, input.phone);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: input.email,
+      phone: input.phone,
+      password: "",
+    },
   });
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const [isCreating, setIsCreating] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
-
-  useEffect(() => {
-    if (name.trim() && password.trim() && (isEmail ? email.trim() : phoneNumber.trim())) {
-      setIsButtonDisabled(true);
-    } else {
-      setIsButtonDisabled(false);
-    }
-  }, [name, email, phoneNumber, password, isEmail]);
-
-  const handleFocus = (field: Field) => {
-    setIsFocused((prev) => ({ ...prev, [field]: true }));
-  };
-
-  const handleBlur = (field: Field, value: string) => {
-    if (value.trim() === '') {
-      setIsFocused((prev) => ({ ...prev, [field]: false }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: { name?: string; email?: string; phoneNumber?: string; password?: string } = {};
-
-    if (!name.trim()) {
-      newErrors.name = 'Name is required.';
-    }
-
-    if (!password.trim()) {
-      newErrors.password = 'Password is required.';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters long.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const [userId, setUserId] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showInstituteCreation, setShowInstituteCreation] = useState(false);
 
   const parseName = (name: string) => {
-    const nameParts = name.trim().split(' ');
-    const parsedName: { firstName: string; middleName?: string; lastName?: string } = { firstName: nameParts[0] };
+    const nameParts = name.trim().split(" ");
+    const parsedName: {
+      firstName: string;
+      middleName?: string;
+      lastName?: string;
+    } = { firstName: nameParts[0] };
 
     if (nameParts.length === 2) {
       parsedName.lastName = nameParts[1];
     } else if (nameParts.length >= 3) {
-      parsedName.middleName = nameParts.slice(1, -1).join(' ');
+      parsedName.middleName = nameParts.slice(1, -1).join(" ");
       parsedName.lastName = nameParts[nameParts.length - 1];
     }
-
     return parsedName;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsCreating(true);
-      const parsedName = parseName(name);
-      try {
-        const response = await axiosInstance.post('/users', {
-          ...parsedName,
-          email: isEmail ? input : email,
-          phone: isEmail ? phoneNumber : input,
-          password,
-          role: "admin"
-        });
-        console.log('Form submitted:', response.data);
-        setUserId(response.data.id); // Store the user_id
-
-        setTimeout(() => {
-          setIsCreating(false);
-          setShowInstituteCreation(true);
-        }, 2000);
-      } catch (error) {
-        console.error('Error creating user:', error);
-        setErrorMessage('Error creating user. Please try again.');
-        setIsCreating(false);
-      }
-    }
-  };
-
-  const handleUserSelect = async (userId: string) => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const example = parseName(values.name);
     try {
-      const response = await axiosInstance.get<User>(`/users/${userId}`);
-      setSelectedUser(response.data);
+      const response = await axiosInstance.post("/users", {
+        ...example,
+        email: values.email,
+        phone: values.phone,
+        password: values.password,
+        role: "admin",
+      });
+      console.log("Form submitted:", response);
+      setUserId(response.data.values);
+      setTimeout(() => {
+        setIsCreating(false);
+        setShowInstituteCreation(true);
+      }, 2000);
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error("Error creating user:", error);
+      setErrorMessage("Error creating user. Please try again.");
+      setIsCreating(false);
     }
-  };
 
-  if (showInstituteCreation && userId) {
-    return <CreateInstitute userId={userId} />;
+    console.log(example);
+    console.log(values);
   }
 
+  if (showInstituteCreation) {
+    return <CreateInstitute userId={userId} />;
+  }
   return (
-    <div className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-5/6 z-10">
-      <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">Account Details</h1>
-      <p className="text-center text-gray-500 mb-6">Please enter your details</p>
-      <form onSubmit={handleSubmit}>
-        <div className="p-8">
-          <div className="relative mb-4">
-            <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.name || name ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
-              Name<span className="text-red-500"> *</span>
-            </div>
-            <Input
-              type="text"
-              className={`w-full font-medium pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'} py-2`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onFocus={() => handleFocus('name')}
-              onBlur={() => handleBlur('name', name)}
-              required
-            />
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-          </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-5/6 z-10 space-y-5"
+      >
+        <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">
+          Account Details
+        </h1>
+        <p className="text-center text-gray-500 mb-6">
+          Please enter your details
+        </p>
 
-          {isEmail ? (
-            <>
-              <div className="relative mb-4">
-                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
-                  Email
-                </div>
-                <Input
-                  type="email"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
-                  value={input}
-                  disabled
-                />
-              </div>
-              <div className="relative mb-4">
-                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
-                  Phone Number
-                </div>
-                <Input
-                  type="tel"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  onFocus={() => handleFocus('phone')}
-                  onBlur={() => handleBlur('phone', phoneNumber)}
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="relative mb-4">
-                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.phone || phoneNumber ? 'text-xs -top-1 mt-3' : '-top-1 text-xs mt-3 text-gray-400 font-medium'}`}>
-                  Phone Number
-                </div>
-                <Input
-                  type="tel"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
-                  value={input}
-                  disabled
-                />
-              </div>
-              <div className="relative mb-4">
-                <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.email || email ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
-                  Email
-                </div>
-                <Input
-                  type="email"
-                  className="w-full font-medium p-2 pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none py-2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => handleFocus('email')}
-                  onBlur={() => handleBlur('email', email)}
-                />
-              </div>
-            </>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Full Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
+        />
 
-          <div className="relative mb-4">
-            <div className={`absolute left-4 transition-all duration-200 ease-in-out pointer-events-none ${isFocused.password || password ? 'text-xs -top-1 mt-3' : 'top-4 text-gray-400 font-medium'}`}>
-              Password<span className="text-red-500"> *</span>
-            </div>
-            <Input
-              type="password"
-              className={`w-full font-medium pl-4 mb-4 border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'} py-2`}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => handleFocus('password')}
-              onBlur={() => handleBlur('password', password)}
-              required
-            />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-          </div>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Email Address" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input placeholder="Phone Number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <div className="text-center mt-6">
-            <button
-              type="submit"
-              className={`w-full p-2 bg-blue-500 text-white rounded-lg font-semibold ${isButtonDisabled ? '' : 'cursor-not-allowed opacity-50'}`}
-              disabled={!isButtonDisabled}
-            >
-              {isCreating ? 'Creating...' : 'Create Account'}
-            </button>
-          </div>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="Password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
-        </div>
+        <Button type="submit" disabled={isCreating}>
+          {isCreating ? "Creating..." : "Create Account"}
+        </Button>
+
+        {errorMessage && (
+          <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+        )}
       </form>
-    </div>
+    </Form>
   );
 };
 
 export default CreateProfile;
+function setShowInstituteCreation(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

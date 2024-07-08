@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import OTPComponent from "../components/Otp";
-import ProfileCreation from "@/components/CreateProfile";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
@@ -9,7 +9,10 @@ import { motion } from "framer-motion";
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthSchema, AuthSchemaType } from "@/schema/createInstitute/AuthSchema";
+import {
+  AuthSchema,
+  AuthSchemaType,
+} from "@/schema/createInstitute/AuthSchema";
 import {
   Form,
   FormControl,
@@ -20,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import CreateProfile from "./CreateProfile";
 
 const AuthPage: React.FC = () => {
   const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
@@ -40,7 +44,10 @@ const AuthPage: React.FC = () => {
   const phoneRegex = /^\d{10}$/;
 
   const validateInput = (emailOrPhoneNumber: string): boolean => {
-    return emailRegex.test(emailOrPhoneNumber) || phoneRegex.test(emailOrPhoneNumber);
+    console.log(emailOrPhoneNumber);
+    return (
+      emailRegex.test(emailOrPhoneNumber) || phoneRegex.test(emailOrPhoneNumber)
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,7 +96,9 @@ const AuthPage: React.FC = () => {
     try {
       setIsLoading(true); // Show the loader
       const { data } = await axiosInstance.post("/users/login", {
-        ...(emailRegex.test(emailOrPhoneNumber) ? { email: emailOrPhoneNumber } : { phone: emailOrPhoneNumber }),
+        ...(emailRegex.test(emailOrPhoneNumber)
+          ? { email: emailOrPhoneNumber }
+          : { phone: emailOrPhoneNumber }),
         password,
       });
 
@@ -176,12 +185,22 @@ const AuthPage: React.FC = () => {
           ></motion.div>
 
           {showProfileCreation ? (
-            <ProfileCreation input={emailOrPhoneNumber} />
+            <CreateProfile
+              input={{
+                email: emailRegex.test(emailOrPhoneNumber)
+                  ? emailOrPhoneNumber
+                  : "",
+                phone: phoneRegex.test(emailOrPhoneNumber)
+                  ? emailOrPhoneNumber
+                  : "",
+              }}
+            />
           ) : showOTP ? (
             <OTPComponent
-                input={emailOrPhoneNumber}
-                onEdit={handleEdit}
-                onSubmitOTP={handleOTPSubmit}/>
+              input={emailOrPhoneNumber}
+              onEdit={handleEdit}
+              onSubmitOTP={handleOTPSubmit}
+            />
           ) : (
             <motion.div
               className="bg-white border p-8 shadow-xl w-auto h-auto rounded-lg z-10"
@@ -200,7 +219,11 @@ const AuthPage: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <Form {...form}>
-                  <form onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}>
+                  <form
+                    onSubmit={
+                      showPasswordInput ? handlePasswordSubmit : handleSubmit
+                    }
+                  >
                     <div>
                       <FormField
                         control={form.control}
@@ -222,7 +245,9 @@ const AuthPage: React.FC = () => {
                                   placeholder="Email or Phone Number"
                                   {...field}
                                   value={emailOrPhoneNumber}
-                                  onChange={(e) => setEmailOrPhoneNumber(e.target.value)}
+                                  onChange={(e) =>
+                                    setEmailOrPhoneNumber(e.target.value)
+                                  }
                                   ref={inputRef}
                                 />
                                 {showPasswordInput && (
@@ -239,7 +264,9 @@ const AuthPage: React.FC = () => {
                                       className="border w-80 border-gray-300 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
                                       placeholder="Password"
                                       value={password}
-                                      onChange={(e) => setPassword(e.target.value)}
+                                      onChange={(e) =>
+                                        setPassword(e.target.value)
+                                      }
                                     />
                                   </>
                                 )}

@@ -1,3 +1,5 @@
+import { Ban, BellRing, Laugh, LucideIcon } from "lucide-react";
+
 const BASE_API_URL = "http://192.168.1.7:3300";
 
 interface SelectType {
@@ -144,5 +146,78 @@ export const classStages: EducationStage[] = [
 	{
 		stage: "Pre Primary Stage",
 		classes: ["UKG", "LKG", "Nursery", "Pre-Nursery"],
+	},
+];
+
+export const attendanceOverview = [
+	{
+		title: "Total Students",
+		data: "10,000",
+		color: "text-black",
+	},
+	{
+		title: "Total Present",
+		data: "9,500",
+		color: "text-green-400",
+	},
+	{
+		title: "Total Absent",
+		data: "400",
+		color: "text-red-400",
+	},
+	{
+		title: "Not Marked",
+		data: "100",
+		color: "text-black",
+	},
+];
+
+export interface insights {
+	content:string;
+	bgColor:string;
+	emoji:LucideIcon
+};
+
+export const insights =[
+	{
+		content: "All classes have done taken attendance",
+		bgColor: "bg-green-50",
+		emoji: Laugh,
+		color: "text-green-400",
+	},
+	{
+		content: "Attendance is not taken",
+		bgColor: "bg-red-50",
+		emoji: Ban,
+		color: "text-red-400",
+	},
+	{
+		content: "Take attendance before 1st period",
+		bgColor: "bg-yellow-50",
+		emoji: BellRing,
+		color: "text-yellow-400",
+	},
+];
+
+export const detailedReport = [
+	{
+		title: "Class & Section",
+		data: "12 - A",
+	},
+	{
+		title: "Class Teacher",
+		data: "Shubham Jain",
+	},
+	{
+		title: "Total Attendance",
+		data: "90",
+	},
+	{
+		title: "Present",
+		data: "72",
+	},
+	{
+		title: "Absent",
+		data: "18",
 	},
 ];
