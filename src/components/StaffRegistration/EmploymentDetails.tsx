@@ -27,8 +27,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import employmentSchema from "@/staffRegistrationSchema/employmentSchemaStaff";
-import { EmploymentStaffSchemaType } from "@/staffRegistrationSchema/employmentSchemaStaff";
+import employmentSchema from "@/schema/staffRegistrationSchema/employmentSchemaStaff";
+import { EmploymentStaffSchemaType } from "@/schema/staffRegistrationSchema/employmentSchemaStaff";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";

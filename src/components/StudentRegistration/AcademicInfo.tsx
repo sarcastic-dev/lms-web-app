@@ -14,7 +14,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { programInfoSchema } from "@/studentFormSchema/academicInfoSchema";
+import { programInfoSchema } from "@/schema/studentFormSchema/academicInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 import {

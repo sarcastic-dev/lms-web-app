@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import bankDetailsSchema from "@/staffRegistrationSchema/bankDetailsSchemaStaff";
-import { BankDetailsSchemaType } from "@/staffRegistrationSchema/bankDetailsSchemaStaff";
+import bankDetailsSchema from "@/schema/staffRegistrationSchema/bankDetailsSchemaStaff";
+import { BankDetailsSchemaType } from "@/schema/staffRegistrationSchema/bankDetailsSchemaStaff";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
-const BankDetails = ({ onNext }: { onNext: (data: any) => void;}) => {
+const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 	const bankDetails = useSelector(
 		(state: RootState) => state.staffRegistration.bankDetailInfo
 	);
@@ -154,7 +154,10 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void;}) => {
 							/>
 						</div>
 						<div className='flex items-center justify-end space-x-2'>
-							<Button type='submit' className='mt-8 hidden'>
+							<Button
+								type='submit'
+								className='mt-8 hidden'
+							>
 								Next
 							</Button>
 						</div>

@@ -91,26 +91,47 @@ interface EducationStage {
 	classes: string[];
 }
 
-export const educationStages: EducationStage[] = [
+export const educationStages = [
 	{
 		stage: "Pre Primary Stage",
-		classes: ["UKG", "LKG", "Nursery", "Pre-Nursery"],
+		classes: [
+			{ name: "Pre-Nursery", level: "P" },
+			{ name: "Nursery", level: "N" },
+			{ name: "LKG", level: "L" },
+			{ name: "UKG", level: "U" },
+		],
 	},
 	{
 		stage: "Primary Stage",
-		classes: ["Class 5", "Class 4", "Class 3", "Class 2", "Class 1"],
+		classes: [
+			{ name: "Class 1", level: "1" },
+			{ name: "Class 2", level: "2" },
+			{ name: "Class 3", level: "3" },
+		],
 	},
 	{
 		stage: "Middle Stage",
-		classes: ["Class 8", "Class 7", "Class 6", "Class 5"],
+		classes: [
+			{ name: "Class 4", level: "4" },
+			{ name: "Class 5", level: "5" },
+			{ name: "Class 6", level: "6" },
+		],
 	},
 	{
 		stage: "Secondary Stage",
-		classes: ["Class 10", "Class 9"],
+		classes: [
+			{ name: "Class 7", level: "7" },
+			{ name: "Class 8", level: "8" },
+			{ name: "Class 9", level: "9" },
+			{ name: "Class 10", level: "10" },
+		],
 	},
 	{
 		stage: "Senior Secondary Stage",
-		classes: ["Class 12", "Class 1"],
+		classes: [
+			{ name: "Class 11", level: "11" },
+			{ name: "Class 12", level: "12" },
+		],
 	},
 ];
 
@@ -129,7 +150,7 @@ export const Teachers: Teachers[] = [
 export const classStages: EducationStage[] = [
 	{
 		stage: "Senior Secondary Stage",
-		classes: ["Class 12", "Class 1"],
+		classes: ["Class 12", "Class 11"],
 	},
 	{
 		stage: "Secondary Stage",

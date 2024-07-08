@@ -17,8 +17,8 @@ import {
 import { BloodGroups, Gender } from "@/Constant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import basicSchemaStaff from "@/staffRegistrationSchema/basicSchemaStaff";
-import { BasicInfoSchemaStaffType } from "@/staffRegistrationSchema/basicSchemaStaff";
+import basicSchemaStaff from "@/schema/staffRegistrationSchema/basicSchemaStaff";
+import { BasicInfoSchemaStaffType } from "@/schema/staffRegistrationSchema/basicSchemaStaff";
 import {
 	Form,
 	FormControl,
@@ -69,7 +69,6 @@ const BasicInfo = ({
 	const onSubmit = (value: BasicInfoSchemaStaffType) => {
 		onNext(value);
 	};
-
 
 	const { reset } = form;
 	useEffect(() => {

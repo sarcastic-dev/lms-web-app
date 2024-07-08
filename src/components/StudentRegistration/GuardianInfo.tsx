@@ -12,7 +12,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { generalInfoSchema } from "@/studentFormSchema/guardianInfoSchema";
+import { generalInfoSchema } from "@/schema/studentFormSchema/guardianInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 

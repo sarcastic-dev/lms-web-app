@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { parentInfoSchema } from "@/studentFormSchema/parentInfoSchema";
+import { parentInfoSchema } from "@/schema/studentFormSchema/parentInfoSchema";
 import {
 	Form,
 	FormControl,
@@ -36,7 +36,7 @@ const ParentInfo = ({
 	const parentInfoStudent = useSelector(
 		(state: RootState) => state.studentRegistration.parentInfo
 	);
-	const {viewState} = useSelector((state:RootState)=> state.student)
+	const { viewState } = useSelector((state: RootState) => state.student);
 
 	const form = useForm<ParentInfoSchemaType>({
 		resolver: zodResolver(parentInfoSchema),
@@ -85,8 +85,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='John Doe'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -110,8 +109,7 @@ const ParentInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value}
-                                                disabled={viewState === 'view'}
-
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
@@ -162,8 +160,7 @@ const ParentInfo = ({
 												type='email'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='parent@gmail.com'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -190,8 +187,9 @@ const ParentInfo = ({
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
-													disabled={viewState === 'view'}
-												
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
@@ -221,8 +219,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Ex. MBBS'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -248,8 +245,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Ex. Doctor'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -275,8 +271,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Ex. Government Hospital'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -302,8 +297,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Ex. CMO'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -329,8 +323,7 @@ const ParentInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Ex. 50XXXX'
-                                                disabled={viewState === 'view'}
-											
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>

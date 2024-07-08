@@ -12,13 +12,17 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { motherInfoSchema } from "@/studentFormSchema/motherInfoSchema";
+import { motherInfoSchema } from "@/schema/studentFormSchema/motherInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
 type MotherInfoSchemaType = z.infer<typeof motherInfoSchema>;
 
-const ParentInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement => {
+const ParentInfo = ({
+	onNext,
+}: {
+	onNext: (data: any) => void;
+}): ReactElement => {
 	const motherInfoStudent = useSelector(
 		(state: RootState) => state.studentRegistration.motherInfo
 	);
@@ -31,7 +35,7 @@ const ParentInfo = ({ onNext }: { onNext: (data: any) => void }):ReactElement =>
 		onNext(values);
 	};
 
-    const { reset } = form;
+	const { reset } = form;
 	useEffect(() => {
 		reset(motherInfoStudent || {});
 	}, [motherInfoStudent, reset]);

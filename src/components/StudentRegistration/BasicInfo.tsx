@@ -7,9 +7,6 @@ import React, {
 } from "react";
 import { Input } from "../ui/input";
 
-
-
-
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -29,7 +26,7 @@ import { useForm } from "react-hook-form";
 import {
 	BasicInfoSchema,
 	BasicInfoSchemaType,
-} from "@/studentFormSchema/basicInfoSchema";
+} from "@/schema/studentFormSchema/basicInfoSchema";
 import {
 	Form,
 	FormControl,
@@ -57,36 +54,35 @@ const BasicInfo = ({
 		return current && (current < minDate || current > maxDate);
 	};
 
-	
-    const basicInfo = useSelector((state: RootState) => state.studentRegistration.basicInfo);
-
-    const form = useForm<BasicInfoSchemaType>({
-        resolver: zodResolver(BasicInfoSchema),
-        defaultValues: {
-            bloodGroup: basicInfo?.user?.bloodGroup || "",
-            dob: basicInfo?.user?.dob || "",
-            email: basicInfo?.user?.email || "",
-            firstName: basicInfo?.user?.firstName || "",
-            gender: basicInfo?.user?.gender || "",
-            lastName: basicInfo?.user?.lastName || "",
-            middleName: basicInfo?.user?.middleName || "",
-			phone: basicInfo?.user?.phone || "",
-			role:basicInfo?.user?.role || "student",
-        },
-    });
-
-    const onSubmit = (value: BasicInfoSchemaType) => {
-        onNext(value);
-	};
-	const { viewState } = useSelector(
-		(state: RootState) => state.student
+	const basicInfo = useSelector(
+		(state: RootState) => state.studentRegistration.basicInfo
 	);
 
-    const { reset } = form;
+	const form = useForm<BasicInfoSchemaType>({
+		resolver: zodResolver(BasicInfoSchema),
+		defaultValues: {
+			bloodGroup: basicInfo?.user?.bloodGroup || "",
+			dob: basicInfo?.user?.dob || "",
+			email: basicInfo?.user?.email || "",
+			firstName: basicInfo?.user?.firstName || "",
+			gender: basicInfo?.user?.gender || "",
+			lastName: basicInfo?.user?.lastName || "",
+			middleName: basicInfo?.user?.middleName || "",
+			phone: basicInfo?.user?.phone || "",
+			role: basicInfo?.user?.role || "student",
+		},
+	});
 
-    useEffect(() => {
-        reset(basicInfo?.user || {});
-    }, [basicInfo, reset]);
+	const onSubmit = (value: BasicInfoSchemaType) => {
+		onNext(value);
+	};
+	const { viewState } = useSelector((state: RootState) => state.student);
+
+	const { reset } = form;
+
+	useEffect(() => {
+		reset(basicInfo?.user || {});
+	}, [basicInfo, reset]);
 	return (
 		<div className='flex justify-center my-4'>
 			<div className='w-full tracking-wide'>
@@ -114,7 +110,9 @@ const BasicInfo = ({
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
-												disabled={viewState==="view"}
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
@@ -146,7 +144,7 @@ const BasicInfo = ({
 												type='email'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Email ID'
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -175,7 +173,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='First Name'
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -200,7 +198,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Middle Name'
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -225,7 +223,7 @@ const BasicInfo = ({
 												type='text'
 												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='Last Name'
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 												{...field}
 											/>
 										</FormControl>
@@ -251,7 +249,7 @@ const BasicInfo = ({
 												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 text-foreground placeholder:text-gray-400'
 												format={dateFormat}
 												disabledDate={disabledDate}
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 												placeholder='Select Date'
 												onChange={(date) => {
 													field.onChange(
@@ -291,7 +289,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value}
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
@@ -344,7 +342,7 @@ const BasicInfo = ({
 											<Select
 												onValueChange={field.onChange}
 												value={field.value}
-												disabled={viewState==="view"}
+												disabled={viewState === "view"}
 											>
 												<SelectTrigger
 													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${

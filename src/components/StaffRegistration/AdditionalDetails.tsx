@@ -25,7 +25,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 import additionalEmployeeDetailsSchema, {
 	AdditionalEmployeeDetailsSchemaType,
-} from "@/staffRegistrationSchema/additionalSchemaStaff";
+} from "@/schema/staffRegistrationSchema/additionalSchemaStaff";
 
 const AdditionalDetails = ({
 	onNext,
@@ -35,10 +35,7 @@ const AdditionalDetails = ({
 	const additionalEmployeeInfo = useSelector(
 		(state: RootState) => state.staffRegistration.additionalInfo
 	);
-	const { viewState } = useSelector(
-		(state: RootState) => state.staff
-	);
-
+	const { viewState } = useSelector((state: RootState) => state.staff);
 
 	const form = useForm<AdditionalEmployeeDetailsSchemaType>({
 		resolver: zodResolver(additionalEmployeeDetailsSchema),
@@ -62,7 +59,6 @@ const AdditionalDetails = ({
 	const onSubmit = (value: AdditionalEmployeeDetailsSchemaType) => {
 		onNext(value);
 	};
-
 
 	return (
 		<div className='flex justify-center my-8'>
@@ -366,7 +362,9 @@ const AdditionalDetails = ({
 													type='tel'
 													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
-													disabled={viewState === "view"}
+													disabled={
+														viewState === "view"
+													}
 													{...field}
 												/>
 												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>

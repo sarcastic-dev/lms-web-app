@@ -15,8 +15,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import previousExperienceSchema from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
-import { PreviousExperienceSchemaStaffType } from "@/staffRegistrationSchema/previousExprienceSchemaStaff";
+import previousExperienceSchema from "@/schema/staffRegistrationSchema/previousExprienceSchemaStaff";
+import { PreviousExperienceSchemaStaffType } from "@/schema/staffRegistrationSchema/previousExprienceSchemaStaff";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";

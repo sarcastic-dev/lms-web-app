@@ -31,7 +31,7 @@ const Page = () => {
 
   const fetchStudentList = async () => {
     setLoading(true);
-    const { data } = await axiosInstance.get("/students");
+    const { data } = await axiosInstance.get("/students/institute/97cb57e0-067c-4210-aba1-279fd577494e");
     const filteredData = data.map((obj: any) => {
       const studentObj: any = {};
 

@@ -204,3 +204,23 @@ export interface StudentState {
 	error: string | null;
 	viewState: "view" | "edit" | "add";
 }
+
+
+interface Section {
+	id: string;
+	name: string;
+}
+
+interface Class {
+	id: string;
+	name: string;
+	level: string;
+	status: string;
+	sections: Section[];
+}
+
+export interface Stage {
+	stage: string;
+	classes: Class[];
+}
+
