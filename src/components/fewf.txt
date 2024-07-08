@@ -134,3 +134,246 @@
           {isCreating ? "Creating Institute..." : "Create Institute"}
         </button>
       </form>
+
+
+
+      "use client";
+import React, { useState, useEffect } from 'react';
+import CreateInstitute from '@/components/CreateInstitute';
+import axiosInstance from '@/lib/axiosInstance';
+import { Input } from './ui/input';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from './ui/form';
+
+type Field = 'name' | 'email' | 'phone' | 'password';
+
+interface ProfileCreationProps {
+  input: string;
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+const schema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Invalid email address' }).optional(),
+  phone: z.string().min(10, { message: 'Phone number must be at least 10 characters' }).optional(),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+});
+
+type FormData = z.infer<typeof schema>;
+
+const CreateProfile: React.FC<ProfileCreationProps> = ({ input }) => {
+  const [showInstituteCreation, setShowInstituteCreation] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const watchFields = watch(['name', 'email', 'phone', 'password']);
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+
+  useEffect(() => {
+    const [name, email, phone, password] = watchFields;
+    const isFormValid = name && password && (isEmail ? email : phone);
+    setIsButtonDisabled(!isFormValid);
+  }, [watchFields, isEmail]);
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setIsCreating(true);
+    const parsedName = parseName(data.name);
+    try {
+      const response = await axiosInstance.post('/users', {
+        ...parsedName,
+        email: isEmail ? input : data.email,
+        phone: isEmail ? data.phone : input,
+        password: data.password,
+        role: "admin",
+      });
+      console.log('Form submitted:', response.data);
+      setUserId(response.data.id);
+      setTimeout(() => {
+        setIsCreating(false);
+        setShowInstituteCreation(true);
+      }, 2000);
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setErrorMessage('Error creating user. Please try again.');
+      setIsCreating(false);
+    }
+  };
+
+  const handleUserSelect = async (userId: string) => {
+    try {
+      const response = await axiosInstance.get<User>(`/users/${userId}`);
+      setSelectedUser(response.data);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
+
+  const parseName = (name: string) => {
+    const nameParts = name.trim().split(' ');
+    const parsedName: { firstName: string; middleName?: string; lastName?: string } = { firstName: nameParts[0] };
+
+    if (nameParts.length === 2) {
+      parsedName.lastName = nameParts[1];
+    } else if (nameParts.length >= 3) {
+      parsedName.middleName = nameParts.slice(1, -1).join(' ');
+      parsedName.lastName = nameParts[nameParts.length - 1];
+    }
+
+    return parsedName;
+  };
+
+  if (showInstituteCreation && userId) {
+    return <CreateInstitute userId={userId} />;
+  }
+
+  return (
+    <div className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-5/6 z-10">
+      <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">Account Details</h1>
+      <p className="text-center text-gray-500 mb-6">Please enter your details</p>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  {...field}
+                  className={`w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                  required
+                />
+              </FormControl>
+              {errors.name && <FormMessage>{errors.name.message}</FormMessage>}
+            </FormItem>
+          )}
+        />
+        {isEmail ? (
+          <>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      value={input}
+                      {...field}
+                      className="w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none"
+                      disabled
+                    />
+                  </FormControl>
+                  {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      {...field}
+                      className="w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none"
+                    />
+                  </FormControl>
+                  {errors.phone && <FormMessage>{errors.phone.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+          </>
+        ) : (
+          <>
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      value={input}
+                      {...field}
+                      className="w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none"
+                      disabled
+                    />
+                  </FormControl>
+                  {errors.phone && <FormMessage>{errors.phone.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      {...field}
+                      className="w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none"
+                    />
+                  </FormControl>
+                  {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+          </>
+        )}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  {...field}
+                  className={`w-full font-medium border-2 border-gray-400 rounded-xl bg-white focus:border-blue-600 focus:border-2 outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                  required
+                />
+              </FormControl>
+              {errors.password && <FormMessage>{errors.password.message}</FormMessage>}
+            </FormItem>
+          )}
+        />
+        <div className="text-center mt-6">
+          <button
+            type="submit"
+            className={`w-full p-2 bg-blue-500 text-white rounded-lg font-semibold ${isButtonDisabled ? '' : 'cursor-not-allowed opacity-50'}`}
+            disabled={!isButtonDisabled}
+          >
+            {isCreating ? 'Creating...' : 'Create Account'}
+          </button>
+        </div>
+        {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
+      </Form>
+    </div>
+  );
+};
+
+export default CreateProfile;

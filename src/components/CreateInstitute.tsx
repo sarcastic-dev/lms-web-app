@@ -21,13 +21,13 @@ interface CreateInstituteProps {
 
 const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
   const [formData, setFormData] = useState<InstituteSchema>({
-    instituteName: "",
-    address: "",
-    phoneNumber: "",
+    name: "",
+    email: "",
+    phone: "",
     city: "",
-    instituteType: "",
-    instituteAddress: "",
-    academicBoard: "", // New state for Academic Board selection
+    type: "",
+    address: "",
+    boardUniversity: "", // New state for Academic Board selection
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -136,11 +136,11 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
         </div>
         <div className="relative mb-4">
           <Select
-            value={formData.instituteType}
-            onValueChange={handleSelectChange("instituteType")}
+            value={formData.type}
+            onValueChange={handleSelectChange("type")}
             required
           >
-            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.instituteType ? "text-gray-400" : ""}`}>
+            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.type ? "text-gray-400" : ""}`}>
               <SelectValue placeholder="Select your institute type" />
             </SelectTrigger>
             <SelectContent>
@@ -151,16 +151,16 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             </SelectContent>
           </Select>
           {errors.instituteType && (
-            <p className="text-red-500 text-sm mt-1">{errors.instituteType}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.type}</p>
           )}
         </div>
         <div className="relative mb-4">
           <Select
-            value={formData.academicBoard}
-            onValueChange={handleSelectChange("academicBoard")}
+            value={formData.boardUniversity}
+            onValueChange={handleSelectChange("boardUniversity")}
             required
           >
-            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.academicBoard ? "text-gray-400" : ""}`}>
+            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.boardUniversity ? "text-gray-400" : ""}`}>
               <SelectValue
                 placeholder="Select Academic Board"
               />
@@ -174,7 +174,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             </SelectContent>
           </Select>
           {errors.academicBoard && (
-            <p className="text-red-500 text-sm mt-1">{errors.academicBoard}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.board}</p>
           )}
         </div>
         <div className="relative mb-4">
@@ -182,15 +182,15 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             id="institute_name"
             type="text"
             className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.instituteName ? "border-red-500" : "border-gray-300"
+              errors.name ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Institute Name"
-            value={formData.instituteName}
-            onChange={handleInputChange("instituteName")}
+            value={formData.name}
+            onChange={handleInputChange("name")}
             required
           />
           {errors.instituteName && (
-            <p className="text-red-500 text-sm mt-1">{errors.instituteName}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
           )}
         </div>
         <div className="relative mb-4">
@@ -198,15 +198,15 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             id="email_address"
             type="text"
             className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.address ? "border-red-500" : "border-gray-300"
+              errors.email ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Email Address"
-            value={formData.address}
-            onChange={handleInputChange("address")}
+            value={formData.email}
+            onChange={handleInputChange("email")}
             required
           />
           {errors.address && (
-            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
           )}
         </div>
         <div className="relative mb-4">
@@ -214,15 +214,15 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             id="phone_number"
             type="text"
             className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.phoneNumber ? "border-red-500" : "border-gray-300"
+              errors.phone ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Phone Number"
-            value={formData.phoneNumber}
-            onChange={handleInputChange("phoneNumber")}
+            value={formData.phone}
+            onChange={handleInputChange("phone")}
             required
           />
-          {errors.phoneNumber && (
-            <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+          {errors.phone && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
           )}
         </div>
         <div className="relative mb-4">
@@ -230,16 +230,16 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
             id="institute_address"
             type="text"
             className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.instituteAddress ? "border-red-500" : "border-gray-300"
+              errors.address ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Institute Address"
-            value={formData.instituteAddress}
-            onChange={handleInputChange("instituteAddress")}
+            value={formData.address}
+            onChange={handleInputChange("address")}
             required
           />
-          {errors.instituteAddress && (
+          {errors.address && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.instituteAddress}
+              {errors.address}
             </p>
           )}
         </div>
