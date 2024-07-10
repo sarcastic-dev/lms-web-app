@@ -13,12 +13,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import columns from "./columns";
+
 import { DataTable } from "./data-table";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
 import { resetStaffData, setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
+
 
 const Page = () => {
   const [data, setData] = useState([]);
@@ -30,7 +32,7 @@ const Page = () => {
 
   const fetchStaffList = async () => {
     setLoading(true);
-    const { data } = await axiosInstance.get("/staffs");
+    const { data } = await axiosInstance.get("/staffs/institute/97cb57e0-067c-4210-aba1-279fd577494e");
     const filteredStaffData = data.map((obj:any) => {
       const staffObj: any = {};
 

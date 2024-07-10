@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
-import ExpandableTable from "./ExpandableTable";
 import { ClassInfo, classData } from "./attendanceDummyData";
+import dynamic from "next/dynamic";
+
+const ExpandableTable = dynamic(() => import("./ExpandableTable"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 const classColumns = [
   { key: "class", label: "Class" },

@@ -54,28 +54,28 @@ export const classData: ClassInfo[] = [
       { id: 20, name: "Tina Turner", status: "present" },
     ],
   },
-  // Additional sections
-  ...Array.from({ length: 38 }, (_, i) => {
-    const sectionId = 103 + i;
-    const sectionLetter = String.fromCharCode(67 + i);
-    const totalStudents = Math.floor(Math.random() * 21) + 40; // Random between 40 and 60
-    const presentStudents = Math.floor(Math.random() * totalStudents);
-    const absentStudents = totalStudents - presentStudents;
+  // // Additional sections
+  // ...Array.from({ length: 38 }, (_, i) => {
+  //   const sectionId = 103 + i;
+  //   const sectionLetter = String.fromCharCode(67 + i);
+  //   const totalStudents = Math.floor(Math.random() * 21) + 40; // Random between 40 and 60
+  //   const presentStudents = Math.floor(Math.random() * totalStudents);
+  //   const absentStudents = totalStudents - presentStudents;
 
-    const students = Array.from({ length: totalStudents }, (_, j) => ({
-      id: 21 + i * 100 + j,
-      name: `Student ${21 + i * 100 + j}`,
-      status: j < presentStudents ? "present" : "absent",
-    }));
+  //   const students = Array.from({ length: totalStudents }, (_, j) => ({
+  //     id: 21 + i * 100 + j,
+  //     name: `Student ${21 + i * 100 + j}`,
+  //     status: j < presentStudents ? "present" : "absent",
+  //   }));
 
-    return {
-      id: sectionId,
-      section: sectionLetter,
-      class: `${10 + Math.floor(i / 2)}th Grade`, // Alternating between 10th and 11th Grade
-      total_students: totalStudents,
-      present: presentStudents,
-      absent: absentStudents,
-      students: students,
-    };
-  }),
+  //   return {
+  //     id: sectionId,
+  //     section: sectionLetter,
+  //     class: `${10 + Math.floor(i / 2)}th Grade`, // Alternating between 10th and 11th Grade
+  //     total_students: totalStudents,
+  //     present: presentStudents,
+  //     absent: absentStudents,
+  //     students: students,
+  //   };
+  // }),
 ];

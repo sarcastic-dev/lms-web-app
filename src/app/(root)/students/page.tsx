@@ -11,11 +11,6 @@ import {
 	Users,
 } from "lucide-react";
 import { StepProps, StepperProps, Student } from "@/types";
-import BasicInfo from "@/components/StudentRegistration/BasicInfo";
-import AddressInfo from "@/components/StudentRegistration/AddressInfo";
-import ParentInfo from "@/components/StudentRegistration/ParentInfo";
-import AcademicInfo from "@/components/StudentRegistration/AcademicInfo";
-import MedicalInfo from "@/components/StudentRegistration/MedicalInfo";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setAddressInfoData,
@@ -31,6 +26,42 @@ import { fetchStudentById } from "@/context/studentSlice";
 import axiosInstance from "@/lib/axiosInstance";
 import { Switch } from "antd";
 import { setViewState } from "@/context/studentSlice";
+import dynamic from "next/dynamic";
+const BasicInfo = dynamic(
+	() => import("@/components/StudentRegistration/BasicInfo"),
+	{
+		loading: () => <p>Loading...</p>,
+		ssr: true,
+	}
+);
+const AddressInfo = dynamic(
+	() => import("@/components/StudentRegistration/AddressInfo"),
+	{
+		loading: () => <p>Loading...</p>,
+		ssr: true,
+	}
+);
+const ParentInfo = dynamic(
+	() => import("@/components/StudentRegistration/ParentInfo"),
+	{
+		loading: () => <p>Loading...</p>,
+		ssr: true,
+	}
+);
+const AcademicInfo = dynamic(
+	() => import("@/components/StudentRegistration/AcademicInfo"),
+	{
+		loading: () => <p>Loading...</p>,
+		ssr: true,
+	}
+);
+const MedicalInfo = dynamic(
+	() => import("@/components/StudentRegistration/MedicalInfo"),
+	{
+		loading: () => <p>Loading...</p>,
+		ssr: true,
+	}
+);
 
 export default function Page() {
 	const [step, setStep] = useState<number>(1);

@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { addressSchema } from "@/schema/createInstitute/studentFormSchema/addressInfoSchema";
+import { addressSchema } from "@/schema/studentFormSchema/addressInfoSchema";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import {
