@@ -65,7 +65,7 @@ const AddTeacher = ({
 		if (selectedId && sectionId) {
 			try {
 				const response = await axiosInstance.post(
-					"/sections/assign-students",
+					"/sections/assign-teacher",
 					{
 						sectionId,
 						teacherId: selectedId,
