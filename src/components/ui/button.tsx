@@ -14,6 +14,10 @@ const buttonVariants = cva(
 				lms: "bg-lmsAccent text-white rounded font-semibold text-sm",
 				lmsOutline:
 					"outline-lmsAccent outline rounded text-lmsAccent font-semibold text-sm",
+				lmsNext:
+					"text-white w-20 h-10 rounded bg-lmsAccent text-semibold text-sm disabled:bg-lms-200 disabled:text-lms-600   transition-all duration-300 hover:bg-gradient-to-r hover:from-[#115DB8] hover:to-[#0F4A95]",
+				lmsBack:
+					"bg-background  border border-[#CDD3DB] text-lmsPrimary text-sm font-semibold w-20 h-10 rounded gap-2.5",
 				destructive:
 					"bg-destructive text-destructive-foreground hover:bg-destructive/90",
 				outline:

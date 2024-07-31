@@ -1,12 +1,9 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Form,
 	FormControl,
@@ -19,10 +16,6 @@ import { healthInfoSchema } from "@/schema/studentFormSchema/medicalInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
-dayjs.extend(customParseFormat);
-
-const dateFormat = "YYYY-MM-DD";
-
 type HealthInfoSchemaType = z.infer<typeof healthInfoSchema>;
 
 const MedicalInfoForm = ({
@@ -30,6 +23,11 @@ const MedicalInfoForm = ({
 }: {
 	onNext: (data: any) => void;
 }): ReactElement => {
+	const [hasValue, setHasValue] = useState(false);
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHasValue(event.target.value !== "");
+	};
 	const medicalInfoStudent = useSelector(
 		(state: RootState) => state.studentRegistration.medicalInfo
 	);
@@ -38,12 +36,6 @@ const MedicalInfoForm = ({
 		defaultValues: medicalInfoStudent || {},
 	});
 
-	const minDate = dayjs("2019-08-01", dateFormat);
-	const maxDate = dayjs().endOf("day");
-
-	const disabledDate = (current: any) => {
-		return current && (current < minDate || current > maxDate);
-	};
 	const onSubmit = (values: HealthInfoSchemaType) => {
 		onNext(values);
 	};
@@ -66,7 +58,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='weight'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Weight (Kg)
 										</FormLabel>
@@ -74,7 +66,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='weight'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='60'
 												disabled={viewState === "view"}
 												{...field}
@@ -91,7 +83,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='height'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Height (cm)
 										</FormLabel>
@@ -99,7 +91,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='height'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='162'
 												disabled={viewState === "view"}
 												{...field}
@@ -116,7 +108,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='bmi'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Body Mass Index
 										</FormLabel>
@@ -124,7 +116,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='bmi'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='24.56'
 												disabled={viewState === "view"}
 												{...field}
@@ -141,7 +133,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='pulseRate'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Pulse Rate
 										</FormLabel>
@@ -149,7 +141,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='pulseRate'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='72 BPM'
 												disabled={viewState === "view"}
 												{...field}
@@ -166,7 +158,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='haemoglobin'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Haemoglobin (Hb)
 										</FormLabel>
@@ -174,7 +166,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='haemoglobin'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='16'
 												disabled={viewState === "view"}
 												{...field}
@@ -191,7 +183,7 @@ const MedicalInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='allergies'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Allergies
 										</FormLabel>
@@ -199,7 +191,7 @@ const MedicalInfoForm = ({
 											<Input
 												id='allergies'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='"Asthma" , "Soy" etc.'
 												disabled={viewState === "view"}
 												{...field}
@@ -213,34 +205,32 @@ const MedicalInfoForm = ({
 								control={form.control}
 								name='reportIssueDate'
 								render={({ field }) => (
-									<FormItem>
+									<FormItem className=''>
 										<FormLabel
-											htmlFor='issuedDate'
-											className='pl-1 text-blue-500 font-semibold'
+											htmlFor='dateOfBirth'
+											className='pl-1'
 										>
-											Issued Date
+											Date of Birth
 										</FormLabel>
 										<FormControl>
-											<DatePicker
-												id='issuedDate'
-												size='small'
-												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500 text-foreground placeholder:text-gray-400 w-full'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
-												disabled={viewState === "view"}
+											<Input
 												{...field}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												id='dateOfBirth'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-gray-400`}
+												disabled={viewState === "view"}
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
-												onChange={(date, dateString) =>
-													field.onChange(dateString)
-												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />

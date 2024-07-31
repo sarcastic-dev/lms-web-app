@@ -55,7 +55,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='addressLine1'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											Address Line 1{" "}
 										</FormLabel>
@@ -63,7 +63,7 @@ const AddressInfoForm = ({
 											<Input
 												id='addressLine1'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Address Line 1'
 												disabled={viewState === "view"}
 												{...field}
@@ -80,7 +80,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='addressLine2'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											Address Line 2
 										</FormLabel>
@@ -88,7 +88,7 @@ const AddressInfoForm = ({
 											<Input
 												id='addressLine2'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Address Line 2'
 												disabled={viewState === "view"}
 												{...field}
@@ -105,7 +105,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='cityTown'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											City/Town{" "}
 										</FormLabel>
@@ -113,7 +113,7 @@ const AddressInfoForm = ({
 											<Input
 												id='cityTown'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='City/Town'
 												disabled={viewState === "view"}
 												{...field}
@@ -130,7 +130,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='state'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											State{" "}
 										</FormLabel>
@@ -138,7 +138,7 @@ const AddressInfoForm = ({
 											<Input
 												id='state'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='State'
 												disabled={viewState === "view"}
 												{...field}
@@ -155,7 +155,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='pincode'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											PIN Code
 										</FormLabel>
@@ -163,7 +163,7 @@ const AddressInfoForm = ({
 											<Input
 												id='pincode'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='PIN Code'
 												disabled={viewState === "view"}
 												{...field}
@@ -180,7 +180,7 @@ const AddressInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='country'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											Country{" "}
 										</FormLabel>
@@ -188,7 +188,7 @@ const AddressInfoForm = ({
 											<Input
 												id='country'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Country'
 												disabled={viewState === "view"}
 												{...field}

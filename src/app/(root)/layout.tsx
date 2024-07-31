@@ -19,12 +19,14 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 					sidebarOpen ? "ml-[248px]" : "ml-24"
 				} w-full h-screen overflow-y-auto`}
 			>
-				<div className='2xl:p-4 xl:px-10 xl:py-5 2xl:py-3 '>
+				<div className=''>
 					{children}
 				</div>
 			</section>
 		</div>
 	);
 };
+
+// 2xl:p-4 xl:px-10 xl:py-5 2xl:py-3 
 
 export default RootLayout;

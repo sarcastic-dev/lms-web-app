@@ -75,7 +75,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='parent_name'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Parent Name
 										</FormLabel>
@@ -83,7 +83,7 @@ const ParentInfo = ({
 											<Input
 												id='parent_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='John Doe'
 												disabled={viewState === "view"}
 												{...field}
@@ -100,8 +100,8 @@ const ParentInfo = ({
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
-											htmlFor='bloodGroup'
-											className='pl-1 text-blue-500 font-semibold'
+											htmlFor='relation'
+											className='pl-1 '
 										>
 											Relation
 										</FormLabel>
@@ -112,9 +112,9 @@ const ParentInfo = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider  ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
@@ -150,7 +150,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='parent_email'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Parent Email ID
 										</FormLabel>
@@ -158,7 +158,7 @@ const ParentInfo = ({
 											<Input
 												id='parent_email'
 												type='email'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='parent@gmail.com'
 												disabled={viewState === "view"}
 												{...field}
@@ -176,7 +176,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='parent_phone'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Parent Phone Number
 										</FormLabel>
@@ -185,7 +185,7 @@ const ParentInfo = ({
 												<Input
 													id='parent_phone'
 													type='tel'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
+													className='border  px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
 													placeholder='Mobile Number'
 													disabled={
 														viewState === "view"
@@ -209,7 +209,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='parent_qualification'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Parent Qualification
 										</FormLabel>
@@ -217,7 +217,7 @@ const ParentInfo = ({
 											<Input
 												id='parent_qualification'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Ex. MBBS'
 												disabled={viewState === "view"}
 												{...field}
@@ -235,7 +235,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='parent_occupation'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Parent Occupation
 										</FormLabel>
@@ -243,7 +243,7 @@ const ParentInfo = ({
 											<Input
 												id='parent_occupation'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Ex. Doctor'
 												disabled={viewState === "view"}
 												{...field}
@@ -261,7 +261,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='work_organization'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Work Organization Name
 										</FormLabel>
@@ -269,7 +269,7 @@ const ParentInfo = ({
 											<Input
 												id='work_organization'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Ex. Government Hospital'
 												disabled={viewState === "view"}
 												{...field}
@@ -287,7 +287,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='designation'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Designation
 										</FormLabel>
@@ -295,7 +295,7 @@ const ParentInfo = ({
 											<Input
 												id='designation'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Ex. CMO'
 												disabled={viewState === "view"}
 												{...field}
@@ -313,7 +313,7 @@ const ParentInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='annual_income'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Annual Income
 										</FormLabel>
@@ -321,7 +321,7 @@ const ParentInfo = ({
 											<Input
 												id='annual_income'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Ex. 50XXXX'
 												disabled={viewState === "view"}
 												{...field}
