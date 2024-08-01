@@ -1,6 +1,6 @@
 import React from "react";
 
-import AuthPage from "../components/Signup";
+import AuthPage from "../components/Home";
 import Loader from "@/components/Loader";
 import CreateInstitute from "./pages/create-institute";
 // import CreateProfile from "@/components/CreateProfile";

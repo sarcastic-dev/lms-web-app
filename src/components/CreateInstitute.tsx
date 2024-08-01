@@ -14,20 +14,33 @@ import {
 } from "./ui/select";
 import { Input } from "./ui/input";
 import axiosInstance from "@/lib/axiosInstance";
+import { Form, FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "./ui/button";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 
 interface CreateInstituteProps {
   userId: string | null;
 }
 
 const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
-  const [formData, setFormData] = useState<InstituteSchema>({
-    name: "",
-    email: "",
-    phone: "",
-    city: "",
-    type: "",
-    address: "",
-    boardUniversity: "", // New state for Academic Board selection
+  const methods = useForm<InstituteSchema>({
+    resolver: zodResolver(instituteSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      type: "",
+      boardUniversity: "",
+    },
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -35,19 +48,22 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const isValid = instituteSchema.safeParse(formData).success;
-    setIsButtonDisabled(!isValid);
-  }, [formData]);
+    const subscription = methods.watch((value) => {
+      const isValid = instituteSchema.safeParse(value).success;
+      setIsButtonDisabled(!isValid);
+    });
+    return () => subscription.unsubscribe();
+  }, [methods]);
 
   const validateForm = () => {
-    const result = instituteSchema.safeParse(formData);
+    const result = instituteSchema.safeParse(methods.getValues());
     if (!result.success) {
       const newErrors: Record<string, string> = {};
       result.error.errors.forEach(
         (err: { path: string | any[]; message: string }) => {
           if (err.path.length > 0) {
             const field = err.path[0];
-            newErrors[field] = err.message;
+            newErrors[field as string] = err.message;
           }
         }
       );
@@ -58,14 +74,12 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: InstituteSchema) => {
     if (validateForm()) {
       setIsCreating(true);
 
       try {
-        const instituteData = { ...formData, userId };
+        const instituteData = { ...data, userId };
 
         console.log("Sending request with data:", instituteData);
         const response = await axiosInstance.post("/institutes", instituteData);
@@ -73,7 +87,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
 
         setTimeout(() => {
           setIsCreating(false);
-          router.push("/loader");
+          router.push("/dashboard");
         }, 2000);
       } catch (error: any) {
         console.error("Error creating institute:", error);
@@ -94,172 +108,216 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     }
   };
 
-  const handleInputChange =
-    (field: keyof InstituteSchema) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [field]: e.target.value });
-    };
+  // const handleInputChange =
+  //   (field: keyof InstituteSchema) =>
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     useForm({ ...form, [field]: e.target.value });
+  //   };
 
-  const handleSelectChange =
-    (field: keyof InstituteSchema) => (value: string) => {
-      setFormData({ ...formData, [field]: value });
-    };
+  // const handleSelectChange =
+  //   (field: keyof InstituteSchema) => (value: string) => {
+  //     useForm({ ...form, [field]: value });
+  //   };
 
   return (
-    <div className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-6/6 z-10">
-      <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">
-        Create your Institute
-      </h1>
-      <p className="text-center text-gray-500 mb-6">
-        Tell us about you and your institute
-      </p>
-      <form onSubmit={handleSubmit}>
-        <div className="relative mb-4">
-          <Select
-            value={formData.city}
-            onValueChange={handleSelectChange("city")}
-            required
-          >
-            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.city ? "text-gray-400" : ""}`}>
-              <SelectValue placeholder="Select City" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Firozabad">Firozabad</SelectItem>
-              <SelectItem value="New Delhi">New Delhi</SelectItem>
-              <SelectItem value="Gurugram">Gurugram</SelectItem>
-              <SelectItem value="Bangalore">Bangalore</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.city && (
-            <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] z-10"
+      >
+        <h1 className="text-2xl text-start text-[#07254A] font-bold mb-8">
+          Create Institute
+        </h1>
+
+        {/* Institute Name */}
+        <FormField
+          control={methods.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs text-[#07254A]">
+                Institute Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  placeholder="Institute Name"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Select
-            value={formData.type}
-            onValueChange={handleSelectChange("type")}
-            required
-          >
-            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.type ? "text-gray-400" : ""}`}>
-              <SelectValue placeholder="Select your institute type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="School">School</SelectItem>
-              <SelectItem value="College">College</SelectItem>
-              <SelectItem value="Tuition">Tuition</SelectItem>
-              <SelectItem value="Others">Others</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.instituteType && (
-            <p className="text-red-500 text-sm mt-1">{errors.type}</p>
+        />
+
+        {/* Institute Type Selection */}
+        <FormField
+          control={methods.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem className="mt-2"> 
+              <FormLabel className="text-xs text-[#07254A]">
+                Institute Type
+              </FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger
+                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                      !field.value ? "text-[#9DACBE]" : ""
+                    }`}
+                  >
+                    <SelectValue placeholder="Select Institute Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="School">School</SelectItem>
+                    <SelectItem value="College">College</SelectItem>
+                    <SelectItem value="Tuition">Tuition</SelectItem>
+                    <SelectItem value="Others">Others</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Select
-            value={formData.boardUniversity}
-            onValueChange={handleSelectChange("boardUniversity")}
-            required
-          >
-            <SelectTrigger className={`w-full font-medium border-2 rounded-xl bg-white focus:border-blue-500 outline-none ${!formData.boardUniversity ? "text-gray-400" : ""}`}>
-              <SelectValue
-                placeholder="Select Academic Board"
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="CBSE">CBSE</SelectItem>
-              <SelectItem value="ICSE">ICSE</SelectItem>
-              <SelectItem value="State Board">State Board</SelectItem>
-              <SelectItem value="IB">IB</SelectItem>
-              {/* Add other options as needed */}
-            </SelectContent>
-          </Select>
-          {errors.academicBoard && (
-            <p className="text-red-500 text-sm mt-1">{errors.board}</p>
+        />
+
+        {/* Academic Board Selection */}
+        <FormField
+          control={methods.control}
+          name="boardUniversity"
+          render={({ field }) => (
+            <FormItem className="mt-2">
+              <FormLabel className="text-xs text-[#07254A]">
+                Academic Board
+              </FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger
+                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                      !field.value ? "text-[#9DACBE]" : ""
+                    }`}
+                  >
+                    <SelectValue placeholder="Select Academic Board" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CBSE">CBSE</SelectItem>
+                    <SelectItem value="ICSE">ICSE</SelectItem>
+                    <SelectItem value="State Board">State Board</SelectItem>
+                    <SelectItem value="IB">IB</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Input
-            id="institute_name"
-            type="text"
-            className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Institute Name"
-            value={formData.name}
-            onChange={handleInputChange("name")}
-            required
-          />
-          {errors.instituteName && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+        />
+
+        {/* Email Address */}
+        <FormField
+          control={methods.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="mt-2">
+              <FormLabel className="text-xs text-[#07254A]">
+                Email Address
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  placeholder="Email Address"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Input
-            id="email_address"
-            type="text"
-            className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleInputChange("email")}
-            required
-          />
-          {errors.address && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+        />
+
+        {/* Phone Number */}
+        <FormField
+          control={methods.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem className="mt-2">
+              <FormLabel className="text-xs text-[#07254A]">
+                Phone Number
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  placeholder="Phone Number"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Input
-            id="phone_number"
-            type="text"
-            className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.phone ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleInputChange("phone")}
-            required
-          />
-          {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+        />
+
+        {/* Institute Address */}
+        <FormField
+          control={methods.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem className="mt-2">
+              <FormLabel className="text-xs text-[#07254A]">
+                Institute Address
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  placeholder="Institute Address"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        <div className="relative mb-4">
-          <Input
-            id="institute_address"
-            type="text"
-            className={`w-full font-medium border-2 rounded-xl placeholder:text-gray-400 bg-white focus:border-blue-500 outline-none ${
-              errors.address ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Institute Address"
-            value={formData.address}
-            onChange={handleInputChange("address")}
-            required
-          />
-          {errors.address && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.address}
-            </p>
+        />
+
+        {/* City Selection */}
+        <FormField
+          control={methods.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem className="mt-2">
+              <FormLabel className="text-xs text-[#07254A]">City</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger
+                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                      !field.value ? "text-[#9DACBE]" : ""
+                    }`}
+                  >
+                    <SelectValue placeholder="Select City" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Firozabad">Firozabad</SelectItem>
+                    <SelectItem value="New Delhi">New Delhi</SelectItem>
+                    <SelectItem value="Gurugram">Gurugram</SelectItem>
+                    <SelectItem value="Bangalore">Bangalore</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="text-[10px]" />
+            </FormItem>
           )}
-        </div>
-        {errors.general && (
-          <p className="text-red-500 text-sm mt-1">{errors.general}</p>
-        )}
-        <button
+        />
+
+        {/* Submit Button */}
+        <Button
+          className="w-full rounded bg-[#115DB8] mt-6"
           type="submit"
-          className={`w-full py-2 mt-5 font-semibold text-blue-500 border-blue-500 border-2 rounded-xl ${
-            isButtonDisabled || isCreating
-              ? "bg-white cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-          }`}
-          disabled={isButtonDisabled || isCreating}
+          disabled={isCreating}
         >
           {isCreating ? "Creating Institute..." : "Create Institute"}
-        </button>
+        </Button>
       </form>
-    </div>
+    </FormProvider>
   );
 };
 
 export default CreateInstitute;
+function preventDefault() {
+  throw new Error("Function not implemented.");
+}

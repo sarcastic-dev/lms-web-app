@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Manrope, Montserrat } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={manrope.className}>
         <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
