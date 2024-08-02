@@ -29,18 +29,18 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
 	return (
 		<aside
 			className={`bg-lms-50 h-screen p-5  relative transition-all duration-500 ${
-				open ? "w-[248px]" : "w-24"
+				open ? "w-[248px]" : "w-[93px]"
 			}`}
 		>
 			{open ? (
-				<div className='w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-6 right-6 rounded-full flex items-center justify-center bg-white transition-all duration-500'>
+				<div className='w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-3 right-3 rounded-full flex items-center justify-center bg-white transition-all duration-500'>
 					<ChevronLeft
 						className='text-4xl text-lmgSecondary'
 						onClick={() => setOpen(!open)}
 					/>
 				</div>
 			) : (
-				<div className='w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-6 right-8 rounded-full flex items-center justify-center bg-white transition-all duration-500 '>
+				<div className='w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-3 right-3 rounded-full flex items-center justify-center bg-white transition-all duration-500 '>
 					<ChevronRight
 						className='text-4xl text-lmgSecondary'
 						onClick={() => setOpen(!open)}
@@ -64,10 +64,11 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
 									collapsed={!open}
 									className='w-full'
 									label={link.label}
+									nameOfPath={link.href}
 									variant={
 										pathName === link.href
-											? "secondary"
-											: "ghost"
+											? "lmsActive"
+											: "lmsInActive"
 									}
 								>
 									{link.label}

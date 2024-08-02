@@ -14,6 +14,10 @@ import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/context/store";
 import { Button } from "./ui/button";
+// import activeIcon from "/active.png"; // Replace with actual path
+// import completeIcon from "/Complete.png";
+import { CircleDashed } from "lucide-react"; // Use default icon
+import Image from "next/image";
 
 type DynamicTabsProps = {
 	config: TabConfig[];
@@ -36,6 +40,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 	const registrationData = useSelector(
 		(state: RootState) => state.studentRegistration
 	);
+	const [completedSteps, setCompletedSteps] = React.useState<number[]>([]);
 
 	const handleTabChange = (value: string) => {
 		onTabChange(value);
@@ -43,11 +48,8 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 
 	const formatLabel = (label: string) => label.replace(/^\d+\.\s*/, "");
 
-	const activeTabLabel = formatLabel(
-		config.find((tab) => tab.value === activeTab)?.label || ""
-	);
-
 	const handleNext = async (data: any) => {
+		// Dispatch appropriate actions based on the step
 		if (step === 1) {
 			dispatch(setBasicInfoUserData(data));
 		} else if (step === 2) {
@@ -73,13 +75,13 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					},
 				},
 				medicalInfo: {
-					...registrationData?.medicalInfo,
-					weightKg: Number(registrationData?.medicalInfo?.weightKg),
-					heightCm: Number(registrationData?.medicalInfo?.heightCm),
-					bmi: Number(registrationData?.medicalInfo?.bmi),
-					pulseRate: Number(registrationData?.medicalInfo?.pulseRate),
+					...registrationData.medicalInfo,
+					weightKg: Number(registrationData.medicalInfo.weightKg),
+					heightCm: Number(registrationData.medicalInfo.heightCm),
+					bmi: Number(registrationData.medicalInfo.bmi),
+					pulseRate: Number(registrationData.medicalInfo.pulseRate),
 					haemoglobin: Number(
-						registrationData?.medicalInfo?.haemoglobin
+						registrationData.medicalInfo.haemoglobin
 					),
 				},
 			};
@@ -117,6 +119,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 		if (currentIndex < config.length - 1) {
 			onTabChange(config[currentIndex + 1].value);
 			setStep(step + 1);
+			setCompletedSteps((prevSteps) => [...prevSteps, step]); // Mark current step as completed
 		}
 	};
 
@@ -128,6 +131,9 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 		}
 	};
 
+	const isTabCompleted = (index: number) =>
+		completedSteps.includes(index + 1);
+
 	return (
 		<Tabs
 			value={activeTab}
@@ -135,32 +141,66 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 			onValueChange={handleTabChange}
 		>
 			<TabsList className='flex items-center'>
-				{config.map((tab) => (
-					<TabsTrigger
-						key={tab.value}
-						value={tab.value}
-						className='focus:border-t-lmsSuccess'
-					>
-						<span>
-							<tab.icon
-								className='h-5 w-5 mr-2'
-								strokeWidth={tab.strokeWidth}
-							/>
-						</span>
-						{formatLabel(tab.label)}
-					</TabsTrigger>
-				))}
+				{config.map((tab, index) => {
+					const isActive = tab.value === activeTab;
+					const isComplete = isTabCompleted(index);
+					return (
+						<TabsTrigger
+							key={tab.value}
+							value={tab.value}
+							className={`${
+								isActive || isComplete
+									? "border-t-lmsSuccess"
+									: ""
+							}`}
+						>
+							<span>
+								{isComplete ? (
+									<Image
+										src={"/Complete.png"}
+										alt='Complete'
+										className='mr-2'
+										width={20}
+										height={20}
+									/>
+								) : isActive ? (
+									<Image
+										src={"/Active.png"}
+										alt='Active'
+										className='mr-2'
+										width={20}
+										height={20}
+									/>
+								) : (
+									<CircleDashed className='h-5 w-5 mr-2' />
+								)}
+							</span>
+							<span
+								className={`${
+									isActive ? "text-lmsAccent" : ""
+								}`}
+							>
+								{tab.label}
+							</span>
+						</TabsTrigger>
+					);
+				})}
 			</TabsList>
-			{activeTabLabel && (
-				<div className='my-8 text-xl font-medium tracking-tight text-lmsPrimary'>
-					{activeTabLabel}
+			{activeTab && (
+				<div className='my-6 text-xl font-medium tracking-tight text-lmsPrimary'>
+					{formatLabel(
+						config.find((tab) => tab.value === activeTab)?.label ||
+							""
+					)}
 				</div>
 			)}
 			{config.map((tab) => (
 				<TabsContent
 					key={tab.value}
 					value={tab.value}
-					className='border rounded-[8px] xl:p-8 lg:p-5'
+					className={`border rounded-[8px] xl:px-8 lg:px-5 ${
+						tab.value === "review" ? "h-[650px]" : "h-[330px]"
+					} overflow-y-scroll`}
 				>
 					<tab.component onNext={handleNext} />
 				</TabsContent>

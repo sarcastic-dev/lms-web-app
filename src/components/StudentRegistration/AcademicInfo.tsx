@@ -73,7 +73,7 @@ const AcademicInfoForm = ({
 							<FormField
 								control={form.control}
 								name='enrollmentId'
-								render={({ field }) => (
+								render={({ field, fieldState: { error } }) => (
 									<FormItem>
 										<div className=''>
 											<FormLabel
@@ -92,7 +92,11 @@ const AcademicInfoForm = ({
 												<Input
 													id='enrolmentID'
 													type='text'
-													className='border px-3 py-6 text-md tracking-wider pr-28'
+													className={`tracking-wider pr-28 ${
+														error
+															? "border-red-500"
+															: ""
+													}`}
 													placeholder='Enrolment ID'
 													disabled={
 														viewState === "view"

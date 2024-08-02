@@ -192,7 +192,7 @@ const ParentInfo = ({
 													}
 													{...field}
 												/>
-												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-lms-700 font-semibold'>
 													<span>+91-</span>
 												</span>
 											</div>

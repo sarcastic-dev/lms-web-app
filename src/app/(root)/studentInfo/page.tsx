@@ -100,7 +100,7 @@ const Page = () => {
 	};
 
 	return (
-		<div className='flex flex-col w-full h-screen my-4 space-y-4'>
+		<div className='flex flex-col w-full h-screen my-4 space-y-4 2xl:px-16 2xl:py-2 xl:px-8 xl:py-2 lg:px-12 lg:py-4'>
 			<div className='flex justify-between items-center'>
 				<div>
 					<h4 className='font-bold text-2xl text-lmsPrimary'>
