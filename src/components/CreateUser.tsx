@@ -23,14 +23,15 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type Props = {
+interface CreateProfileProps {
   input: {
     email: string;
     phone: string;
   };
-};
+  onShowInstitute: () => void;  // Add this line to define the prop
+}
 
-const CreateProfile = ({ input }: Props) => {
+const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute }) => {
   console.log("input", input.email, input.phone);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,23 +98,23 @@ const CreateProfile = ({ input }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-white border p-8 rounded-lg shadow-xl w-2/6 h-5/6 z-10 space-y-5"
+        className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] h-5/6 z-10 space-y-5"
       >
-        <h1 className="text-2xl text-center text-blue-500 font-bold mb-3">
+        <h1 className="text-2xl text-start text-[#07254A] font-bold mb-3">
           Account Details
         </h1>
-        <p className="text-center text-gray-500 mb-6">
+        {/* <p className="text-center text-gray-500 mb-6">
           Please enter your details
-        </p>
+        </p> */}
 
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className="text-sm text-[#07254A]">Name</FormLabel>
               <FormControl>
-                <Input placeholder="Full Name" {...field} />
+                <Input className="rounded" placeholder="Enter Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,9 +126,9 @@ const CreateProfile = ({ input }: Props) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-sm text-[#07254A]">Email ID</FormLabel>
               <FormControl>
-                <Input placeholder="Email Address" {...field} />
+                <Input className="rounded" placeholder="Enter Email ID" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,9 +139,9 @@ const CreateProfile = ({ input }: Props) => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone</FormLabel>
+              <FormLabel className="text-sm text-[#07254A]">Mobile No.</FormLabel>
               <FormControl>
-                <Input placeholder="Phone Number" {...field} />
+                <Input className="rounded" placeholder="Mobile No." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -152,16 +153,16 @@ const CreateProfile = ({ input }: Props) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-sm text-[#07254A]">Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input className="rounded" type="password" placeholder="Enter Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" disabled={isCreating}>
+        <Button className="w-full rounded bg-[#115DB8]" type="submit" disabled={isCreating}>
           {isCreating ? "Creating..." : "Create Account"}
         </Button>
 
