@@ -20,58 +20,91 @@ export type Student = {
 const columns: ColumnDef<Student>[] = [
 	{
 		accessorKey: "name",
-		header: ({ column }) => {
-			return (
-				<Button
-					variant='ghost'
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					Name
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
-		},
+		header: ({ column }) => (
+			<Button
+				variant='ghost'
+				className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+				onClick={() =>
+					column.toggleSorting(column.getIsSorted() === "asc")
+				}
+			>
+				Name
+				<ArrowUpDown className='ml-2 h-4 w-4' />
+			</Button>
+		),
 	},
 	{
 		accessorKey: "class",
-		header: "Class",
+		header: ({ column }) => (
+			<Button
+				variant='ghost'
+				className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+				onClick={() =>
+					column.toggleSorting(column.getIsSorted() === "asc")
+				}
+			>
+				Class & Section
+				<ArrowUpDown className='ml-2 h-4 w-4' />
+			</Button>
+		),
 	},
 	{
 		accessorKey: "contact",
-		header: "Contact",
+		header: ({ column }) => (
+			<Button
+				variant='ghost'
+				className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+				onClick={() =>
+					column.toggleSorting(column.getIsSorted() === "asc")
+				}
+			>
+				Contact
+				<ArrowUpDown className='ml-2 h-4 w-4' />
+			</Button>
+		),
 	},
 	{
 		accessorKey: "parentName",
-		header: ({ column }) => {
-			return (
-				<Button
-					variant='ghost'
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					Parent Name
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
-		},
+		header: ({ column }) => (
+			<Button
+				variant='ghost'
+				className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+				onClick={() =>
+					column.toggleSorting(column.getIsSorted() === "asc")
+				}
+			>
+				Parent Name
+				<ArrowUpDown className='ml-2 h-4 w-4' />
+			</Button>
+		),
 	},
 	{
 		accessorKey: "email",
-		header: "Email",
+		header: ({ column }) => (
+			<Button
+				variant='ghost'
+				className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+				onClick={() =>
+					column.toggleSorting(column.getIsSorted() === "asc")
+				}
+			>
+				EMAIL ID
+				<ArrowUpDown className='ml-2 h-4 w-4' />
+			</Button>
+		),
 	},
 	{
 		id: "actions",
 		enableHiding: false,
 		cell: ({ row }) => (
-			<ActionCell
-				id={row.original.id}
-				fetchById={fetchStudentById}
-				setViewState={setViewState}
-				pathName='students'
-			/>
+			<div className='flex justify-center items-center xl:w-1 2xl:w-full '>
+				<ActionCell
+					id={row.original.id}
+					fetchById={fetchStudentById}
+					setViewState={setViewState}
+					pathName='students'
+				/>
+			</div>
 		),
 	},
 ];

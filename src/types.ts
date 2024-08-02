@@ -33,7 +33,8 @@ export interface BasicInfoUser {
 	lastName: string;
 	middleName: string;
 	phone: string;
-	role:string
+	role: string;
+	instituteId: string;
 }
 
 export interface BasicInfoStudent {
@@ -135,8 +136,6 @@ export interface AddressStaffInfo {
 	state: string;
 }
 
-
-
 export interface AdditionalDetails {
 	aadharNumber: string;
 	category: string;
@@ -170,9 +169,9 @@ export interface BankDetails {
 // STAFF SLICE
 export interface Staff {
 	basicInfo: {
-		user: BasicInfoStaffUser,
-		staff:BasicInfoStaff
-	},
+		user: BasicInfoStaffUser;
+		staff: BasicInfoStaff;
+	};
 	addressInfo: AddressStaffInfo;
 	additionalInfo: AdditionalDetails;
 	previousExperienceInfo: PreviousExperience;
@@ -180,7 +179,7 @@ export interface Staff {
 }
 
 export interface StaffState {
-	staffData: Staff ;
+	staffData: Staff;
 	status: "idle" | "loading" | "succeeded" | "failed";
 	error: string | null;
 	viewState: "view" | "edit" | null;
@@ -190,8 +189,8 @@ export interface StaffState {
 
 export interface Student {
 	basicInfo: {
-		user: BasicInfoUser,
-		student: BasicInfoStudent
+		user: BasicInfoUser;
+		student: BasicInfoStudent;
 	};
 	addressInfo: AddressInfo;
 	parentInfo: ParentInfo;
@@ -204,7 +203,6 @@ export interface StudentState {
 	error: string | null;
 	viewState: "view" | "edit" | "add";
 }
-
 
 interface Section {
 	id: string;
@@ -223,4 +221,3 @@ export interface Stage {
 	stage: string;
 	classes: Class[];
 }
-

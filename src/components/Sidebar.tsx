@@ -13,6 +13,8 @@ import {
   User,
   ClipboardCheck,
   School2,
+  Monitor,
+  BookOpen,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -44,29 +46,29 @@ const sidebarItems: SidebarItems = {
     {
       label: "Attendance",
       href: "/attendance",
-      icon: ClipboardCheck,
+      icon: BookOpen,
       className: "string",
     },
-    {
-      label: "Dummy Attendance",
-      href: "/dummyAttendance",
-      icon: ClipboardCheck,
-      className: "string",
-    },
+    // {
+    //   label: "Dummy Attendance",
+    //   href: "/dummyAttendance",
+    //   icon: ClipboardCheck,
+    //   className: "string",
+    // },
     {
       label: "Classroom",
       href: "/classroom",
-      icon: School2,
+      icon: Monitor,
       className: "string",
     },
-    { label: "TimeTable", href: "/", icon: Calendar, className: "string" },
-    {
-      label: "Events",
-      href: "/",
-      icon: CalendarClockIcon,
-      className: "string",
-    },
-    { label: "Activity", href: "/", icon: Activity, className: "string" },
+    // { label: "TimeTable", href: "/", icon: Calendar, className: "string" },
+    // {
+    //   label: "Events",
+    //   href: "/",
+    //   icon: CalendarClockIcon,
+    //   className: "string",
+    // },
+    // { label: "Activity", href: "/", icon: Activity, className: "string" },
   ],
 };
 

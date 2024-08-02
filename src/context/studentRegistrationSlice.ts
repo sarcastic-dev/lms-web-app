@@ -19,7 +19,8 @@ const initialState: RegistrationState = {
 			lastName: "",
 			middleName: "",
 			phone: "",
-			role:"student"
+			role: "student",
+			instituteId: "97cb57e0-067c-4210-aba1-279fd577494e",
 		},
 		student: {
 			enrollmentId: "",

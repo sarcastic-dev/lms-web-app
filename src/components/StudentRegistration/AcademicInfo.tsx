@@ -1,11 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+
 import {
 	Form,
 	FormControl,
@@ -24,12 +23,6 @@ import {
 	TooltipTrigger,
 } from "../ui/tooltip";
 import { Separator } from "../ui/separator";
-import { DatePicker } from "antd";
-// import { setBasicInfoStudentData } from "@/context/studentRegistrationSlice";
-
-dayjs.extend(customParseFormat);
-
-const dateFormat = "YYYY-MM-DD";
 
 type AcademicInfoSchemaType = z.infer<typeof programInfoSchema>;
 
@@ -38,12 +31,12 @@ const AcademicInfoForm = ({
 }: {
 	onNext: (data: any) => void;
 }): ReactElement => {
-	const minDate = dayjs("2019-08-01", dateFormat);
-	const maxDate = dayjs().endOf("day");
+	const [hasValue, setHasValue] = useState(false);
 
-	const disabledDate = (current: any) => {
-		return current && (current < minDate || current > maxDate);
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHasValue(event.target.value !== "");
 	};
+
 	const basicInfo = useSelector(
 		(state: RootState) => state.studentRegistration.basicInfo
 	);
@@ -80,12 +73,12 @@ const AcademicInfoForm = ({
 							<FormField
 								control={form.control}
 								name='enrollmentId'
-								render={({ field }) => (
+								render={({ field, fieldState: { error } }) => (
 									<FormItem>
 										<div className=''>
 											<FormLabel
 												htmlFor='enrolmentID'
-												className='pl-1 text-blue-500 font-semibold mr-[120px]'
+												className='pl-1 mr-[120px]'
 											>
 												Enrolment ID{" "}
 												<span className='text-red-500'>
@@ -99,17 +92,21 @@ const AcademicInfoForm = ({
 												<Input
 													id='enrolmentID'
 													type='text'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
+													className={`tracking-wider pr-28 ${
+														error
+															? "border-red-500"
+															: ""
+													}`}
 													placeholder='Enrolment ID'
 													disabled={
 														viewState === "view"
 													}
 													{...field}
 												/>
-												<span className='absolute right-3 top-3.5 flex items-center space-x-2 text-gray-500'>
+												<span className='absolute right-3 top-3.5 flex items-center space-x-2 text-lmsSecondary'>
 													<Separator
 														orientation='vertical'
-														className='h-6 border-l border-gray-300'
+														className='h-6 border-l border-lmsSecondary'
 													/>
 													<TooltipProvider>
 														<Tooltip>
@@ -122,7 +119,7 @@ const AcademicInfoForm = ({
 																	@TES2097
 																</span>
 															</TooltipTrigger>
-															<TooltipContent className='text-xs text-white bg-blue-500'>
+															<TooltipContent className='text-xs text-white bg-lmsSecondary'>
 																<p>Last Used</p>
 															</TooltipContent>
 														</Tooltip>
@@ -141,7 +138,7 @@ const AcademicInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='programClass'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1'
 										>
 											Program/Class
 										</FormLabel>
@@ -149,7 +146,7 @@ const AcademicInfoForm = ({
 											<Input
 												id='programClass'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='10th/B.Tech'
 												disabled={viewState === "view"}
 												{...field}
@@ -166,7 +163,7 @@ const AcademicInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='section'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Section
 										</FormLabel>
@@ -174,7 +171,7 @@ const AcademicInfoForm = ({
 											<Input
 												id='section'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='"A"'
 												disabled={viewState === "view"}
 												{...field}
@@ -191,7 +188,7 @@ const AcademicInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='classRollNumber'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Class Roll Number
 										</FormLabel>
@@ -199,7 +196,7 @@ const AcademicInfoForm = ({
 											<Input
 												id='classRollNumber'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='Class Roll Number'
 												disabled={viewState === "view"}
 												{...field}
@@ -209,69 +206,36 @@ const AcademicInfoForm = ({
 									</FormItem>
 								)}
 							/>
-							{/* <FormField
-                                control={form.control}
-                                name='admissionDate'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel
-                                            htmlFor='admissionYear'
-                                            className='pl-1 text-blue-500 font-semibold'
-                                        >
-                                            Admission Year 
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                id='admissionYear'
-                                                type='text'
-                                                className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
-                                                placeholder='2022'
-                                                disabled={viewState === 'view'}
-                                            
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            /> */}
 							<FormField
 								control={form.control}
 								name='admissionDate'
 								render={({ field }) => (
 									<FormItem className=''>
 										<FormLabel
-											htmlFor='admissionYear'
-											className='pl-1 text-blue-500 font-semibold '
+											htmlFor='dateOfBirth'
+											className='pl-1'
 										>
-											Admission Year
+											Date of Birth
 										</FormLabel>
 										<FormControl>
-											<DatePicker
-												id='admissionYear'
-												size='small'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 text-foreground placeholder:text-gray-400'
-												format={dateFormat}
-												disabledDate={disabledDate}
+											<Input
+												{...field}
+												id='dateOfBirth'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-gray-400`}
 												disabled={viewState === "view"}
-												placeholder='Select Date'
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -285,7 +249,7 @@ const AcademicInfoForm = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='boardUniversity'
-											className='pl-1 text-blue-500 font-semibold'
+											className='pl-1 '
 										>
 											Board/University
 										</FormLabel>
@@ -293,7 +257,7 @@ const AcademicInfoForm = ({
 											<Input
 												id='boardUniversity'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:border-blue-500 placeholder:text-gray-400'
+												className='border  px-3 py-6 text-md tracking-wider '
 												placeholder='CBSE / University Name'
 												disabled={viewState === "view"}
 												{...field}

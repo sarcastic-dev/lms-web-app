@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,20 +7,27 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 210 20% 26%; /* HSL value for #334155 */
-    --foreground-rgb: 51, 65, 85; /* RGB value for #334155 */
+    --foreground: 210 20% 26%;
+    /* HSL value for #334155 */
+    --foreground-rgb: 51, 65, 85;
+    /* RGB value for #334155 */
     --card: 0 0% 100%;
-    --card-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --card-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --popover: 0 0% 100%;
-    --popover-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --popover-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --secondary-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --muted: 210 40% 96.1%;
-    --muted-foreground: 51, 65, 85; /* RGB value for #334155 */
+    --muted-foreground: 51, 65, 85;
+    /* RGB value for #334155 */
     --accent: 210 40% 96.1%;
-    --accent-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --accent-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
@@ -32,20 +41,27 @@
 
   .dark {
     --background: 222.2 84% 4.9%;
-    --foreground: 210 20% 26%; /* HSL value for #334155 */
-    --foreground-rgb: 51, 65, 85; /* RGB value for #334155 */
+    --foreground: 210 20% 26%;
+    /* HSL value for #334155 */
+    --foreground-rgb: 51, 65, 85;
+    /* RGB value for #334155 */
     --card: 222.2 84% 4.9%;
-    --card-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --card-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --popover-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --secondary-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 51, 65, 85; /* RGB value for #334155 */
+    --muted-foreground: 51, 65, 85;
+    /* RGB value for #334155 */
     --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 20% 26%; /* HSL value for #334155 */
+    --accent-foreground: 210 20% 26%;
+    /* HSL value for #334155 */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
@@ -56,21 +72,20 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-    
-    .form-label.text-red-500 {
-      color: #ef4444; /* Red color for error state */
-    }
-    
-    .form-item.has-error .form-label {
-      color: #ef4444; /* Red color for error state */
-    }
-    
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+
+  .form-label.text-red-500 {
+    color: #ef4444;
+    /* Red color for error state */
+  }
+
+  .form-item.has-error .form-label {
+    color: #ef4444;
+    /* Red color for error state */
+  }
+
 }
 
 @layer utilities {
@@ -85,12 +100,51 @@ body {
 }
 
 .hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .placeholder-custom-style::placeholder {
-  font-size: 5rem; /* Adjust the font size as needed */
+  font-size: 5rem;
+  /* Adjust the font size as needed */
   /* Add any other custom placeholder styles here */
 }
 
+/* styles.css */
+input[type="date"] {
+  position: relative;
+  font-weight: 600; /* Tailwind's font-semibold */
+  color: #9DACBE; /* Initial text color */
+}
+
+input[type="date"].has-value {
+  color: #092F5C; /* Text color after choosing a date */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+input[type="date"].has-value::-webkit-calendar-picker-indicator {
+  color: #092F5C; /* Icon color after choosing a date */
+}
+
+input[type="date"]::placeholder {
+  color: #9DACBE; /* Placeholder color */
+}
+
+/* General input styles for autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #092F5C !important;
+  font-family: 'Manrope', sans-serif !important;
+}

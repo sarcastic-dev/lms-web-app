@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const Table = React.forwardRef<
+const LmsTable = React.forwardRef<
 	HTMLTableElement,
 	React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
@@ -14,9 +14,9 @@ const Table = React.forwardRef<
 		/>
 	</div>
 ));
-Table.displayName = "Table";
+LmsTable.displayName = "LmsTable";
 
-const TableHeader = React.forwardRef<
+const LmsTableHeader = React.forwardRef<
 	HTMLTableSectionElement,
 	React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
@@ -26,9 +26,9 @@ const TableHeader = React.forwardRef<
 		{...props}
 	/>
 ));
-TableHeader.displayName = "TableHeader";
+LmsTableHeader.displayName = "LmsTableHeader";
 
-const TableBody = React.forwardRef<
+const LmsTableBody = React.forwardRef<
 	HTMLTableSectionElement,
 	React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
@@ -38,9 +38,9 @@ const TableBody = React.forwardRef<
 		{...props}
 	/>
 ));
-TableBody.displayName = "TableBody";
+LmsTableBody.displayName = "LmsTableBody";
 
-const TableFooter = React.forwardRef<
+const LmsTableFooter = React.forwardRef<
 	HTMLTableSectionElement,
 	React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
@@ -53,9 +53,9 @@ const TableFooter = React.forwardRef<
 		{...props}
 	/>
 ));
-TableFooter.displayName = "TableFooter";
+LmsTableFooter.displayName = "LmsTableFooter";
 
-const TableRow = React.forwardRef<
+const LmsTableRow = React.forwardRef<
 	HTMLTableRowElement,
 	React.HTMLAttributes<HTMLTableRowElement>
 >(({ className, ...props }, ref) => (
@@ -68,24 +68,24 @@ const TableRow = React.forwardRef<
 		{...props}
 	/>
 ));
-TableRow.displayName = "TableRow";
+LmsTableRow.displayName = "LmsTableRow";
 
-const TableHead = React.forwardRef<
+const LmsTableHead = React.forwardRef<
 	HTMLTableCellElement,
 	React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
 	<th
 		ref={ref}
 		className={cn(
-			"h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+			"h-12 px-4 text-left align-middle font-bold uppercase text-lmsBase leading-4 tracking-wider text-muted-foreground [&:has([role=checkbox])]:pr-0 text-lmsPrimary ",
 			className
 		)}
 		{...props}
 	/>
 ));
-TableHead.displayName = "TableHead";
+LmsTableHead.displayName = "LmsTableHead";
 
-const TableCell = React.forwardRef<
+const LmsTableCell = React.forwardRef<
 	HTMLTableCellElement,
 	React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
@@ -98,9 +98,9 @@ const TableCell = React.forwardRef<
 		{...props}
 	/>
 ));
-TableCell.displayName = "TableCell";
+LmsTableCell.displayName = "LmsTableCell";
 
-const TableCaption = React.forwardRef<
+const LmsTableCaption = React.forwardRef<
 	HTMLTableCaptionElement,
 	React.HTMLAttributes<HTMLTableCaptionElement>
 >(({ className, ...props }, ref) => (
@@ -110,15 +110,15 @@ const TableCaption = React.forwardRef<
 		{...props}
 	/>
 ));
-TableCaption.displayName = "TableCaption";
+LmsTableCaption.displayName = "LmsTableCaption";
 
 export {
-	Table,
-	TableHeader,
-	TableBody,
-	TableFooter,
-	TableHead,
-	TableRow,
-	TableCell,
-	TableCaption,
+	LmsTable,
+	LmsTableHeader,
+	LmsTableBody,
+	LmsTableFooter,
+	LmsTableHead,
+	LmsTableRow,
+	LmsTableCell,
+	LmsTableCaption,
 };
