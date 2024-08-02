@@ -43,14 +43,14 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     },
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const subscription = methods.watch((value) => {
       const isValid = instituteSchema.safeParse(value).success;
-      setIsButtonDisabled(!isValid);
+      // setIsButtonDisabled(!isValid);
     });
     return () => subscription.unsubscribe();
   }, [methods]);
@@ -285,7 +285,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
-                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                    className={`w-full h- text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
                       !field.value ? "text-[#9DACBE]" : ""
                     }`}
                   >
@@ -308,7 +308,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
         <Button
           className="w-full rounded bg-[#115DB8] mt-6"
           type="submit"
-          disabled={isCreating}
+          // disabled={isCreating}
         >
           {isCreating ? "Creating Institute..." : "Create Institute"}
         </Button>
