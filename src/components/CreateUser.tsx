@@ -24,21 +24,23 @@ const formSchema = z.object({
 });
 
 interface CreateProfileProps {
-  input: {
+  formData: {
     email: string;
     phone: string;
   };
-  onShowInstitute: () => void;  // Add this line to define the prop
+  setFormType: (type: string) => void;
 }
 
-const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute }) => {
-  console.log("input", input.email, input.phone);
+const CreateProfile: React.FC<CreateProfileProps> = ({
+  formData,
+  setFormType,
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: input.email,
-      phone: input.phone,
+      email: formData.email,
+      phone: formData.phone,
       password: "",
     },
   });
@@ -81,6 +83,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
         setIsCreating(false);
         setShowInstituteCreation(true);
       }, 2000);
+      setFormType("createInstitute");
     } catch (error) {
       console.error("Error creating user:", error);
       setErrorMessage("Error creating user. Please try again.");
@@ -91,9 +94,6 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
     console.log(values);
   }
 
-  if (showInstituteCreation) {
-    return <CreateInstitute userId={userId} />;
-  }
   return (
     <Form {...form}>
       <form
@@ -114,7 +114,11 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
             <FormItem>
               <FormLabel className="text-sm text-[#07254A]">Name</FormLabel>
               <FormControl>
-                <Input className="rounded" placeholder="Enter Name" {...field} />
+                <Input
+                  className="rounded"
+                  placeholder="Enter Name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -128,7 +132,11 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
             <FormItem>
               <FormLabel className="text-sm text-[#07254A]">Email ID</FormLabel>
               <FormControl>
-                <Input className="rounded" placeholder="Enter Email ID" {...field} />
+                <Input
+                  className="rounded"
+                  placeholder="Enter Email ID"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,9 +147,15 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm text-[#07254A]">Mobile No.</FormLabel>
+              <FormLabel className="text-sm text-[#07254A]">
+                Mobile No.
+              </FormLabel>
               <FormControl>
-                <Input className="rounded" placeholder="Mobile No." {...field} />
+                <Input
+                  className="rounded"
+                  placeholder="Mobile No."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -155,14 +169,23 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
             <FormItem>
               <FormLabel className="text-sm text-[#07254A]">Password</FormLabel>
               <FormControl>
-                <Input className="rounded" type="password" placeholder="Enter Password" {...field} />
+                <Input
+                  className="rounded"
+                  type="password"
+                  placeholder="Enter Password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className="w-full rounded bg-[#115DB8]" type="submit" disabled={isCreating}>
+        <Button
+          className="w-full rounded bg-[#115DB8]"
+          type="submit"
+          disabled={isCreating}
+        >
           {isCreating ? "Creating..." : "Create Account"}
         </Button>
 
@@ -175,6 +198,3 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ input, onShowInstitute })
 };
 
 export default CreateProfile;
-function setShowInstituteCreation(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

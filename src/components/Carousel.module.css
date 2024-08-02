@@ -1,0 +1,9 @@
+/* Make pagination dots white */
+.swiper-pagination-bullet {
+  background-color: white; /* Default dot color */
+}
+
+/* Make the active pagination dot white */
+.swiper-pagination-bullet-active {
+  background-color: white; /* Active dot color */
+}

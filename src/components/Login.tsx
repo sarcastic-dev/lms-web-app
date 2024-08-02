@@ -27,20 +27,26 @@ import CreateProfile from "./CreateUser";
 
 interface LoginProps {
   onShowOTP: (contact: { email: string; phone: string }) => void;
+  setFormType: (type: string) => void;
+  setFormData: (data: any) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
+const Login: React.FC<LoginProps> = ({
+  onShowOTP,
+  setFormType,
+  setFormData,
+}) => {
   const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [isClient, setIsClient] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showOTP, setShowOTP] = useState(false);
   const [showProfileCreation, setShowProfileCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [isSendingOTP, setIsSendingOTP] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -62,6 +68,10 @@ const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
     }
     setErrorMessage("");
     setIsSendingOTP(true);
+    setFormData({
+      email: emailRegex.test(emailOrPhoneNumber) ? emailOrPhoneNumber : "",
+      phone: emailRegex.test(emailOrPhoneNumber) ? "" : emailOrPhoneNumber,
+    });
 
     const userObj = emailRegex.test(emailOrPhoneNumber)
       ? { email: emailOrPhoneNumber, phone: "" }
@@ -78,7 +88,8 @@ const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
         }
       } else {
         setHasAccount(false);
-        setShowOTP(true);
+        // setShowOTP(true);
+        setFormType("otp");
       }
     } catch (error) {
       console.error("Error checking user existence:", error);
@@ -97,7 +108,7 @@ const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
     setErrorMessage("");
 
     try {
-      setIsLoading(true); // Show the loader
+      // setIsLoading(true); // Show the loader
       const { data } = await axiosInstance.post("/users/login", {
         ...(emailRegex.test(emailOrPhoneNumber)
           ? { email: emailOrPhoneNumber }
@@ -111,12 +122,12 @@ const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
       // Show loader for 5 seconds, then redirect to the dashboard
       setTimeout(() => {
         router.push("/dashboard");
-        setIsLoading(false); // Hide the loader
+        // setIsLoading(false); // Hide the loader
       }, 5000);
     } catch (error) {
       console.error("Error logging in:", error);
       setErrorMessage("Error logging in. Please try again.");
-      setIsLoading(false); // Hide the loader on error
+      // setIsLoading(false); // Hide the loader on error
     }
   };
 
@@ -134,119 +145,91 @@ const Login: React.FC<LoginProps> = ({ onShowOTP }) => {
 
   useEffect(() => {
     if (showPasswordInput) {
-      setIsButtonDisabled(password.trim() === "" || isSendingOTP);
+      // setIsButtonDisabled(password.trim() === "" || isSendingOTP);
     } else {
-      setIsButtonDisabled(emailOrPhoneNumber.trim() === "" || isSendingOTP);
+      // setIsButtonDisabled(emailOrPhoneNumber.trim() === "" || isSendingOTP);
     }
   }, [emailOrPhoneNumber, password, showPasswordInput, isSendingOTP]);
 
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(AuthSchema),
   });
+  
+
   return (
     <div>
-      {showProfileCreation ? (
-        <CreateProfile
-          input={{
-            email: emailRegex.test(emailOrPhoneNumber)
-              ? emailOrPhoneNumber
-              : "",
-            phone: phoneRegex.test(emailOrPhoneNumber)
-              ? emailOrPhoneNumber
-              : "",
-          }}
-          onShowInstitute={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      ) : showOTP ? (
-        <OTPComponent
-          input={{
-            email: emailOrPhoneNumber.includes("@") ? emailOrPhoneNumber : "",
-            phone: emailOrPhoneNumber.includes("@") ? "" : emailOrPhoneNumber,
-          }}
-          onEdit={handleEdit}
-          onShowProfile={handleOTPSubmit}
-        />
-      ) : (
-        <div className="flex flex-col sm:w-[320px] md:w-[380px] lg:w-[466px] bg-white p-8 rounded z-10">
-          <Form {...form}>
-            <form
-              onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}
-            >
-              <div>
-                <h4 className="text-2xl font-bold mb-5">Get Start New</h4>
-                <FormField
-                  control={form.control}
-                  name="email_or_phone_number"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel
-                        htmlFor="email_or_phone_number"
-                        className="pl-1 text-gray-500 text-sm"
-                      >
-                        Email or Phone Number
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative space-y-2">
-                          <Input
-                            id="email_or_phone_number"
-                            type="text"
-                            className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs mb-2 tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                            placeholder="Enter Email or Phone Number"
-                            {...field}
-                            value={emailOrPhoneNumber}
-                            onChange={(e) =>
-                              setEmailOrPhoneNumber(e.target.value)
-                            }
-                            ref={inputRef}
-                          />
-                          {showPasswordInput && (
-                            <>
-                              <FormLabel
-                                htmlFor="password"
-                                className="pl-1 text-gray-500 text-sm"
-                              >
-                                Password
-                              </FormLabel>
-                              <Input
-                                id="password"
-                                type="password"
-                                className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                              />
-                            </>
-                          )}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  className={`sm:w-[250px] md:w-[320px] lg:w-[402px] py-2 border-2 mt-5 font-semibold border-[#115DB8] rounded mb-8 ${
-                    isButtonDisabled || isSendingOTP
-                      ? "text-white bg-[#115DB8] cursor-not-allowed"
-                      : "bg-[#115DB8] text-white hover:bg-[#0f4a95]"
-                  }`}
-                  // disabled={isButtonDisabled || isSendingOTP}
-                >
-                  {isSendingOTP && !showPasswordInput
-                    ? "Sending OTP..."
-                    : showPasswordInput
-                    ? "Login"
-                    : "Submit"}
-                </Button>
-                {errorMessage && (
-                  <div className="text-red-500 mt-2">{errorMessage}</div>
+      <div className="flex flex-col sm:w-[320px] md:w-[380px] lg:w-[466px] bg-white p-8 rounded z-10">
+        <Form {...form}>
+          <form
+            onSubmit={showPasswordInput ? handlePasswordSubmit : handleSubmit}
+          >
+            <div>
+              <h4 className="text-2xl font-bold mb-5">Get Start New</h4>
+              <FormField
+                control={form.control}
+                name="email_or_phone_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel
+                      htmlFor="email_or_phone_number"
+                      className="pl-1 text-gray-500 text-sm"
+                    >
+                      Email or Phone Number
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative space-y-2">
+                        <Input
+                          id="email_or_phone_number"
+                          type="text"
+                          className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs mb-2 tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                          placeholder="Enter Email or Phone Number"
+                          {...field}
+                          value={emailOrPhoneNumber}
+                          onChange={(e) =>
+                            setEmailOrPhoneNumber(e.target.value)
+                          }
+                          ref={inputRef}
+                        />
+                        {showPasswordInput && (
+                          <>
+                            <FormLabel
+                              htmlFor="password"
+                              className="pl-1 text-gray-500 text-sm"
+                            >
+                              Password
+                            </FormLabel>
+                            <Input
+                              id="password"
+                              type="password"
+                              className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                              placeholder="Password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                          </>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </form>
-          </Form>
-        </div>
-      )}
+              />
+              <Button
+                className={`bg-[#115DB8] sm:w-[250px] md:w-[320px] lg:w-[402px] py-2 border-2 mt-5 font-semibold border-[#115DB8] rounded mb-8`}
+              >
+                {isSendingOTP && !showPasswordInput
+                  ? "Sending OTP..."
+                  : showPasswordInput
+                  ? "Login"
+                  : "Submit"}
+              </Button>
+              {errorMessage && (
+                <div className="text-red-500 mt-2">{errorMessage}</div>
+              )}
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

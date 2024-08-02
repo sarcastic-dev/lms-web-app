@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import ProfileCreation from "@/components/CreateUser";
 
 interface OTPProps {
-  onShowProfile: () => void;
+  setFormType: (type: string) => void;
   onEdit: () => void;
-  input: {
+  formData: {
     email: string;
     phone: string;
   };
 }
 
-const Otp: React.FC<OTPProps> = ({ input, onEdit, onShowProfile }) => {
+const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
   const [otp, setOTP] = useState(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(30);
   const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
@@ -50,23 +50,16 @@ const Otp: React.FC<OTPProps> = ({ input, onEdit, onShowProfile }) => {
     setTimeout(() => {
       setIsSubmitting(false); // Reset submitting state after 2 seconds
       setSubmitted(true); // Set submitted to true to render ProfileCreation component
-      onShowProfile(); // Call parent function to handle OTP submission
+      setFormType("createProfile"); // Call parent function to handle OTP submission
     }, 2000);
   };
-
-  // Render ProfileSelect component if submitted is true
-  if (submitted) {
-    return <ProfileCreation input={input} onShowInstitute={function (): void {
-      throw new Error("Function not implemented.");
-    } } />;
-  }
 
   return (
     <div className="bg-white p-8 rounded sm:w-[320px] md:w-[380px] lg:w-[466px] h-3/6 z-10">
       <h1 className="text-2xl text-start font-bold -mt-2 mb-2">Verify OTP</h1>
       <div className="flex justify-between items-center text-start mt-3 mb-8">
         <p className="text-[#07254A] text-sm">
-          OTP sent to <span>{input.email || input.phone}</span>
+          OTP sent to <span>{formData.email || formData.phone}</span>
         </p>
         <button onClick={onEdit} className="text-[#115DB8] font-semibold">
           edit
@@ -75,7 +68,7 @@ const Otp: React.FC<OTPProps> = ({ input, onEdit, onShowProfile }) => {
       <p className="text-[#07254A] mb-2 text-sm">Enter OTP</p>
 
       <form onSubmit={handleOTPSubmit} className="flex flex-col items-center">
-        <div className="flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[85px]">
+        <div className="flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[px]">
           {otp.map((digit, index) => (
             <input
               key={index}
