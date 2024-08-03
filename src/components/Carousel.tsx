@@ -5,8 +5,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-
-type FormType = "login" | "otp" | "createProfile" | "createInstitute";
+import { FormType } from "@/types";
 
 interface CarouselProps {
   formType: FormType;

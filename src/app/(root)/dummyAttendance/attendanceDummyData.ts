@@ -13,6 +13,7 @@ export interface ClassInfo {
   absent: number;
   students: Student[];
 }
+
 export const classData: ClassInfo[] = [
   {
     id: 101,

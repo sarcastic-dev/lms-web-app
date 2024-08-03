@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useState } from "react";
 import CreateInstitute from "./CreateInstitute";
+import { FormType } from "@/types";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -28,7 +29,7 @@ interface CreateProfileProps {
     email: string;
     phone: string;
   };
-  setFormType: (type: string) => void;
+  setFormType: (type: FormType) => void;
 }
 
 const CreateProfile: React.FC<CreateProfileProps> = ({

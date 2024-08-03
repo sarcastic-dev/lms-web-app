@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProfileCreation from "@/components/CreateUser";
+import { FormType } from "@/types";
 
 interface OTPProps {
-  setFormType: (type: string) => void;
+  setFormType: (type: FormType) => void;
   onEdit: () => void;
   formData: {
     email: string;

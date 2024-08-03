@@ -6,9 +6,10 @@ import Otp from "./Otp";
 import CreateProfile from "./CreateUser";
 import CreateInstitute from "./CreateInstitute";
 import Carousel from "./Carousel";
+import { FormType } from "@/types";
 
 const HomePage: React.FC = () => {
-  const [formType, setFormType] = useState("login");
+  const [formType, setFormType] = useState<FormType>("login");
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
@@ -35,7 +36,7 @@ const HomePage: React.FC = () => {
             />
           </div>
           <div className="relative flex h-screen justify-center text-white items-end text-4xl font-bold pb-10 z-50">
-            <Carousel formType={formType}/>
+            <Carousel formType={formType} />
           </div>
         </div>
         <div className="w-1/2 flex justify-center items-center">

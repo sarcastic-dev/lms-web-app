@@ -18,7 +18,7 @@ interface ExpandableTableProps<T> {
   data: T[];
   columns: Column[];
   subColumns: Column[];
-  getSubData: (row: T) => any[];
+  getSubData: (row: any) => any[];
   subSearchable?: boolean;
 }
 

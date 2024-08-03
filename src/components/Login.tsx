@@ -24,10 +24,11 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import CreateProfile from "./CreateUser";
+import { FormType } from "@/types";
 
 interface LoginProps {
   onShowOTP: (contact: { email: string; phone: string }) => void;
-  setFormType: (type: string) => void;
+  setFormType: (type: FormType) => void;
   setFormData: (data: any) => void;
 }
 
@@ -154,7 +155,6 @@ const Login: React.FC<LoginProps> = ({
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(AuthSchema),
   });
-  
 
   return (
     <div>
