@@ -84,7 +84,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
           ))}
         </div>
         <div className="flex justify-between w-full">
-          <p className="w-full text-sm">Didn't get the code?</p>
+          <p className="w-full text-sm">Didn&apos;t get the code?</p>
           <button className="text-sm font-semibold underline text-[#115DB8] mb-8">
             resend
           </button>
