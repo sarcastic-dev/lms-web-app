@@ -35,10 +35,6 @@ import { fetchStaffById, setViewState } from "@/context/staffSlice";
 import axiosInstance from "@/lib/axiosInstance";
 
 export default function Page() {
-  const [formState, setFormState] = useState(() => {
-    // Get the initial viewState from localStorage, default to 'view'
-    return localStorage.getItem("viewState") || "view";
-  });
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -55,7 +51,6 @@ export default function Page() {
   const handleToggle = () => {
     const newState = viewState === "view" ? "edit" : "view";
     dispatch(setViewState(newState));
-
   };
 
   const setStaffData = useCallback(
@@ -72,7 +67,6 @@ export default function Page() {
   useEffect(() => {
     if (id) {
       dispatch(fetchStaffById(id));
-
     }
   }, [dispatch, id]);
 
@@ -112,15 +106,11 @@ export default function Page() {
       try {
         if (viewState === "view" || viewState === "edit") {
           await axiosInstance.put(
-            
             `/staffs/${searchParams.get("id")}`,
             modifiedRegistrationData
           );
         } else {
-          await axiosInstance.post(
-            "/staffs",
-            modifiedRegistrationData
-          );
+          await axiosInstance.post("/staffs", modifiedRegistrationData);
         }
         dispatch(resetRegistrationData());
         router.push("/staffInfo");
@@ -220,149 +210,135 @@ export default function Page() {
 }
 
 function Stepper({ step }: StepperProps) {
-	const steps = [
-		{ number: 1, description: "Basic Info", icon: Info },
-		{
-			number: 2,
-			description: "Employment Details",
-			icon: BriefcaseBusiness,
-		},
-		{ number: 3, description: "Address Info", icon: LocateFixed },
-		{ number: 4, description: "Additional Details", icon: BadgePlus },
-		{ number: 5, description: "Previous Experience", icon: History },
-		{ number: 6, description: "Bank Details", icon: Landmark },
-	];
+  const steps = [
+    { number: 1, description: "Basic Info", icon: Info },
+    {
+      number: 2,
+      description: "Employment Details",
+      icon: BriefcaseBusiness,
+    },
+    { number: 3, description: "Address Info", icon: LocateFixed },
+    { number: 4, description: "Additional Details", icon: BadgePlus },
+    { number: 5, description: "Previous Experience", icon: History },
+    { number: 6, description: "Bank Details", icon: Landmark },
+  ];
 
-	return (
-		<div className='flex w-full items-center flex-wrap 2xl:gap-y-10 2xl:gap-x-4 xl:gap-y-5 xl:gap-x-4'>
-			{steps.map((s, index) => (
-				<div
-					key={s.number}
-					className='flex items-center'
-				>
-					<Step
-						step={s.number}
-						currentStep={step}
-						description={s.description}
-						icon={s.icon}
-					/>
-					{index < steps.length - 1 && (
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ delay: 0.2 }}
-							className='text-slate-400 2xl:ml-2 xl:ml-3'
-						>
-							<ChevronRight
-								color={
-									step > s.number
-										? "var(--blue-500)"
-										: "var(--slate-400)"
-								}
-							/>
-						</motion.div>
-					)}
-				</div>
-			))}
-		</div>
-	);
+  return (
+    <div className="flex w-full items-center flex-wrap 2xl:gap-y-10 2xl:gap-x-4 xl:gap-y-5 xl:gap-x-4">
+      {steps.map((s, index) => (
+        <div key={s.number} className="flex items-center">
+          <Step
+            step={s.number}
+            currentStep={step}
+            description={s.description}
+            icon={s.icon}
+          />
+          {index < steps.length - 1 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-slate-400 2xl:ml-2 xl:ml-3"
+            >
+              <ChevronRight
+                color={step > s.number ? "var(--blue-500)" : "var(--slate-400)"}
+              />
+            </motion.div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function Step({ step, currentStep, description, icon: Icon }: StepProps) {
-	let status =
-		currentStep === step
-			? "active"
-			: currentStep < step
-			? "inactive"
-			: "complete";
+  let status =
+    currentStep === step
+      ? "active"
+      : currentStep < step
+      ? "inactive"
+      : "complete";
 
-	return (
-		<motion.div
-			animate={status}
-			className='flex items-center space-x-2'
-		>
-			<motion.div
-				variants={{
-					active: {
-						scale: 1,
-						transition: {
-							delay: 0,
-							duration: 0.2,
-						},
-					},
-					complete: {
-						scale: 1.25,
-					},
-				}}
-				transition={{
-					duration: 0.6,
-					delay: 0.2,
-					type: "tween",
-					ease: "circOut",
-				}}
-				className='relative'
-			>
-				<div className='absolute inset-0 rounded-full bg-blue-200'></div>
-				<motion.div
-					initial={false}
-					variants={{
-						inactive: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--slate-200)",
-							color: "var(--slate-400)",
-						},
-						active: {
-							backgroundColor: "var(--white)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-						complete: {
-							backgroundColor: "var(--blue-500)",
-							borderColor: "var(--blue-500)",
-							color: "var(--blue-500)",
-						},
-					}}
-					transition={{ duration: 0.2 }}
-					className={`relative flex h-6 w-6 items-center justify-center rounded-full border-1 font-semibold`}
-				>
-					<div className='flex items-center justify-center'>
-						{status === "complete" ? (
-							<CheckIcon className='h-3.5 w-3.5 text-white' />
-						) : (
-							<Icon />
-						)}
-					</div>
-				</motion.div>
-			</motion.div>
+  return (
+    <motion.div animate={status} className="flex items-center space-x-2">
+      <motion.div
+        variants={{
+          active: {
+            scale: 1,
+            transition: {
+              delay: 0,
+              duration: 0.2,
+            },
+          },
+          complete: {
+            scale: 1.25,
+          },
+        }}
+        transition={{
+          duration: 0.6,
+          delay: 0.2,
+          type: "tween",
+          ease: "circOut",
+        }}
+        className="relative"
+      >
+        <div className="absolute inset-0 rounded-full bg-blue-200"></div>
+        <motion.div
+          initial={false}
+          variants={{
+            inactive: {
+              backgroundColor: "var(--white)",
+              borderColor: "var(--slate-200)",
+              color: "var(--slate-400)",
+            },
+            active: {
+              backgroundColor: "var(--white)",
+              borderColor: "var(--blue-500)",
+              color: "var(--blue-500)",
+            },
+            complete: {
+              backgroundColor: "var(--blue-500)",
+              borderColor: "var(--blue-500)",
+              color: "var(--blue-500)",
+            },
+          }}
+          transition={{ duration: 0.2 }}
+          className={`relative flex h-6 w-6 items-center justify-center rounded-full border-1 font-semibold`}
+        >
+          <div className="flex items-center justify-center">
+            {status === "complete" ? (
+              <CheckIcon className="h-3.5 w-3.5 text-white" />
+            ) : (
+              <Icon />
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
 
-			<motion.div
-				variants={{
-					complete: {
-						color: "var(--blue-500)",
-					},
-				}}
-				className={`ml-2 text-sm font-medium complete`}
-			>
-				{description}
-			</motion.div>
-		</motion.div>
-	);
+      <motion.div
+        variants={{
+          complete: {
+            color: "var(--blue-500)",
+          },
+        }}
+        className={`ml-2 text-sm font-medium complete`}
+      >
+        {description}
+      </motion.div>
+    </motion.div>
+  );
 }
 
 function CheckIcon({ className }: IconProps) {
-	return (
-		<svg
-			className={className}
-			fill='none'
-			viewBox='0 0 24 24'
-			stroke='currentColor'
-			strokeWidth={3}
-		>
-			<path
-				strokeLinecap='round'
-				strokeLinejoin='round'
-				d='M5 13l4 4L19 7'
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={3}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+  );
 }
