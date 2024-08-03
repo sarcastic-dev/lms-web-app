@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
@@ -20,6 +21,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={manrope.className}>
 				<ReduxProvider>{children}</ReduxProvider>
+				<Toaster />
 			</body>
 		</html>
 	);
