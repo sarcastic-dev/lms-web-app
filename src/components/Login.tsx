@@ -1,12 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import OTPComponent from "./Otp";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
-import { motion } from "framer-motion";
-import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,11 +19,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import CreateProfile from "./CreateUser";
+
+type FormType = "login" | "otp" | "createProfile" | "createInstitute";
 
 interface LoginProps {
   onShowOTP: (contact: { email: string; phone: string }) => void;
-  setFormType: (type: string) => void;
+  setFormType: (type: FormType) => void;
   setFormData: (data: any) => void;
 }
 
@@ -181,7 +178,7 @@ const Login: React.FC<LoginProps> = ({
                         <Input
                           id="email_or_phone_number"
                           type="text"
-                          className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs mb-2 tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                          className="tracking-wider"
                           placeholder="Enter Email or Phone Number"
                           {...field}
                           value={emailOrPhoneNumber}
@@ -215,7 +212,8 @@ const Login: React.FC<LoginProps> = ({
                 )}
               />
               <Button
-                className={`bg-[#115DB8] sm:w-[250px] md:w-[320px] lg:w-[402px] py-2 border-2 mt-5 font-semibold border-[#115DB8] rounded mb-8`}
+              variant={"lmsActive"}
+                className={` sm:w-[250px] md:w-[320px] lg:w-[402px] py-2 border-2 mt-5 font-semibold rounded mb-8`}
               >
                 {isSendingOTP && !showPasswordInput
                   ? "Sending OTP..."
