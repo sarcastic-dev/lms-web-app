@@ -8,8 +8,6 @@ import CreateInstitute from "./CreateInstitute";
 import Carousel from "./Carousel";
 import { FormType } from "@/types";
 
-type FormType = "login" | "otp" | "createProfile" | "createInstitute";
-
 const HomePage: React.FC = () => {
   const [formType, setFormType] = useState<FormType>("login");
   const [formData, setFormData] = useState({

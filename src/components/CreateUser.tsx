@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useState } from "react";
-import CreateInstitute from "./CreateInstitute";
 import { FormType } from "@/types";
 
 const formSchema = z.object({
@@ -23,8 +22,6 @@ const formSchema = z.object({
   phone: z.string().min(10, "Phone number must be at least 10 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
-
-type FormType = "login" | "otp" | "createProfile" | "createInstitute";
 
 interface CreateProfileProps {
   formData: {
