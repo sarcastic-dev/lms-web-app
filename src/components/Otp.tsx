@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "./ui/button";
 import ProfileCreation from "@/components/CreateUser";
 import { FormType } from "@/types";
 
@@ -69,7 +70,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
       <p className="text-[#07254A] mb-2 text-sm">Enter OTP</p>
 
       <form onSubmit={handleOTPSubmit} className="flex flex-col items-center">
-        <div className="flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[px]">
+        <div className="flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[80px]">
           {otp.map((digit, index) => (
             <input
               key={index}
@@ -91,13 +92,12 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
           </button>
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="sm:w-[255px] md:w-[320px] lg:w-[402px] text-white text-sm font-semibold py-[10px] rounded bg-[#115DB8] hover:bg-[#115DB8] disabled:bg-white disabled:text-[#115DB8] border-2 border-[#115DB8]"
-          disabled={otp.some((digit) => digit === "") || isSubmitting}
+          className="sm:w-[255px] md:w-[320px] lg:w-[402px] text-white text-sm font-semibold py-[10px] rounded bg-[#115DB8] hover:bg-[#115DB8]"
         >
           {isSubmitting ? "Submitting OTP..." : "Submit OTP"}
-        </button>
+        </Button>
       </form>
     </div>
   );

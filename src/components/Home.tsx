@@ -8,16 +8,18 @@ import CreateInstitute from "./CreateInstitute";
 import Carousel from "./Carousel";
 import { FormType } from "@/types";
 
+type FormType = "login" | "otp" | "createProfile" | "createInstitute";
+
 const HomePage: React.FC = () => {
   const [formType, setFormType] = useState<FormType>("login");
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
   });
-  // const [userContact, setUserContact] = useState({ email: "", phone: "" });
+  const [userId, setUserId] = useState<string | null>(null);
+
 
   const handleShowOTP = (contact: { email: string; phone: string }) => {
-    // setUserContact(contact);
     setFormType("otp");
   };
 
@@ -56,10 +58,10 @@ const HomePage: React.FC = () => {
               />
             )}
             {formType === "createProfile" && (
-              <CreateProfile setFormType={setFormType} formData={formData} />
+              <CreateProfile setFormType={setFormType} formData={formData} setUserId={setUserId} />
             )}
             {formType === "createInstitute" && (
-              <CreateInstitute userId={null} />
+              <CreateInstitute userId={userId} />
             )}
           </div>
         </div>

@@ -43,14 +43,12 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     },
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const subscription = methods.watch((value) => {
       const isValid = instituteSchema.safeParse(value).success;
-      // setIsButtonDisabled(!isValid);
     });
     return () => subscription.unsubscribe();
   }, [methods]);
@@ -78,16 +76,31 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     if (validateForm()) {
       setIsCreating(true);
 
-      try {
-        const instituteData = { ...data, userId };
+      console.log("userId used in onSubmit:", userId);
 
-        console.log("Sending request with data:", instituteData);
-        const response = await axiosInstance.post("/institutes", instituteData);
-        console.log("Institute created:", response.data);
+      try {
+        if (userId) {
+          try {
+            const response = await axiosInstance.post("/institutes", {
+              ...data,
+              userId,
+            });
+            console.log("Institute created:", response.data);
+
+            await axiosInstance.put(`/users/${userId}`, {
+              instituteId: response.data.id,
+            });
+            console.log("User updated with instituteId");
+          } catch (error) {
+            console.error("Error creating institute:", error);
+          }
+        } else {
+          console.error("userId is null");
+        }
 
         setTimeout(() => {
           setIsCreating(false);
-          router.push("/dashboard");
+          router.push("/");
         }, 2000);
       } catch (error: any) {
         console.error("Error creating institute:", error);
@@ -108,24 +121,13 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
     }
   };
 
-  // const handleInputChange =
-  //   (field: keyof InstituteSchema) =>
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     useForm({ ...form, [field]: e.target.value });
-  //   };
-
-  // const handleSelectChange =
-  //   (field: keyof InstituteSchema) => (value: string) => {
-  //     useForm({ ...form, [field]: value });
-  //   };
-
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] z-10"
+        className="bg-white sm:w-[320px] md:w-[380px] lg:w-[466px] z-10"
       >
-        <h1 className="text-2xl text-start text-[#07254A] font-bold mb-8">
+        <h1 className="text-2xl text-start text-[#07254A] font-bold mb-2">
           Create Institute
         </h1>
 
@@ -140,7 +142,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  className="rounded border-[#CED5DE] text-[#9DACBE] text-xs"
                   placeholder="Institute Name"
                   {...field}
                 />
@@ -155,14 +157,14 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           control={methods.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="mt-2"> 
+            <FormItem className="mt-2">
               <FormLabel className="text-xs text-[#07254A]">
                 Institute Type
               </FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
-                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                    className={`w-full sm:px-4 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
                       !field.value ? "text-[#9DACBE]" : ""
                     }`}
                   >
@@ -193,7 +195,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
-                    className={`w-full h-10 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                    className={`w-full sm:px-4 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
                       !field.value ? "text-[#9DACBE]" : ""
                     }`}
                   >
@@ -223,7 +225,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  className="rounded border-[#CED5DE] text-[#9DACBE] text-xs"
                   placeholder="Email Address"
                   {...field}
                 />
@@ -244,7 +246,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  className="rounded border-[#CED5DE] text-[#9DACBE] text-xs"
                   placeholder="Phone Number"
                   {...field}
                 />
@@ -265,7 +267,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="rounded h-10 border-[#CED5DE] text-[#9DACBE] text-xs"
+                  className="rounded border-[#CED5DE] text-[#9DACBE] text-xs"
                   placeholder="Institute Address"
                   {...field}
                 />
@@ -285,7 +287,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
-                    className={`w-full h- text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
+                    className={`w-full sm:px-4 text-xs font-medium border border-[#CED5DE] rounded bg-white focus:border-[#115DB8] outline-none ${
                       !field.value ? "text-[#9DACBE]" : ""
                     }`}
                   >
@@ -306,7 +308,7 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
 
         {/* Submit Button */}
         <Button
-          className="w-full rounded bg-[#115DB8] mt-6"
+          className="w-full rounded bg-[#115DB8] hover:bg-[#115DB8] mt-4"
           type="submit"
           // disabled={isCreating}
         >
@@ -318,6 +320,3 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
 };
 
 export default CreateInstitute;
-function preventDefault() {
-  throw new Error("Function not implemented.");
-}

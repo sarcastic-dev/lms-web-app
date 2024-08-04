@@ -24,17 +24,21 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+type FormType = "login" | "otp" | "createProfile" | "createInstitute";
+
 interface CreateProfileProps {
   formData: {
     email: string;
     phone: string;
   };
   setFormType: (type: FormType) => void;
+  setUserId: (id: string) => void;
 }
 
 const CreateProfile: React.FC<CreateProfileProps> = ({
   formData,
   setFormType,
+  setUserId,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,9 +51,8 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
   });
 
   const [isCreating, setIsCreating] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+
   const [errorMessage, setErrorMessage] = useState("");
-  const [showInstituteCreation, setShowInstituteCreation] = useState(false);
 
   const parseName = (name: string) => {
     const nameParts = name.trim().split(" ");
@@ -78,11 +81,11 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
         password: values.password,
         role: "admin",
       });
+      const userId = response.data.id;
       console.log("Form submitted:", response);
-      setUserId(response.data.values);
+      setUserId(userId);
       setTimeout(() => {
         setIsCreating(false);
-        setShowInstituteCreation(true);
       }, 2000);
       setFormType("createInstitute");
     } catch (error) {
@@ -104,10 +107,6 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
         <h1 className="text-2xl text-start text-[#07254A] font-bold mb-3">
           Account Details
         </h1>
-        {/* <p className="text-center text-gray-500 mb-6">
-          Please enter your details
-        </p> */}
-
         <FormField
           control={form.control}
           name="name"
@@ -182,11 +181,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
           )}
         />
 
-        <Button
-          className="w-full rounded bg-[#115DB8]"
-          type="submit"
-          disabled={isCreating}
-        >
+        <Button className="w-full rounded bg-[#115DB8]" type="submit">
           {isCreating ? "Creating..." : "Create Account"}
         </Button>
 
