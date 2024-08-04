@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-
-type FormType = "login" | "otp" | "createProfile" | "createInstitute";
+import CreateProfile from "./CreateUser";
+import { FormType } from "@/types";
 
 interface LoginProps {
   onShowOTP: (contact: { email: string; phone: string }) => void;
@@ -151,7 +151,6 @@ const Login: React.FC<LoginProps> = ({
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(AuthSchema),
   });
-  
 
   return (
     <div>
