@@ -16,7 +16,6 @@ const HomePage: React.FC = () => {
   });
   const [userId, setUserId] = useState<string | null>(null);
 
-
   const handleShowOTP = (contact: { email: string; phone: string }) => {
     setFormType("otp");
   };
@@ -27,7 +26,7 @@ const HomePage: React.FC = () => {
         <div className="w-1/2 relative h-screen">
           <div className="h-fit">
             <Image
-              src="/mainBG.png"
+              src="/MainBG.png"
               alt="Background Image"
               layout="fill"
               sizes="(max-width: 640px)"
@@ -56,7 +55,11 @@ const HomePage: React.FC = () => {
               />
             )}
             {formType === "createProfile" && (
-              <CreateProfile setFormType={setFormType} formData={formData} setUserId={setUserId} />
+              <CreateProfile
+                setFormType={setFormType}
+                formData={formData}
+                setUserId={setUserId}
+              />
             )}
             {formType === "createInstitute" && (
               <CreateInstitute userId={userId} />
