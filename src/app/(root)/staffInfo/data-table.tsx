@@ -209,13 +209,17 @@ export function DataTable<TData, TValue>({
 				</Table>
 				<div className='flex items-center justify-end py-6'>
 					<span className='text-lms-600 font-medium mr-10'>
-						<Input
-							value={`Page ${
-								table.getState().pagination.pageIndex + 1
-							} of ${table.getPageCount()}`}
-							className='w-28 disabled:text-lmsAccent disabled:border-lmsAccent rounded h-10 disabled:cursor-default'
+						<Button
+							variant={"lmsOutline"}
+							// value={`Page ${
+							// 	table.getState().pagination.pageIndex + 1
+							// } of ${table.getPageCount()}`}
+							className='w-28 disabled:text-lmsAccent disabled:border-lmsAccent rounded h-10 disabled:cursor-default disabled:border-1.5'
 							disabled
-						/>
+						>
+							Page {table.getState().pagination.pageIndex + 1} of{" "}
+							{table.getPageCount()}
+						</Button>
 					</span>
 					<div className='flex items-center space-x-2'>
 						<Button

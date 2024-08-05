@@ -23,6 +23,7 @@ const columns: ColumnDef<Teacher>[] = [
 			return (
 				<Button
 					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
 					onClick={() =>
 						column.toggleSorting(column.getIsSorted() === "asc")
 					}
@@ -35,19 +36,71 @@ const columns: ColumnDef<Teacher>[] = [
 	},
 	{
 		accessorKey: "contact",
-		header: "Contact",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Contact
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
 	},
 	{
 		accessorKey: "email",
-		header: "Email",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Email
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
 	},
 	{
 		accessorKey: "designation",
-		header: "Designation",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Designation
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
 	},
 	{
 		accessorKey: "department",
-		header: "Department",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Department
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
 	},
 	{
 		id: "actions",
