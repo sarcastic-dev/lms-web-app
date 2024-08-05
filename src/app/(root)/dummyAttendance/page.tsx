@@ -27,7 +27,7 @@ const getSubData = (classInfo: ClassInfo) => classInfo.students;
 const ClassTable = () => {
   return (
     <div className="container mx-auto p-4">
-      <ExpandableTable<ClassInfo>
+      <ExpandableTable
         data={classData}
         columns={classColumns}
         subColumns={studentColumns}

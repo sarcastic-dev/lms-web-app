@@ -6,17 +6,17 @@ import Otp from "./Otp";
 import CreateProfile from "./CreateUser";
 import CreateInstitute from "./CreateInstitute";
 import Carousel from "./Carousel";
+import { FormType } from "@/types";
 
 const HomePage: React.FC = () => {
-  const [formType, setFormType] = useState("login");
+  const [formType, setFormType] = useState<FormType>("login");
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
   });
-  // const [userContact, setUserContact] = useState({ email: "", phone: "" });
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleShowOTP = (contact: { email: string; phone: string }) => {
-    // setUserContact(contact);
     setFormType("otp");
   };
 
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
         <div className="w-1/2 relative h-screen">
           <div className="h-fit">
             <Image
-              src="/mainBG.png"
+              src="/MainBG.png"
               alt="Background Image"
               layout="fill"
               sizes="(max-width: 640px)"
@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
             />
           </div>
           <div className="relative flex h-screen justify-center text-white items-end text-4xl font-bold pb-10 z-50">
-            <Carousel formType={formType}/>
+            <Carousel formType={formType} />
           </div>
         </div>
         <div className="w-1/2 flex justify-center items-center">
@@ -55,10 +55,14 @@ const HomePage: React.FC = () => {
               />
             )}
             {formType === "createProfile" && (
-              <CreateProfile setFormType={setFormType} formData={formData} />
+              <CreateProfile
+                setFormType={setFormType}
+                formData={formData}
+                setUserId={setUserId}
+              />
             )}
             {formType === "createInstitute" && (
-              <CreateInstitute userId={null} />
+              <CreateInstitute userId={userId} />
             )}
           </div>
         </div>

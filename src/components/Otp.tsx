@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "./ui/button";
 import ProfileCreation from "@/components/CreateUser";
-import useCookie from "@/hooks/useCookie";
-import axiosInstance from "@/lib/axiosInstance";
-import { useToast } from "./ui/use-toast";
+
+import { FormType } from "@/types";
 
 interface OTPProps {
-	setFormType: (type: string) => void;
-	onEdit: () => void;
-	formData: {
-		email: string;
-		phone: string;
-	};
+  setFormType: (type: FormType) => void;
+  onEdit: () => void;
+  formData: {
+    email: string;
+    phone: string;
+  };
 }
 
 const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
@@ -133,17 +133,37 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 						resend
 					</button>
 				</div>
+      <form onSubmit={handleOTPSubmit} className="flex flex-col items-center">
+        <div className="flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[80px]">
+          {otp.map((digit, index) => (
+            <input
+              key={index}
+              id={`otp-input-${index}`}
+              type="text"
+              className="sm:w-6 sm:h-[6] md:w-8 md:h-8 lg:w-10 lg:h-10 text-center text-lg border focus:border-2 focus:border-blue-500 outline-none rounded"
+              value={digit}
+              onChange={(e) => handleOTPChange(e, index)}
+              maxLength={1}
+              autoFocus={index === 0}
+              autoComplete="off"
+            />
+          ))}
+        </div>
+        <div className="flex justify-between w-full">
+          <p className="w-full text-sm">Didn&apos;t get the code?</p>
+          <button className="text-sm font-semibold underline text-[#115DB8] mb-8">
+            resend
+          </button>
+        </div>
 
-				<button
-					type='submit'
-					className='sm:w-[255px] md:w-[320px] lg:w-[402px] text-white text-sm font-semibold py-[10px] rounded bg-[#115DB8] hover:bg-[#115DB8] disabled:bg-white disabled:text-[#115DB8] border-2 border-[#115DB8]'
-					disabled={otp.some((digit) => digit === "") || isSubmitting}
-					onClick={handleOTPSubmit}
-				>
-					{isSubmitting ? "Submitting OTP..." : "Submit OTP"}
-				</button>
-			</div>
-		</div>
-	);
+        <Button
+          type="submit"
+          className="sm:w-[255px] md:w-[320px] lg:w-[402px] text-white text-sm font-semibold py-[10px] rounded bg-[#115DB8] hover:bg-[#115DB8]"
+        >
+          {isSubmitting ? "Submitting OTP..." : "Submit OTP"}
+        </Button>
+      </form>
+    </div>
+  );
 };
 export default Otp;
