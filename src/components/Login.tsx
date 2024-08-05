@@ -1,37 +1,38 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  AuthSchema,
-  AuthSchemaType,
+	AuthSchema,
+	AuthSchemaType,
 } from "@/schema/createInstitute/AuthSchema";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import CreateProfile from "./CreateUser";
+
 import { FormType } from "@/types";
 
 interface LoginProps {
   onShowOTP: (contact: { email: string; phone: string }) => void;
   setFormType: (type: FormType) => void;
   setFormData: (data: any) => void;
+
 }
 
 const Login: React.FC<LoginProps> = ({
-  onShowOTP,
-  setFormType,
-  setFormData,
+	onShowOTP,
+	setFormType,
+	setFormData,
 }) => {
   const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
   const [password, setPassword] = useState("");

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";

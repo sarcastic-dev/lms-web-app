@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <div>Loading...</div>
+    <div className='h-screen w-full bg-white'>Loading...</div>
   )
 }
 
