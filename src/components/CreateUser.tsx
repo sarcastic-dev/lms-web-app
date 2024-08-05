@@ -48,7 +48,6 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
   });
 
   const [isCreating, setIsCreating] = useState(false);
-
   const [errorMessage, setErrorMessage] = useState("");
 
   const parseName = (name: string) => {
@@ -133,6 +132,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
                   className="rounded"
                   placeholder="Enter Email ID"
                   {...field}
+                  readOnly
                 />
               </FormControl>
               <FormMessage />
@@ -152,6 +152,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
                   className="rounded"
                   placeholder="Mobile No."
                   {...field}
+                  readOnly
                 />
               </FormControl>
               <FormMessage />
@@ -178,7 +179,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
           )}
         />
 
-        <Button className="w-full rounded bg-[#115DB8]" type="submit">
+        <Button className="w-full rounded bg-[#115DB8] hover:bg-[#115DB8]" type="submit">
           {isCreating ? "Creating..." : "Create Account"}
         </Button>
 

@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+<<<<<<< Updated upstream
 
 import { useToast } from "./ui/use-toast";
 import useCookie from "../hooks/useCookie";
 import axiosInstance from "../lib/axiosInstance";
+=======
+import { Button } from "./ui/button";
+>>>>>>> Stashed changes
 import { FormType } from "@/types";
 
 interface OTPProps {
@@ -15,6 +19,7 @@ interface OTPProps {
 }
 
 const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
+<<<<<<< Updated upstream
 	const [otp, setOTP] = useState(Array(6).fill(""));
 	const [resendTimer, setResendTimer] = useState(30);
 	const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
@@ -108,6 +113,54 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 				</button>
 			</div>
 			<p className='text-[#07254A] mb-2 text-sm'>Enter OTP</p>
+=======
+  const [otp, setOTP] = useState(Array(6).fill(""));
+  const [resendTimer, setResendTimer] = useState(30);
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleOTPChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { value } = e.target;
+    const newOTP = [...otp];
+    newOTP[index] = value.slice(0, 1);
+    setOTP(newOTP);
+
+    if (value && index < otp.length - 1) {
+      const nextInput = document.getElementById(`otp-input-${index + 1}`);
+      if (nextInput) {
+        nextInput.focus();
+      }
+    } else if (!value && index > 0) {
+      const prevInput = document.getElementById(`otp-input-${index - 1}`);
+      if (prevInput) {
+        prevInput.focus();
+      }
+    }
+  };
+
+  const handleOTPSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const otpValue = otp.join("");
+    console.log("OTP submitted:", otpValue);
+
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setFormType("createProfile");
+    }, 2000);
+  };
+>>>>>>> Stashed changes
 
 			<div className='flex flex-col items-center'>
 				<div className='flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[px]'>
