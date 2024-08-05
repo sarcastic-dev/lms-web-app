@@ -1,12 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import OTPComponent from "./Otp";
-
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
-import { motion } from "framer-motion";
-import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -81,7 +76,6 @@ const Login: React.FC<LoginProps> = ({
 				? ""
 				: emailOrPhoneNumber,
 		});
-		// console.log(emailOrPhoneNumber);
 
 		const userObj = emailRegex.test(emailOrPhoneNumber)
 			? { email: emailOrPhoneNumber, phone: "" }
@@ -133,15 +127,18 @@ const Login: React.FC<LoginProps> = ({
 					: { phone: emailOrPhoneNumber }),
 				password,
 			});
-
 			// Assuming successful login, you might want to store token or user info in state/context
-			console.log("Login successful:", data);
+			// console.log("Login successful:", data);
+			const { accessToken, refreshToken } = data;
+
+			setCookie("accessToken", accessToken, 1);
+			setCookie("refreshToken", refreshToken, 7);
 
 			// Show loader for 5 seconds, then redirect to the dashboard
-			setTimeout(() => {
-				router.push("/dashboard");
-				// setIsLoading(false); // Hide the loader
-			}, 5000);
+			// setTimeout(() => {
+			router.push("/dashboard");
+			// setIsLoading(false); // Hide the loader
+			// }, 5000);
 		} catch (error) {
 			console.error("Error logging in:", error);
 			setErrorMessage("Error logging in. Please try again.");
@@ -172,6 +169,16 @@ const Login: React.FC<LoginProps> = ({
 	const form = useForm<AuthSchemaType>({
 		resolver: zodResolver(AuthSchema),
 	});
+
+	const setCookie = (name: string, value: string, days: number) => {
+		let expires = "";
+		if (days) {
+			const date = new Date();
+			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + (value || "") + expires + "; path=/";
+	};
 
 	return (
 		<div>

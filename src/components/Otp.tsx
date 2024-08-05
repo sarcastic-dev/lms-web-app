@@ -18,7 +18,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 	const [resendTimer, setResendTimer] = useState(30);
 	const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
 	const [isSubmitting, setIsSubmitting] = useState(false); // State to track if OTP is being submitted
-	const [token, setToken] = useCookie("token");
+	const [token, setToken, deleteToken] = useCookie("token");
 	const { toast } = useToast();
 	useEffect(() => {
 		if (resendTimer > 0) {
@@ -59,6 +59,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 				otp: otpValue,
 				token,
 			});
+			deleteToken();
 			// console.log(data);
 			setTimeout(() => {
 				setIsSubmitting(false);
@@ -72,6 +73,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 				title: error.response.data.error,
 			});
 			setIsSubmitting(false);
+			deleteToken();
 		}
 	};
 
