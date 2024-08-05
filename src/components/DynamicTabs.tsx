@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/lms-tabs";
 import { TabConfig } from "@/config/tabConfigurations";
 import { useDispatch, useSelector } from "react-redux";
 import {
