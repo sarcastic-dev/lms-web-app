@@ -1,10 +1,6 @@
 "use client";
 import React, { ReactElement, useState } from "react";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useForm } from "react-hook-form";
 import {
 	Form,
@@ -21,20 +17,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
-dayjs.extend(customParseFormat);
-
-const dateFormat = "YYYY-MM-DD";
-
 const PreviousExperience = ({
 	onNext,
 }: {
 	onNext: (data: any) => void;
 }): ReactElement => {
-	const minDate = dayjs("2019-08-01", dateFormat);
-	const maxDate = dayjs().endOf("day");
-
-	const disabledDate = (current: any) => {
-		return current && (current < minDate || current > maxDate);
+	const [hasValue, setHasValue] = useState(false);
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHasValue(event.target.value !== "");
 	};
 
 	const previousExperienceInfo = useSelector(
@@ -60,7 +50,7 @@ const PreviousExperience = ({
 	const { viewState } = useSelector((state: RootState) => state.staff);
 
 	return (
-		<div className='flex justify-center my-8'>
+		<div className='flex justify-center mt-8'>
 			<div className='w-full tracking-wide'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
@@ -72,7 +62,7 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='institute_name'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Institute Name
 										</FormLabel>
@@ -80,7 +70,7 @@ const PreviousExperience = ({
 											<Input
 												id='institute_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Previous Institute Name'
 												disabled={viewState === "view"}
 												{...field}
@@ -97,7 +87,7 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='job_title'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Job Title
 										</FormLabel>
@@ -105,7 +95,7 @@ const PreviousExperience = ({
 											<Input
 												id='job_title'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Previous Job Title'
 												disabled={viewState === "view"}
 												{...field}
@@ -122,36 +112,29 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='join_date'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Joining Date
 										</FormLabel>
 										<FormControl>
-											<DatePicker
+											<Input
+												{...field}
 												id='join_date'
-												size='small'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-lms-400`}
 												disabled={viewState === "view"}
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -165,36 +148,29 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='relieving_date'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Relieving Date
 										</FormLabel>
 										<FormControl>
-											<DatePicker
+											<Input
+												{...field}
 												id='relieving_date'
-												size='small'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-lms-400`}
 												disabled={viewState === "view"}
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -208,7 +184,7 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='location'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Location
 										</FormLabel>
@@ -216,7 +192,7 @@ const PreviousExperience = ({
 											<Input
 												id='location'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Previous Institute Location'
 												disabled={viewState === "view"}
 												{...field}
@@ -233,7 +209,7 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='ref_name'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Reference Name
 										</FormLabel>
@@ -241,7 +217,7 @@ const PreviousExperience = ({
 											<Input
 												id='ref_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Reference Name'
 												disabled={viewState === "view"}
 												{...field}
@@ -258,7 +234,7 @@ const PreviousExperience = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='reference_mobile_number'
-											className='pl-1 text-blue-500 font-semibold'
+											className=''
 										>
 											Reference Mobile Number{" "}
 										</FormLabel>
@@ -267,14 +243,14 @@ const PreviousExperience = ({
 												<Input
 													id='reference_mobile_number'
 													type='tel'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
+													className=' pl-11'
 													placeholder='Mobile Number'
 													disabled={
 														viewState === "view"
 													}
 													{...field}
 												/>
-												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-lms-700 font-semibold'>
 													<span>+91-</span>
 												</span>
 											</div>

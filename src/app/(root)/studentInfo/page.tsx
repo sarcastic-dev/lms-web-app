@@ -183,7 +183,7 @@ const Page = () => {
 						</DialogContent>
 					</Dialog>
 
-					<Link href={"/students?userType=student"}>
+					<Link href={"/users?userType=student"}>
 						<Button
 							variant={"lms"}
 							size={"lms"}

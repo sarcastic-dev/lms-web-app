@@ -180,7 +180,7 @@ const Page = () => {
 						</DialogContent>
 					</Dialog>
 
-					<Link href={"/staffs?userType=staff"}>
+					<Link href={"/users?userType=staff"}>
 						<Button
 							variant={"lms"}
 							size={"lms"}

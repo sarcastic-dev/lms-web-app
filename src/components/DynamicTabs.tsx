@@ -1,5 +1,10 @@
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/lms-tabs";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/ui/lms-tabs";
 import { TabConfig } from "@/config/tabConfigurations";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,15 +13,22 @@ import {
 	setParentInfoData,
 	setAddressInfoData,
 	setMedicalInfoData,
-	resetRegistrationData,
+	resetRegistrationData as resetStudentData,
 } from "@/context/studentRegistrationSlice";
+import {
+	setAddressInfoData as setStaffAddress,
+	setAdditionalDetailsData,
+	setPreviousExperienceData,
+	setBankDetailsData,
+	resetRegistrationData,
+	setBasicInfoUserDetailData,
+	setBasicInfoStaffData,
+} from "@/context/staffRegistrationSlice";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/context/store";
 import { Button } from "./ui/button";
-// import activeIcon from "/active.png"; // Replace with actual path
-// import completeIcon from "/Complete.png";
-import { CircleDashed } from "lucide-react"; // Use default icon
+import { CircleDashed } from "lucide-react";
 import Image from "next/image";
 
 type DynamicTabsProps = {
@@ -25,6 +37,7 @@ type DynamicTabsProps = {
 	onTabChange: (value: string) => void;
 	step: number;
 	setStep: (step: number) => void;
+	userType: "student" | "staff";
 };
 
 const DynamicTabs: React.FC<DynamicTabsProps> = ({
@@ -33,12 +46,16 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 	onTabChange,
 	step,
 	setStep,
+	userType,
 }) => {
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const [loading, setLoading] = React.useState(false);
 	const registrationData = useSelector(
 		(state: RootState) => state.studentRegistration
+	);
+	const registrationStaffData = useSelector(
+		(state: RootState) => state.staffRegistration
 	);
 	const [completedSteps, setCompletedSteps] = React.useState<number[]>([]);
 
@@ -49,70 +66,118 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 	const formatLabel = (label: string) => label.replace(/^\d+\.\s*/, "");
 
 	const handleNext = async (data: any) => {
-		// Dispatch appropriate actions based on the step
-		if (step === 1) {
-			dispatch(setBasicInfoUserData(data));
-		} else if (step === 2) {
-			dispatch(setBasicInfoStudentData(data));
-		} else if (step === 3) {
-			dispatch(setParentInfoData(data));
-		} else if (step === 4) {
-			dispatch(setAddressInfoData(data));
-		} else if (step === 5) {
-			dispatch(setMedicalInfoData(data));
-		} else if (step === 6) {
-			setLoading(true);
+		if (userType === "student") {
+			if (step === 1) {
+				dispatch(setBasicInfoUserData(data));
+			} else if (step === 2) {
+				dispatch(setBasicInfoStudentData(data));
+			} else if (step === 3) {
+				dispatch(setParentInfoData(data));
+			} else if (step === 4) {
+				dispatch(setStaffAddress(data));
+			} else if (step === 5) {
+				dispatch(setMedicalInfoData(data));
+			} else if (step === 6) {
+				setLoading(true);
 
-			const modifiedRegistrationData = {
-				...registrationData,
-				basicInfo: {
-					...registrationData?.basicInfo,
-					student: {
-						...registrationData?.basicInfo?.student,
-						rollNumber: Number(
-							registrationData?.basicInfo?.student?.rollNumber
+				const modifiedRegistrationData = {
+					...registrationData,
+					basicInfo: {
+						...registrationData?.basicInfo,
+						student: {
+							...registrationData?.basicInfo?.student,
+							rollNumber: Number(
+								registrationData?.basicInfo?.student?.rollNumber
+							),
+						},
+					},
+					medicalInfo: {
+						...registrationData.medicalInfo,
+						weightKg: Number(registrationData.medicalInfo.weightKg),
+						heightCm: Number(registrationData.medicalInfo.heightCm),
+						bmi: Number(registrationData.medicalInfo.bmi),
+						pulseRate: Number(
+							registrationData.medicalInfo.pulseRate
+						),
+						haemoglobin: Number(
+							registrationData.medicalInfo.haemoglobin
 						),
 					},
-				},
-				medicalInfo: {
-					...registrationData.medicalInfo,
-					weightKg: Number(registrationData.medicalInfo.weightKg),
-					heightCm: Number(registrationData.medicalInfo.heightCm),
-					bmi: Number(registrationData.medicalInfo.bmi),
-					pulseRate: Number(registrationData.medicalInfo.pulseRate),
-					haemoglobin: Number(
-						registrationData.medicalInfo.haemoglobin
-					),
-				},
-			};
+				};
 
-			try {
-				console.log(
-					"Submitting registration data:",
-					modifiedRegistrationData
-				);
-				const studentId = new URLSearchParams(
-					window.location.search
-				).get("id");
-				if (studentId) {
-					await axiosInstance.put(
-						`http://16.170.155.154:3300/api/students/${studentId}`,
-						modifiedRegistrationData
-					);
-				} else {
-					await axiosInstance.post(
-						"http://16.170.155.154:3300/api/students",
-						modifiedRegistrationData
-					);
+				try {
+					const studentId = new URLSearchParams(
+						window.location.search
+					).get("id");
+					if (studentId) {
+						await axiosInstance.put(
+							`http://16.170.155.154:3300/api/students/${studentId}`,
+							modifiedRegistrationData
+						);
+					} else {
+						await axiosInstance.post(
+							"http://16.170.155.154:3300/api/students",
+							modifiedRegistrationData
+						);
+					}
+					dispatch(resetStudentData());
+					router.push("/studentInfo");
+				} catch (error) {
+					console.error("Failed to submit registration data:", error);
+				} finally {
+					setLoading(false);
 				}
-				dispatch(resetRegistrationData());
-				router.push("/studentInfo");
-			} catch (error) {
-				console.error("Failed to submit registration data:", error);
-			} finally {
-				setLoading(false);
+				return;
 			}
-			return;
+		} else if (userType === "staff") {
+			if (step === 1) {
+				dispatch(setBasicInfoUserDetailData(data));
+			} else if (step === 2) {
+				dispatch(setBasicInfoStaffData(data));
+			} else if (step === 3) {
+				dispatch(setAddressInfoData(data));
+			} else if (step === 4) {
+				dispatch(setAdditionalDetailsData(data));
+			} else if (step === 5) {
+				dispatch(setPreviousExperienceData(data));
+			} else if (step === 6) {
+				dispatch(setBankDetailsData(data));
+			} else if (step === 7) {
+				setLoading(true);
+				const modifiedRegistrationData = {
+					...registrationStaffData,
+					basicInfo: {
+						...registrationStaffData.basicInfo,
+						staff: {
+							...registrationStaffData.basicInfo.staff,
+							experienceYears: Number(
+								registrationStaffData.basicInfo.staff
+									?.experienceYears
+							),
+						},
+					},
+				};
+				try {
+					// if (viewState === "view" || viewState === "edit") {
+					// 	await axiosInstance.put(
+					// 		`/staffs/${searchParams.get("id")}`,
+					// 		modifiedRegistrationData
+					// 	);
+					// } else {
+					await axiosInstance.post(
+						"/staffs",
+						modifiedRegistrationData
+					);
+					// }
+					dispatch(resetRegistrationData());
+					router.push("/staffInfo");
+				} catch (error) {
+					console.error("Failed to submit registration data:", error);
+				} finally {
+					setLoading(false);
+				}
+				return;
+			}
 		}
 
 		const currentIndex = config.findIndex((tab) => tab.value === activeTab);

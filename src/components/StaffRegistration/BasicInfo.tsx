@@ -1,10 +1,6 @@
 "use client";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Input } from "../ui/input";
-
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
 	Select,
 	SelectContent,
@@ -31,10 +27,6 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 
-dayjs.extend(customParseFormat);
-
-const dateFormat = "YYYY-MM-DD";
-
 const BasicInfo = ({
 	onNext,
 }: {
@@ -43,11 +35,9 @@ const BasicInfo = ({
 	const basicStaffInfo = useSelector(
 		(state: RootState) => state.staffRegistration.basicInfo
 	);
-	const minDate = dayjs("2019-08-01", dateFormat);
-	const maxDate = dayjs().endOf("day");
-
-	const disabledDate = (current: any) => {
-		return current && (current < minDate || current > maxDate);
+	const [hasValue, setHasValue] = useState(false);
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHasValue(event.target.value !== "");
 	};
 	const { viewState } = useSelector((state: RootState) => state.staff);
 
@@ -86,12 +76,9 @@ const BasicInfo = ({
 								name='phone'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='employee_mobile_number'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='employee_mobile_number'>
 											Employee Mobile Number{" "}
-											<span className='text-red-500'>
+											<span className='text-lmsError'>
 												*
 											</span>
 										</FormLabel>
@@ -100,14 +87,14 @@ const BasicInfo = ({
 												<Input
 													id='employee_mobile_number'
 													type='tel'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
+													className='pl-11 '
 													placeholder='Mobile Number'
 													disabled={
 														viewState === "view"
 													}
 													{...field}
 												/>
-												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-lms-700 font-semibold'>
 													<span>+91-</span>
 												</span>
 											</div>
@@ -121,10 +108,7 @@ const BasicInfo = ({
 								name='email'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='emailID'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='emailID'>
 											Employee Email ID{" "}
 											<span className='text-red-500'>
 												*
@@ -134,7 +118,7 @@ const BasicInfo = ({
 											<Input
 												id='emailID'
 												type='email'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Email ID'
 												disabled={viewState === "view"}
 												{...field}
@@ -150,10 +134,7 @@ const BasicInfo = ({
 								name='firstName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='first_name'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='first_name'>
 											First Name{" "}
 											<span className='text-red-500'>
 												*
@@ -163,7 +144,7 @@ const BasicInfo = ({
 											<Input
 												id='first_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='First Name'
 												disabled={viewState === "view"}
 												{...field}
@@ -178,17 +159,14 @@ const BasicInfo = ({
 								name='middleName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='middle_name'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='middle_name'>
 											Middle Name
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='middle_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Middle Name'
 												disabled={viewState === "view"}
 												{...field}
@@ -203,17 +181,14 @@ const BasicInfo = ({
 								name='lastName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='last_name'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='last_name'>
 											Last Name
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='last_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Last Name'
 												disabled={viewState === "view"}
 												{...field}
@@ -228,38 +203,28 @@ const BasicInfo = ({
 								name='dob'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='dob'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='dob'>
 											Date Of Birth
 										</FormLabel>
 										<FormControl>
-											<DatePicker
+											<Input
+												{...field}
 												id='dob'
-												size='middle'
-												className='border w-full border-gray-300 px-3 py-[12px] rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 text-foreground placeholder:text-gray-400 disabled:bg-black'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-lms-400`}
 												disabled={viewState === "view"}
-												onChange={(date) => {
-													field.onChange(
-														date
-															? date.format(
-																	dateFormat
-															  )
-															: ""
-													);
-												}}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -271,10 +236,7 @@ const BasicInfo = ({
 								name='gender'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='gender'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='gender'>
 											Gender
 										</FormLabel>
 										<FormControl>
@@ -284,9 +246,9 @@ const BasicInfo = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
@@ -324,10 +286,7 @@ const BasicInfo = ({
 								name='bloodGroup'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='bloodGroup'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='bloodGroup'>
 											Blood Group
 										</FormLabel>
 										<FormControl>
@@ -337,9 +296,9 @@ const BasicInfo = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
@@ -378,10 +337,7 @@ const BasicInfo = ({
 								name='role'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='userRole'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='userRole'>
 											Role{" "}
 											<span className='text-red-500'>
 												*
@@ -394,9 +350,9 @@ const BasicInfo = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`border w-full border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
