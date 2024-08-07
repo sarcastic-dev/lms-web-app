@@ -179,7 +179,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
           )}
         />
 
-        <Button className="w-full rounded bg-[#115DB8] hover:bg-[#115DB8]" type="submit">
+        <Button variant={"lmsActive"} className="w-full" type="submit">
           {isCreating ? "Creating..." : "Create Account"}
         </Button>
 

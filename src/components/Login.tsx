@@ -171,7 +171,7 @@ const Login: React.FC<LoginProps> = ({
                         <Input
                           id="email_or_phone_number"
                           type="text"
-                          className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs mb-2 tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                          className="sm:w-[250px] md:w-[320px] lg:w-[402px]"
                           placeholder="Enter Email"
                           {...field}
                           value={emailOrPhoneNumber}
@@ -191,7 +191,7 @@ const Login: React.FC<LoginProps> = ({
                             <Input
                               id="password"
                               type="password"
-                              className="border rounded sm:w-[250px] md:w-[320px] lg:w-[402px] border-gray-300 py-4 text-xs tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                              className="sm:w-[250px] md:w-[320px] lg:w-[402px]"
                               placeholder="Password"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
@@ -206,7 +206,7 @@ const Login: React.FC<LoginProps> = ({
               />
               <Button
                 variant={"lmsActive"}
-                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] py-2 border-2 mt-5 font-semibold rounded mb-8`}
+                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mt-5 mb-8`}
               >
                 {isSendingOTP && !showPasswordInput
                   ? "Sending OTP..."
