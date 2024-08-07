@@ -131,7 +131,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           Create Institute
         </h1>
 
-        {/* Institute Name */}
         <FormField
           control={methods.control}
           name="name"
@@ -152,7 +151,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Institute Type Selection */}
         <FormField
           control={methods.control}
           name="type"
@@ -183,7 +181,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Academic Board Selection */}
         <FormField
           control={methods.control}
           name="boardUniversity"
@@ -214,7 +211,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Email Address */}
         <FormField
           control={methods.control}
           name="email"
@@ -235,7 +231,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Phone Number */}
         <FormField
           control={methods.control}
           name="phone"
@@ -256,7 +251,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Institute Address */}
         <FormField
           control={methods.control}
           name="address"
@@ -277,7 +271,6 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* City Selection */}
         <FormField
           control={methods.control}
           name="city"
@@ -306,11 +299,9 @@ const CreateInstitute: React.FC<CreateInstituteProps> = ({ userId }) => {
           )}
         />
 
-        {/* Submit Button */}
         <Button
-          className="w-full rounded bg-[#115DB8] hover:bg-[#115DB8] mt-4"
+          className="w-full mt-4"
           type="submit"
-          // disabled={isCreating}
         >
           {isCreating ? "Creating Institute..." : "Create Institute"}
         </Button>
