@@ -4,7 +4,9 @@ import { Input } from "../ui/input";
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
@@ -73,7 +75,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='aadhar_number'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Aadhar Number
 										</FormLabel>
@@ -81,7 +82,7 @@ const AdditionalDetails = ({
 											<Input
 												id='aadhar_number'
 												type='number'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='98765432XXXXX'
 												disabled={viewState === "view"}
 												{...field}
@@ -98,7 +99,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='pan_number'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											PAN Number
 										</FormLabel>
@@ -106,7 +106,7 @@ const AdditionalDetails = ({
 											<Input
 												id='pan_number'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='GLDH432XXXXX'
 												disabled={viewState === "view"}
 												{...field}
@@ -123,7 +123,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='religion'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Religion
 										</FormLabel>
@@ -134,9 +133,9 @@ const AdditionalDetails = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`w-full border h-14 text-md tracking-wider border-gray-300 focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
@@ -149,19 +148,27 @@ const AdditionalDetails = ({
 														}
 													/>
 												</SelectTrigger>
+
 												<SelectContent className='bg-white text-md tracking-wider'>
-													{Religion.map(
-														(option, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	option.value
-																}
-															>
-																{option.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Select Religion
+														</SelectLabel>
+														{Religion.map(
+															(option, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		option.value
+																	}
+																>
+																	{
+																		option.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -176,7 +183,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='category'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Category
 										</FormLabel>
@@ -187,9 +193,9 @@ const AdditionalDetails = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`w-full border h-14 text-md tracking-wider border-gray-300 focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
@@ -203,18 +209,25 @@ const AdditionalDetails = ({
 													/>
 												</SelectTrigger>
 												<SelectContent className='bg-white text-md tracking-wider'>
-													{Category.map(
-														(option, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	option.value
-																}
-															>
-																{option.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Select Categories
+														</SelectLabel>
+														{Category.map(
+															(option, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		option.value
+																	}
+																>
+																	{
+																		option.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -229,7 +242,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='marital_status'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Marital Status
 										</FormLabel>
@@ -240,28 +252,27 @@ const AdditionalDetails = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`w-full border h-14 text-md tracking-wider border-gray-300 focus:to-blue-500 focus:border-blue-500 ${
+													className={`border w-ful tracking-wider ${
 														!field.value
-															? "text-gray-400"
+															? "text-lms-300 font-medium"
 															: ""
 													}`}
 												>
-													<SelectValue
-														placeholder='Select Marital Status'
-														className={
-															!field.value
-																? "text-gray-400"
-																: ""
-														}
-													/>
+													<SelectValue placeholder='Select Marital Status' />
 												</SelectTrigger>
-												<SelectContent className='bg-white text-md tracking-wider'>
-													<SelectItem value='unmarried'>
-														Unmarried
-													</SelectItem>
-													<SelectItem value='married'>
-														Married
-													</SelectItem>
+												<SelectContent className=''>
+													<SelectGroup>
+														<SelectLabel>
+															Select Status
+														</SelectLabel>
+
+														<SelectItem value='unmarried'>
+															Unmarried
+														</SelectItem>
+														<SelectItem value='married'>
+															Married
+														</SelectItem>
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -276,7 +287,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='father_name'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Father Name
 										</FormLabel>
@@ -284,7 +294,7 @@ const AdditionalDetails = ({
 											<Input
 												id='father_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -301,7 +311,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='mother_name'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Mother Name
 										</FormLabel>
@@ -309,7 +318,7 @@ const AdditionalDetails = ({
 											<Input
 												id='mother_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -326,7 +335,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='spouse_name'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Spouse Name
 										</FormLabel>
@@ -334,7 +342,7 @@ const AdditionalDetails = ({
 											<Input
 												id='spouse_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -351,7 +359,6 @@ const AdditionalDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='emergency_mobile_number'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Emergency Mobile Number
 										</FormLabel>
@@ -360,14 +367,14 @@ const AdditionalDetails = ({
 												<Input
 													id='emergency_mobile_number'
 													type='tel'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 pl-10 placeholder:text-gray-400'
+													className=' pl-11 '
 													placeholder='Mobile Number'
 													disabled={
 														viewState === "view"
 													}
 													{...field}
 												/>
-												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-gray-500'>
+												<span className='absolute left-3 top-[15px] flex items-center space-x-2 text-lms-700 font-semibold'>
 													<span>+91-</span>
 												</span>
 											</div>

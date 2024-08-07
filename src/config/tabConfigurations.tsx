@@ -138,7 +138,7 @@ export const staffTabs: TabConfig[] = [
 	},
 	{
 		value: "bank-info",
-		label: "5. Bank Info",
+		label: "6. Bank Info",
 		icon: CircleDashed,
 		component: dynamic(
 			() => import("@/components/StaffRegistration/BankDetails"),
@@ -146,5 +146,16 @@ export const staffTabs: TabConfig[] = [
 		),
 		strokeWidth: 1,
 		step: 6,
+	},
+	{
+		value: "review",
+		label: "7. Review & Submit",
+		icon: CircleDashed,
+		component: dynamic(
+			() => import("@/components/StaffRegistration/Review"), // Create this component
+			{ loading: () => <Loading /> }
+		),
+		strokeWidth: 1,
+		step: 7,
 	},
 ];

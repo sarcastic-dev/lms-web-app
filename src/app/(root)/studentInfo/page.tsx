@@ -13,7 +13,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import columns from "./columns";
-import { DataTable } from "./data-table";
+
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import axiosInstance from "@/lib/axiosInstance";
@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { resetStudentData, setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
+import { DataTable } from "@/components/LmsDataTable";
 
 const Page = () => {
 	const [data, setData] = useState([]);
@@ -182,7 +183,7 @@ const Page = () => {
 						</DialogContent>
 					</Dialog>
 
-					<Link href={"/students?userType=student"}>
+					<Link href={"/users?userType=student"}>
 						<Button
 							variant={"lms"}
 							size={"lms"}

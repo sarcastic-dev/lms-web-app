@@ -57,17 +57,13 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 								name='bankName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='bank_name'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='bank_name'>
 											Bank Name
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='bank_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='ABC Bank'
 												disabled={viewState === "view"}
 												{...field}
@@ -82,17 +78,13 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 								name='bankAccountNumber'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='account_no'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='account_no'>
 											Bank Account Number
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='account_no'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='9898 98XXXX 98XXXX'
 												disabled={viewState === "view"}
 												{...field}
@@ -107,17 +99,13 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 								name='ifscCode'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='ifsc_code'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='ifsc_code'>
 											IFSC Code
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='ifsc_code'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='ABC0909021'
 												disabled={viewState === "view"}
 												{...field}
@@ -132,17 +120,13 @@ const BankDetails = ({ onNext }: { onNext: (data: any) => void }) => {
 								name='accountHolderName'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='holder_name'
-											className='pl-1 text-blue-500 font-semibold'
-										>
+										<FormLabel htmlFor='holder_name'>
 											Account Holder&apos;s Name
 										</FormLabel>
 										<FormControl>
 											<Input
 												id='holder_name'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
 												placeholder='John Doe'
 												disabled={viewState === "view"}
 												{...field}

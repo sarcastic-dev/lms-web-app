@@ -63,7 +63,8 @@ export function DataTable<TData, TValue>({
 	if (isLoading) {
 		return (
 			<div className=''>
-				<div className='flex items-center py-4 px-4'>
+				<div className='flex items-center justify-between py-4 px-4 '>
+					<Skeleton className="h-8 w-64"/>
 					<Skeleton className='h-10 w-80' />
 				</div>
 				<Table className='w-full text-left border-collapse'>
@@ -72,7 +73,7 @@ export function DataTable<TData, TValue>({
 							{columns.map((_, index) => (
 								<TableHead
 									key={index}
-									className='px-4 py-2 font-semibold text-gray-700 text-left border-r border-gray-300'
+									className='px-4 py-2 font-semibold text-gray-700 text-left '
 								>
 									<Skeleton className='h-5 w-36' />
 								</TableHead>
@@ -93,7 +94,7 @@ export function DataTable<TData, TValue>({
 									{columns.map((_, colIndex) => (
 										<TableCell
 											key={colIndex}
-											className='px-6 py-3 border-b border-gray-200 h-16 text-left border-r'
+											className='px-6 py-3 border border-gray-200 h-16 text-left'
 										>
 											<Skeleton className='h-5 w-full' />
 										</TableCell>
@@ -103,7 +104,7 @@ export function DataTable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
-				<div className='flex items-center justify-end space-x-2 py-4 px-5'>
+				<div className='flex items-center justify-end space-x-2 py-4 px-5 border border-t-0'>
 					<Skeleton className='h-8 w-20' />
 					<Skeleton className='h-8 w-20' />
 				</div>

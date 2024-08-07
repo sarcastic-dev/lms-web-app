@@ -251,7 +251,7 @@ const BasicInfo = ({
 												type='date'
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
-												} border tracking-wider placeholder:text-gray-400`}
+												} border tracking-wider placeholder:text-lms-400`}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
 												onClick={(

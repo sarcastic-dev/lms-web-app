@@ -36,6 +36,7 @@ const Page: React.FC = () => {
 					onTabChange={setActiveTab}
 					step={step}
 					setStep={setStep}
+					userType={userType}
 				/>
 			)}
 		</div>

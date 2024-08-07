@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "../ui/label";
@@ -13,7 +13,9 @@ import { Separator } from "../ui/separator";
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
@@ -29,15 +31,8 @@ import {
 import { Button } from "../ui/button";
 import employmentSchema from "@/schema/staffRegistrationSchema/employmentSchemaStaff";
 import { EmploymentStaffSchemaType } from "@/schema/staffRegistrationSchema/employmentSchemaStaff";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
-
-dayjs.extend(customParseFormat);
-
-const dateFormat = "YYYY-MM-DD";
 
 const EmploymentDetails = ({
 	onNext,
@@ -69,16 +64,13 @@ const EmploymentDetails = ({
 		},
 	});
 
-	const minDate = dayjs("2019-08-01", dateFormat);
-	const maxDate = dayjs().endOf("day");
-
-	const disabledDate = (current: any) => {
-		return current && (current < minDate || current > maxDate);
+	const [hasValue, setHasValue] = useState(false);
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHasValue(event.target.value !== "");
 	};
 
 	const onSubmit = (value: EmploymentStaffSchemaType) => {
 		onNext(value);
-		// console.log(value);
 	};
 	// const { staffData } = useSelector((state: RootState) => state.staff);
 
@@ -98,7 +90,7 @@ const EmploymentDetails = ({
 										<div className=''>
 											<FormLabel
 												htmlFor='employeeID'
-												className='pl-1 text-blue-500 font-semibold'
+	
 											>
 												Employee ID{" "}
 												<span className='text-red-500'>
@@ -111,17 +103,17 @@ const EmploymentDetails = ({
 												<Input
 													id='employeeID'
 													type='text'
-													className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400 pr-28'
+													className='pr-28'
 													placeholder='Employee ID'
 													disabled={
 														viewState === "view"
 													}
 													{...field}
 												/>
-												<span className='absolute right-3 top-3 flex items-center space-x-2 text-gray-500'>
+												<span className='absolute right-3 top-3 flex items-center space-x-2 text-lms-500'>
 													<Separator
 														orientation='vertical'
-														className='h-6 border-l border-gray-300'
+														className='h-6 border-l border-lmsSecondary'
 													/>
 
 													<TooltipProvider>
@@ -131,11 +123,11 @@ const EmploymentDetails = ({
 																	e.preventDefault()
 																}
 															>
-																<span>
+																<span className='text-lmsSecondary'>
 																	@TES2097
 																</span>
 															</TooltipTrigger>
-															<TooltipContent className='text-xs text-white bg-blue-500'>
+															<TooltipContent className='text-xs text-white bg-lmsSecondary'>
 																<p>Last Used</p>
 															</TooltipContent>
 														</Tooltip>
@@ -154,7 +146,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='job_title'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Job Title
 										</FormLabel>
@@ -162,7 +154,7 @@ const EmploymentDetails = ({
 											<Input
 												id='job_title'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Primary Teacher'
 												disabled={viewState === "view"}
 												{...field}
@@ -179,7 +171,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='employment_type'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Employment Type
 										</FormLabel>
@@ -187,7 +179,7 @@ const EmploymentDetails = ({
 											<Input
 												id='employment_type'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Full-Time'
 												disabled={viewState === "view"}
 												{...field}
@@ -204,7 +196,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='designation'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Designation
 										</FormLabel>
@@ -216,27 +208,34 @@ const EmploymentDetails = ({
 											>
 												<SelectTrigger
 													id='designation'
-													className={`border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
-														field.value
-															? "text-gray-700"
-															: "text-gray-400"
+													className={`border w-ful tracking-wider ${
+														!field.value
+															? "text-lms-300 font-medium"
+															: ""
 													}`}
 												>
 													<SelectValue placeholder='Select Role' />
 												</SelectTrigger>
 												<SelectContent className='text-gray-700'>
-													{Designation.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Select Designation
+														</SelectLabel>
+														{Designation.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -251,7 +250,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='department'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Department
 										</FormLabel>
@@ -263,27 +262,34 @@ const EmploymentDetails = ({
 											>
 												<SelectTrigger
 													id='department'
-													className={`border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
-														field.value
-															? "text-gray-700"
-															: "text-gray-400"
+													className={`border w-ful tracking-wider ${
+														!field.value
+															? "text-lms-300 font-medium"
+															: ""
 													}`}
 												>
 													<SelectValue placeholder='Select Department' />
 												</SelectTrigger>
 												<SelectContent className='text-gray-700'>
-													{Department.map(
-														(item, index) => (
-															<SelectItem
-																key={index}
-																value={
-																	item.value
-																}
-															>
-																{item.option}
-															</SelectItem>
-														)
-													)}
+													<SelectGroup>
+														<SelectLabel>
+															Select Department
+														</SelectLabel>
+														{Department.map(
+															(item, index) => (
+																<SelectItem
+																	key={index}
+																	value={
+																		item.value
+																	}
+																>
+																	{
+																		item.option
+																	}
+																</SelectItem>
+															)
+														)}
+													</SelectGroup>
 												</SelectContent>
 											</Select>
 										</FormControl>
@@ -298,31 +304,29 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='appointmentDate'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Appointment Date
 										</FormLabel>
 										<FormControl>
-											<DatePicker
-												id='appointmentDate'
-												size='middle'
-												className='border border-gray-300 px-3 py-[13px] rounded-md text-md tracking-wider focus:border-blue-500  placeholder:text-gray-400 w-full'
-												format={dateFormat}
-												disabledDate={disabledDate}
-												placeholder='Select Date'
-												disabled={viewState === "view"}
+											<Input
 												{...field}
-												value={
-													field.value
-														? dayjs(
-																field.value,
-																dateFormat
-														  )
-														: null
+												id='appointmentDate'
+												type='date'
+												className={`custom-date-input ${
+													hasValue ? "has-value" : ""
+												} border tracking-wider placeholder:text-lms-400`}
+												disabled={viewState === "view"}
+												placeholder='dd/mm/yyyy'
+												onClick={(
+													e: React.MouseEvent<HTMLInputElement>
+												) =>
+													e.currentTarget.showPicker()
 												}
-												onChange={(date, dateString) =>
-													field.onChange(dateString)
-												}
+												onChange={(e) => {
+													handleChange(e);
+													field.onChange(e);
+												}}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -336,7 +340,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='experience_years'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Experience (Years)
 										</FormLabel>
@@ -361,7 +365,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='highest_qualification'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Highest Qualification
 										</FormLabel>
@@ -369,7 +373,7 @@ const EmploymentDetails = ({
 											<Input
 												id='highest_qualification'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='MBA'
 												disabled={viewState === "view"}
 												{...field}
@@ -379,14 +383,14 @@ const EmploymentDetails = ({
 									</FormItem>
 								)}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name='uan'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel
 											htmlFor='uan'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											UAN (Universal Account Number)
 										</FormLabel>
@@ -394,7 +398,7 @@ const EmploymentDetails = ({
 											<Input
 												id='uan'
 												type='number'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -411,7 +415,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='pf_account_number'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											PF Account Number
 										</FormLabel>
@@ -419,7 +423,7 @@ const EmploymentDetails = ({
 											<Input
 												id='pf_account_number'
 												type='number'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -436,7 +440,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='esi_code_number'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											ESI Code Number
 										</FormLabel>
@@ -444,7 +448,7 @@ const EmploymentDetails = ({
 											<Input
 												id='esi_code_number'
 												type='number'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder=''
 												disabled={viewState === "view"}
 												{...field}
@@ -461,7 +465,7 @@ const EmploymentDetails = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='reporting_manager'
-											className='pl-1 text-blue-500 font-semibold'
+
 										>
 											Reporting Manager
 										</FormLabel>
@@ -472,11 +476,10 @@ const EmploymentDetails = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													id='reporting_manager'
-													className={`border border-gray-300 px-3 py-6 rounded-md text-md tracking-wider focus:to-blue-500 focus:border-blue-500 ${
-														field.value
-															? "text-gray-700"
-															: "text-gray-400"
+													className={`border w-ful tracking-wider ${
+														!field.value
+															? "text-lms-300 font-medium"
+															: ""
 													}`}
 												>
 													<SelectValue placeholder='Select' />
@@ -494,7 +497,7 @@ const EmploymentDetails = ({
 										<FormMessage />
 									</FormItem>
 								)}
-							/>
+							/> */}
 						</div>
 						<div className='flex items-center justify-end space-x-2'>
 							<Button

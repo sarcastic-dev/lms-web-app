@@ -61,7 +61,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='addressLine1'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Address Line 1
 										</FormLabel>
@@ -69,7 +68,7 @@ const AddressInfo = ({
 											<Input
 												id='addressLine1'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Abc near xyz'
 												disabled={viewState === "view"}
 												{...field}
@@ -86,7 +85,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='addressLine2'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Address Line 2
 										</FormLabel>
@@ -94,7 +92,7 @@ const AddressInfo = ({
 											<Input
 												id='addressLine2'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Flat/House No, Landmark'
 												disabled={viewState === "view"}
 												{...field}
@@ -111,7 +109,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='cityTown'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											City/Town
 										</FormLabel>
@@ -119,7 +116,7 @@ const AddressInfo = ({
 											<Input
 												id='cityTown'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Mumbai'
 												disabled={viewState === "view"}
 												{...field}
@@ -136,7 +133,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='state'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											State
 										</FormLabel>
@@ -144,7 +140,7 @@ const AddressInfo = ({
 											<Input
 												id='state'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='Maharashtra'
 												disabled={viewState === "view"}
 												{...field}
@@ -161,7 +157,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='pincode'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											PIN Code
 										</FormLabel>
@@ -169,7 +164,7 @@ const AddressInfo = ({
 											<Input
 												id='pincode'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='123456'
 												disabled={viewState === "view"}
 												{...field}
@@ -186,7 +181,6 @@ const AddressInfo = ({
 									<FormItem>
 										<FormLabel
 											htmlFor='country'
-											className='pl-1 text-blue-500 font-semibold'
 										>
 											Country
 										</FormLabel>
@@ -194,7 +188,7 @@ const AddressInfo = ({
 											<Input
 												id='country'
 												type='text'
-												className='border border-gray-300 px-3 py-6 text-md tracking-wider focus:to-blue-500 focus:border-blue-500 placeholder:text-gray-400'
+												className=''
 												placeholder='India'
 												disabled={viewState === "view"}
 												{...field}

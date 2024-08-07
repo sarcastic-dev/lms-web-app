@@ -5,155 +5,236 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Pencil, UserPlus, CloudUpload, Download } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import columns from "./columns";
 
-import { DataTable } from "./data-table";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
 import { resetStaffData, setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
-
+import { DataTable } from "@/components/LmsDataTable";
+import { Separator } from "@/components/ui/separator";
 
 const Page = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
-  const [fileName, setFileName] = useState<string>("");
-  const dispatch = useDispatch();
-  const router = useRouter()
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [file, setFile] = useState<File | null>(null);
+	const [fileName, setFileName] = useState<string>("");
+	const dispatch = useDispatch();
+	const router = useRouter();
 
-  const fetchStaffList = async () => {
-    setLoading(true);
-    const { data } = await axiosInstance.get("/staffs/institute/97cb57e0-067c-4210-aba1-279fd577494e");
-    const filteredStaffData = data.map((obj:any) => {
-      const staffObj: any = {};
+	const fetchStaffList = async () => {
+		setLoading(true);
+		const { data } = await axiosInstance.get(
+			"/staffs/institute/97cb57e0-067c-4210-aba1-279fd577494e"
+		);
+		const filteredStaffData = data.map((obj: any) => {
+			const staffObj: any = {};
 
-      const user = obj.basicInfo.user;
-      const staff = obj.basicInfo.staff;
+			const user = obj.basicInfo.user;
+			const staff = obj.basicInfo.staff;
 
-      staffObj.id = user.id;
-      staffObj.name = user.firstName + " " + user.middleName + " " + user.lastName;
-      staffObj.contact = user.phone;
-      staffObj.email = user.email;
-      staffObj.designation = staff.designation;
-      staffObj.department = staff.department;
+			staffObj.id = user.id;
+			staffObj.name =
+				user.firstName + " " + user.middleName + " " + user.lastName;
+			staffObj.contact = user.phone;
+			staffObj.email = user.email;
+			staffObj.designation = staff.designation;
+			staffObj.department = staff.department;
 
-      return staffObj;
-    });
-    setData(filteredStaffData);
-    setLoading(false);
-  };
+			return staffObj;
+		});
+		setData(filteredStaffData);
+		setLoading(false);
+	};
 
-  useEffect(() => {
-    fetchStaffList();
-  }, []);
+	useEffect(() => {
+		fetchStaffList();
+	}, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-      setFileName(e.target.files[0].name); // Set file name
-    }
-  };
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files[0]) {
+			setFile(e.target.files[0]);
+			setFileName(e.target.files[0].name); // Set file name
+		}
+	};
 
-  const handleFileUpload = async () => {
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
+	const handleFileUpload = async () => {
+		if (!file) {
+			alert("Please select a file to upload.");
+			return;
+		}
 
-    const formData = new FormData();
-    formData.append("file", file);
+		const formData = new FormData();
+		formData.append("file", file);
 
-    try {
-      const response = await axiosInstance.post("/staffs/bulk", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("File upload response:", response.data);
-      fetchStaffList(); 
-      router.push('/staffInfo')
-    } catch (error) {
-      console.error("File upload error:", error);
-    }
-  };
+		try {
+			const response = await axiosInstance.post(
+				"/staffs/bulk",
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			console.log("File upload response:", response.data);
+			fetchStaffList();
+			router.push("/staffInfo");
+		} catch (error) {
+			console.error("File upload error:", error);
+		}
+	};
 
-  const handleResetStaffData = () => {
-    dispatch(resetStaffData())
-    dispatch(setViewState(null))
-  }
-  return (
-    <div className='flex flex-col w-full h-screen space-y-8'>
-      <div>
-        <h1 className='font-semibold text-2xl'>Staff Directory</h1>
-      </div>
-      <div className='w-full border-b border-dashed border-black'></div>
-      <div>
-        <Tabs defaultValue='teaching'>
-          <div className='flex justify-between items-center mb-6'>
-            <TabsList className="">
-              <TabsTrigger value='teaching'>Teaching Staff</TabsTrigger>
-              <TabsTrigger value='non-teaching'>Non-Teaching Staff</TabsTrigger>
-            </TabsList>
-            <div className='flex gap-3'>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant={"outline"}>
-                    <CloudUpload size={15} className='mr-2' /> Bulk Upload
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className='sm:max-w-4xl h-[500px] px-12'>
-                  <DialogHeader className="mb-6">
-                    <DialogTitle className="text-2xl">Bulk Update</DialogTitle>
-                  </DialogHeader>
-                  <div className='border border-dashed border-blue-500 rounded-lg bg-blue-50'>
-                    <label className='col-span-3 w-full h-52 flex flex-col justify-center items-center cursor-pointer'>
-                      <CloudUpload className='text-blue-500 mb-2 z-40' size={40} />
-                      <span className="text-gray-500">
-                        {fileName ? (
-                          <>
-                            Selected file: <span className="text-blue-500">{fileName}</span>
-                          </>
-                        ) : (
-                          <>
-                            Click <span className="text-blue-500">here</span> to upload file
-                          </>
-                        )}
-                      </span>
-                      <Input id='file' type='file' className='hidden' accept=".xlsx, .csv" onChange={handleFileChange} />
-                    </label>
-                  </div>
-                  <DialogFooter className="mt-10 flex justify-between items-center relative">
-                    <Button type='submit' onClick={handleFileUpload}>Upload File</Button>
-                    <Button variant="link" className="absolute -left-5">Download Sample List <Download className="ml-2" size={15}/></Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <Link href={"/staffs"}>
-                <Button variant={"outline"} onClick={handleResetStaffData}>
-                  <UserPlus size={18} className='mr-2' /> Add Staff
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <TabsContent value='teaching'>
-            <DataTable columns={columns} data={data} isLoading={loading} />
-          </TabsContent>
-          <TabsContent value='non-teaching'>
-            <DataTable columns={columns} data={data} isLoading={loading} />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+	const handleResetStaffData = () => {
+		dispatch(resetStaffData());
+		dispatch(setViewState(null));
+	};
+	return (
+		<div className='flex flex-col w-full h-screen my-4 space-y-4 2xl:px-16 2xl:py-2 xl:px-8 xl:py-2 lg:px-12 lg:py-4'>
+			<div className='flex justify-between items-center'>
+				<div>
+					<h4 className='font-bold text-2xl text-lmsPrimary'>
+						Staff Information
+					</h4>
+				</div>
+				<div className='flex justify-end items-center gap-3 rounded'>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button
+								variant={"lmsOutline"}
+								size={"lms"}
+							>
+								<CloudUpload
+									size={18}
+									className='mr-2'
+								/>{" "}
+								Bulk Upload
+							</Button>
+						</DialogTrigger>
+						<DialogContent className='sm:max-w-4xl h-[500px] px-12'>
+							<DialogHeader className='mb-6'>
+								<DialogTitle className='text-2xl text-lmsPrimary'>
+									Bulk Update
+								</DialogTitle>
+							</DialogHeader>
+							<div className='border border-dashed border-lmsAccent rounded-lg bg-lms-50'>
+								<label className='col-span-3 w-full h-52 flex flex-col justify-center items-center cursor-pointer'>
+									<CloudUpload
+										className='text-lmsAccent mb-2 z-40'
+										size={40}
+									/>
+									<span className='text-lms-500'>
+										{fileName ? (
+											<>
+												Selected file:{" "}
+												<span className='text-lmsAccent'>
+													{fileName}
+												</span>
+											</>
+										) : (
+											<>
+												Click{" "}
+												<span className='text-lmsAccent'>
+													here
+												</span>{" "}
+												to upload file
+											</>
+										)}
+									</span>
+									<Input
+										id='file'
+										type='file'
+										className='hidden'
+										accept='.xlsx, .csv'
+										onChange={handleFileChange}
+									/>
+								</label>
+							</div>
+							<DialogFooter className='mt-10 flex justify-between items-center relative'>
+								<Button
+									type='submit'
+									variant={"lms"}
+									onClick={handleFileUpload}
+								>
+									Upload File
+								</Button>
+								<Button
+									variant='link'
+									className='absolute -left-5'
+								>
+									Download Sample List{" "}
+									<Download
+										className='ml-2'
+										size={15}
+									/>
+								</Button>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
+
+					<Link href={"/users?userType=staff"}>
+						<Button
+							variant={"lms"}
+							size={"lms"}
+							onClick={handleResetStaffData}
+						>
+							<UserPlus
+								size={18}
+								className='mr-2'
+							/>{" "}
+							Add Staff
+						</Button>
+					</Link>
+				</div>
+			</div>
+			<Separator />
+			<div>
+				<Tabs defaultValue='teaching'>
+					<div className='flex justify-between items-center mb-6'>
+						<TabsList className='rounded bg-slate-200 p-1.5'>
+							<TabsTrigger
+								value='teaching'
+								className='rounded data-[state=active]:bg-lmsAccent data-[state=active]:text-white data-[state=active]:shadow-sm text-lmsSecondary font-semibold w-40'
+							>
+								Teaching Staff
+							</TabsTrigger>
+							<TabsTrigger
+								value='non-teaching'
+								className='rounded data-[state=active]:bg-lmsAccent data-[state=active]:text-white data-[state=active]:shadow-sm text-lmsSecondary font-semibold w-40'
+							>
+								Non-Teaching Staff
+							</TabsTrigger>
+						</TabsList>
+					</div>
+					<TabsContent
+						value='teaching'
+						className=''
+					>
+						<DataTable
+							columns={columns}
+							data={data}
+							isLoading={loading}
+						/>
+					</TabsContent>
+					<TabsContent value='non-teaching'>
+						<DataTable
+							columns={columns}
+							data={data}
+							isLoading={loading}
+						/>
+					</TabsContent>
+				</Tabs>
+			</div>
+		</div>
+	);
 };
 
 export default Page;
