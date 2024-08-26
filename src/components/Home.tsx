@@ -7,6 +7,12 @@ import CreateProfile from "./CreateUser";
 import CreateInstitute from "./CreateInstitute";
 import Carousel from "./Carousel";
 import { FormType } from "@/types";
+import ForgotPassword from "./ForgotPassword";
+import CreateNewPassword from "./CreateNewPassword";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthSchema, AuthSchemaType } from "../schema/createInstitute/AuthSchema"; // Adjust the path as necessary
+
 
 const HomePage: React.FC = () => {
   const [formType, setFormType] = useState<FormType>("login");
@@ -15,6 +21,10 @@ const HomePage: React.FC = () => {
     phone: "",
   });
   const [userId, setUserId] = useState<string | null>(null);
+
+  const methods = useForm<AuthSchemaType>({
+    resolver: zodResolver(AuthSchema),
+  });
 
   const handleShowOTP = (contact: { email: string; phone: string }) => {
     setFormType("otp");
@@ -40,30 +50,38 @@ const HomePage: React.FC = () => {
         </div>
         <div className="w-1/2 flex justify-center items-center">
           <div>
-            {formType === "login" && (
-              <Login
-                onShowOTP={handleShowOTP}
-                setFormData={setFormData}
-                setFormType={setFormType}
-              />
-            )}
-            {formType === "otp" && (
-              <Otp
-                setFormType={setFormType}
-                onEdit={() => setFormType("login")}
-                formData={formData}
-              />
-            )}
-            {formType === "createProfile" && (
-              <CreateProfile
-                setFormType={setFormType}
-                formData={formData}
-                setUserId={setUserId}
-              />
-            )}
-            {formType === "createInstitute" && (
-              <CreateInstitute userId={userId} />
-            )}
+            <FormProvider {...methods}>
+              {formType === "login" && (
+                <Login
+                  onShowOTP={handleShowOTP}
+                  setFormData={setFormData}
+                  setFormType={setFormType}
+                />
+              )}
+              {formType === "otp" && (
+                <Otp
+                  setFormType={setFormType}
+                  onEdit={() => setFormType("login")}
+                  formData={formData}
+                />
+              )}
+              {formType === "createProfile" && (
+                <CreateProfile
+                  setFormType={setFormType}
+                  formData={formData}
+                  setUserId={setUserId}
+                />
+              )}
+              {formType === "createInstitute" && (
+                <CreateInstitute userId={userId} />
+              )}
+              {formType === "forgotpassword" && (
+                <ForgotPassword setFormType={setFormType} formData={{
+                  email: ""
+                }} />
+              )}
+              {formType === "createnewpassword" && <CreateNewPassword setFormType={setFormType} />}
+            </FormProvider>
           </div>
         </div>
       </div>

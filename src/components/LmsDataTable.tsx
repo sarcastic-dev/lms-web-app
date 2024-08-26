@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] =
 		React.useState<ColumnFiltersState>([]);
-	const table = useReactTable({
+	const  table = useReactTable({
 		data,
 		columns,
 		initialState: {
@@ -129,6 +129,25 @@ export function DataTable<TData, TValue>({
 	return (
 		<div>
 			<div className='flex flex-row-reverse justify-between items-center mb-6 mt-2'>
+				<div className='flex items-center py-4 px-4 relative w-80 h-10'>
+					<Input
+						placeholder='Filter by student name...'
+						value={
+							(table
+								.getColumn("name")
+								?.getFilterValue() as string) ?? ""
+						}
+						onChange={(event) =>
+							table
+								.getColumn("name")
+								?.setFilterValue(event.target.value)
+						}
+						className='pl-10 rounded border-lms-200 placeholder:text-lms-500'
+					/>
+					<Search
+						className='absolute left-7 text-lmgSecondary'
+						size={20} 
+					/>
 				<div className='flex items-center'>
 					<div className='flex items-center py-4 px-4 relative w-80 h-10'>
 						<Input

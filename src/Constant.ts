@@ -24,6 +24,25 @@ export const BloodGroups: SelectType[] = [
 	{ value: "O-", option: "O-" },
 ];
 
+export const Class: SelectType[] = [
+	{ value: "12th", option: "12th" },
+	{ value: "11th", option: "11th" },
+	{ value: "10th", option: "10th" },
+	{ value: "9th", option: "9th" },
+	{ value: "8th", option: "8th" },
+	{ value: "7th", option: "7th" },
+	{ value: "6th", option: "6th" },
+	{ value: "5th", option: "5th" },
+];
+
+export const Section: SelectType[] = [
+	{ value: "A", option: "A" },
+	{ value: "B", option: "B" },
+	{ value: "C", option: "C" },
+	{ value: "D", option: "D" },
+	
+];
+
 export const Designation: SelectType[] = [
 	{ value: "Teacher", option: "Teacher" },
 	{ value: "Vice Principal", option: "Vice-Principal" },
@@ -174,22 +193,30 @@ export const attendanceOverview = [
 	{
 		title: "Total Students",
 		data: "10,000",
-		color: "text-black",
+		color: "text-white",
+		backgroundColor: "bg-[#6BA2DC]",
+		headingColor: "text-white"
 	},
 	{
 		title: "Total Present",
 		data: "9,500",
-		color: "text-green-400",
+		color: "text-[#24A148]",
+		backgroundColor: "bg-[#D3ECDA]",
+		headingColor: "text-[#24A148]"
 	},
 	{
 		title: "Total Absent",
 		data: "400",
-		color: "text-red-400",
+		color: "text-[#C92710]",
+		backgroundColor: "bg-[#F4D4CF]",
+		headingColor: "text-[#C92710]"
 	},
 	{
 		title: "Not Marked",
 		data: "100",
-		color: "text-black",
+		color: "text-white",
+		backgroundColor: "bg-black",
+		headingColor: "text-white"
 	},
 ];
 
@@ -230,7 +257,7 @@ export const detailedReport = [
 		data: "Shubham Jain",
 	},
 	{
-		title: "Total Attendance",
+		title: "Total Student",
 		data: "90",
 	},
 	{

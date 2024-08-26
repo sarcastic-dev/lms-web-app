@@ -287,7 +287,7 @@ const BasicInfo = ({
 												disabled={viewState === "view"}
 											>
 												<SelectTrigger
-													className={`border w-ful tracking-wider ${
+													className={`border w-full tracking-wider ${
 														!field.value
 															? "text-lms-300 font-medium"
 															: ""

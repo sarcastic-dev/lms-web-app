@@ -222,4 +222,4 @@ export interface Stage {
   classes: Class[];
 }
 
-export type FormType = "login" | "otp" | "createProfile" | "createInstitute";
+export type FormType = "login" | "otp" | "forgotpassword" | "createnewpassword" | "createProfile" | "createInstitute";
