@@ -221,12 +221,12 @@ export const attendanceOverview = [
 ];
 
 export interface insights {
-	content:string;
-	bgColor:string;
-	emoji:LucideIcon
-};
+	content: string;
+	bgColor: string;
+	emoji: LucideIcon;
+}
 
-export const insights =[
+export const insights = [
 	{
 		content: "All classes have done taken attendance",
 		bgColor: "bg-green-50",
@@ -267,5 +267,34 @@ export const detailedReport = [
 	{
 		title: "Absent",
 		data: "18",
+	},
+];
+
+export const colorPalette = [
+	{
+		bgColor: "bg-red-100",
+		shadowColor: "shadow-red-200",
+		outlineColor: "outline-red-200",
+	},
+	{
+		bgColor: "bg-blue-100",
+		shadowColor: "shadow-blue-200",
+		outlineColor: "outline-blue-200",
+	},
+	{
+		bgColor: "bg-emerald-100",
+		shadowColor: "shadow-emerald-200",
+		outlineColor: "outline-emerald-200",
+	},
+	{
+		bgColor: "bg-purple-100",
+		shadowColor: "shadow-purple-200",
+		outlineColor: "outline-purple-200",
+	},
+
+	{
+		bgColor: "bg-amber-100",
+		shadowColor: "shadow-amber-200",
+		outlineColor: "outline-amber-200",
 	},
 ];

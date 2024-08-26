@@ -4,9 +4,19 @@ import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
-import { Checkbox } from "antd";
 import { Button } from "./ui/button";
-import { SheetClose, SheetFooter } from "./ui/sheet";
+import { SheetClose } from "./ui/sheet";
+
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+import { showToast } from "@/utils/toastHelper";
 
 interface Teacher {
 	teacherId: string;
@@ -19,11 +29,13 @@ const AddTeacher = ({
 }: {
 	fetchSectionDetails: () => void;
 	sectionId: string | null;
+	currentPath?: string | null;
 }) => {
 	const [data, setData] = useState<Teacher[]>([]);
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState("");
 
+	// Fetch unassigned teachers
 	const fetchTeacherInfo = async () => {
 		try {
 			const { data } = await axiosInstance.get(
@@ -33,7 +45,6 @@ const AddTeacher = ({
 				teacherId: obj.teacherId,
 				teacherName: obj.teacherName,
 			}));
-			console.log(data);
 			setData(filteredData);
 		} catch (error) {
 			console.log(`Error Occurs In AddTeacher.tsx ${error}`);
@@ -44,36 +55,34 @@ const AddTeacher = ({
 		fetchTeacherInfo();
 	}, []);
 
-	const handleCheckboxChange = (id: string) => {
-		setSelectedId((prevSelectedId) => (prevSelectedId === id ? null : id));
-		console.log("Selected ID:", id);
-	};
-
+	// Filter data based on search input
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
 	};
 
 	const filteredData = data.filter((item) => {
 		return (
-			item.teacherId.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			item.teacherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			""
 		);
 	});
 
-	const handleAssignTeacher = async () => {
-		if (selectedId && sectionId) {
+	// Assign teacher to section and close the sheet/modal
+	const handleAssignTeacher = async (teacherId: string) => {
+		if (teacherId && sectionId) {
 			try {
 				const response = await axiosInstance.post(
 					"/sections/assign-teacher",
 					{
 						sectionId,
-						teacherId: selectedId,
+						teacherId,
 					}
 				);
 				fetchSectionDetails();
+				showToast("success", response.data.message);
 				console.log(response);
-			} catch (error) {
+			} catch (error: any) {
+				showToast("error", error.message);
 				console.error(error);
 			}
 		}
@@ -81,59 +90,67 @@ const AddTeacher = ({
 
 	return (
 		<div className='flex flex-col mt-5 mx-6 h-[95%] relative'>
-			<div className='flex items-center py-4 h-[10%] relative '>
-				<Input
-					placeholder='Search by name, contact, email'
-					value={searchTerm}
-					onChange={handleSearchChange}
-					className='max-w-full pl-10 placeholder:text-gray-400'
-				/>
-				<Search
-					className='absolute left-3'
-					size={20}
-				/>
-			</div>
-			<div className='h-[80%] '>
-				<div className='mt-5 h-[95%] overflow-y-auto'>
-					{filteredData.map((item) => (
-						<div
-							key={item.teacherId}
-							className='flex items-center px-8 py-2.5 bg-gray-100 mb-2 rounded-lg relative'
-						>
-							<Checkbox
-								checked={selectedId === item.teacherId}
-								onChange={() =>
-									handleCheckboxChange(item.teacherId)
-								}
-								className='mr-6'
-							/>
-							<div className='flex-shrink-0 h-10 w-10 rounded-full bg-red-200 flex items-center justify-center text-white font-bold'>
-								{item.teacherName[0]}
-							</div>
-							<div className='ml-4'>
-								<div className='text-sm font-medium text-gray-900'>
-									{item.teacherName}
-								</div>
-							</div>
-						</div>
-					))}
+			<div className='mb-4 flex items-center justify-between flex-row-reverse'>
+				<div className='flex items-center py-4 h-[10%] relative '>
+					<Input
+						placeholder='Search by name...'
+						value={searchTerm}
+						onChange={handleSearchChange}
+						className='max-w-full placeholder:text-gray-400 w-72 border-lms-200'
+						style={{ padding: 0, paddingLeft: "40px" }}
+					/>
+					<Search
+						className='absolute left-3'
+						size={20}
+					/>
 				</div>
+				<h5 className='text-xl text-lmsPrimary font-semibold'>
+					All Teachers
+				</h5>
 			</div>
 
-			<div className='absolute bottom-2 w-full'>
-				<SheetFooter>
-					<SheetClose asChild>
-						<Button
-							variant={"destructive"}
-							className='w-full'
-							disabled={!selectedId}
-							onClick={handleAssignTeacher}
+			<Table>
+				<TableCaption>List of Available Teachers</TableCaption>
+				<TableHeader className='text-sm tracking-wider text-lmsPrimary uppercase'>
+					<TableRow>
+						<TableHead className='w-[100px] font-bold px-5 py-0 text-left'>
+							ID
+						</TableHead>
+						<TableHead className='font-bold px-5 py-0 text-left'>
+							Teacher Name
+						</TableHead>
+						<TableHead className='px-5 py-0 text-right'></TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody className='border'>
+					{filteredData.map((teacher, index) => (
+						<TableRow
+							key={teacher.teacherId}
+							className={`${
+								index % 2 === 0 ? "bg-white" : "bg-lms-100"
+							} font-semibold tracking-wide text-sm text-lmsPrimary h-12`}
 						>
-							Assign Staff To Classroom
-						</Button>
-					</SheetClose>
-				</SheetFooter>
-			</div>
+							<TableCell className='w-[100px] border-r px-5 py-0 text-left'>
+								{index + 1}
+							</TableCell>
+							<TableCell className='px-5 py-0 text-left'>
+								{teacher.teacherName}
+							</TableCell>
+							<TableCell className='px-5 py-0 text-right'>
+								<Button
+									variant={"link"}
+									onClick={() =>
+										handleAssignTeacher(teacher.teacherId)
+									}
+									className='text-xs underline'
+								>
+									Assign
+								</Button>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 		</div>
 	);
 };

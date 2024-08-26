@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Pencil, UserPlus, CloudUpload, Download } from "lucide-react";
@@ -15,13 +15,13 @@ import {
 import columns from "./columns";
 
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
 import { resetStudentData, setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "@/components/LmsDataTable";
+import withAuthCheck from "@/components/withAuthCheck";
 
 const Page = () => {
 	const [data, setData] = useState([]);
@@ -34,7 +34,7 @@ const Page = () => {
 	const fetchStudentList = async () => {
 		setLoading(true);
 		const { data } = await axiosInstance.get(
-			"/students/institute/97cb57e0-067c-4210-aba1-279fd577494e"
+			`/students/institute/${instituteId}`
 		);
 		const filteredData = data.map((obj: any) => {
 			const studentObj: any = {};
@@ -55,10 +55,7 @@ const Page = () => {
 		setData(filteredData);
 		setLoading(false);
 	};
-
-	useEffect(() => {
-		fetchStudentList();
-	}, []);
+	const instituteId = Cookies.get("instituteId");
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
@@ -99,6 +96,9 @@ const Page = () => {
 		dispatch(resetStudentData());
 		dispatch(setViewState("add"));
 	};
+	useEffect(() => {
+		fetchStudentList();
+	}, []);
 
 	return (
 		<div className='flex flex-col w-full h-screen my-4 space-y-4 2xl:px-16 2xl:py-2 xl:px-8 xl:py-2 lg:px-12 lg:py-4'>
@@ -209,4 +209,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default withAuthCheck(Page);

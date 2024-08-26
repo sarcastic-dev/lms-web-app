@@ -1,12 +1,9 @@
-"use client"
-import React from 'react'
+"use client";
+import withAuthCheck from "@/components/withAuthCheck";
+import React from "react";
 
 const page = () => {
-  return (
-	<div>
-	  Dashboard
-	</div>
-  )
-}
+	return <div>Dashboard</div>;
+};
 
-export default page
+export default withAuthCheck(page);

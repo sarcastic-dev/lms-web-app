@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Pencil, UserPlus, CloudUpload, Download } from "lucide-react";
+import Cookies from "js-cookie";
+import { UserPlus, CloudUpload, Download } from "lucide-react";
 import {
 	Dialog,
 	DialogContent,
@@ -13,7 +14,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import columns from "./columns";
-
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ import { resetStaffData, setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/LmsDataTable";
 import { Separator } from "@/components/ui/separator";
+import withAuthCheck from "@/components/withAuthCheck";
 
 const Page = () => {
 	const [data, setData] = useState([]);
@@ -33,8 +34,9 @@ const Page = () => {
 	const fetchStaffList = async () => {
 		setLoading(true);
 		const { data } = await axiosInstance.get(
-			"/staffs/institute/97cb57e0-067c-4210-aba1-279fd577494e"
+			`/staffs/institute/${instituteId}`
 		);
+		console.log(instituteId)
 		const filteredStaffData = data.map((obj: any) => {
 			const staffObj: any = {};
 
@@ -54,6 +56,8 @@ const Page = () => {
 		setData(filteredStaffData);
 		setLoading(false);
 	};
+
+	const instituteId = Cookies.get("instituteId");
 
 	useEffect(() => {
 		fetchStaffList();
@@ -237,4 +241,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default withAuthCheck(Page);

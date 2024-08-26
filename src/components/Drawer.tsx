@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Sheet,
 	SheetContent,
@@ -9,7 +9,7 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet";
 import { Input } from "./ui/input";
-import { Plus, Search } from "lucide-react";
+import { Pencil, Plus, PlusCircle, Search } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface AppProps {
@@ -27,29 +27,34 @@ const Drawer: React.FC<AppProps> = ({
 	// buttonTitle,
 	// onClick,
 }) => {
+	const [currentPath, setCurrentPath] = useState("");
+	useEffect(() => {
+		setCurrentPath(window.location.pathname);
+	});
 	return (
 		<div>
 			<Sheet>
 				<SheetTrigger asChild>
-					{triggerText === "Add Teacher" || triggerText === "Add Students" ? (
+					{triggerText === "Assign Class Teacher" ? (
 						<Button
-							className='space-x-1 text-blue-500'
+							className={`space-x-1 text-white p-0 h-0 text-sm`}
 							variant={"link"}
 						>
+							<p className='text-xs font-medium'>{triggerText}</p>
 							<span>
-								<Plus size={12} />
+								<Pencil size={12} />
 							</span>
-							<p className='text-xs font-semibold'>
-								{triggerText}
-							</p>
 						</Button>
 					) : (
-						<Button variant='outline'>{triggerText}</Button>
+						<Button variant='lmsActive'>
+							<PlusCircle size={15} className="mr-1"/>
+							{triggerText}
+						</Button>
 					)}
 				</SheetTrigger>
-				<SheetContent className='max-w-[400px] sm:max-w-[600px]'>
+				<SheetContent className={`max-w-[400px] ${title === 'Assign Student To Classroom'?'sm:max-w-[700px]':'sm:max-w-[600px]'}`}>
 					<SheetHeader>
-						<SheetTitle className='text-2xl font-bold text-gray-600'>
+						<SheetTitle className='text-2xl font-bold text-lmsPrimary'>
 							{title}
 						</SheetTitle>
 					</SheetHeader>

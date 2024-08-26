@@ -2,11 +2,22 @@
 
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
+import { CheckCircleIcon, CircleX, Search } from "lucide-react";
 import { Checkbox } from "antd";
 import { Button } from "./ui/button";
 import axiosInstance from "@/lib/axiosInstance";
 import { SheetClose, SheetFooter } from "./ui/sheet";
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+import { toast } from "./ui/use-toast";
+import { showToast } from "@/utils/toastHelper";
 
 interface Student {
 	studentId: string;
@@ -40,18 +51,16 @@ const AddStudent = ({
 			} else {
 				newSelectedIds.add(id);
 			}
-			console.log("Selected IDs:", Array.from(newSelectedIds));
 			return newSelectedIds;
 		});
 	};
 
 	const handleSelectAllChange = () => {
-		if (selectedIds.size === data.length) {
+		if (selectedIds.size === filteredData.length) {
 			setSelectedIds(new Set());
 		} else {
-			const allIds = new Set(data.map((item) => item.studentId));
+			const allIds = new Set(filteredData.map((item) => item.studentId));
 			setSelectedIds(allIds);
-			// console.log("Selected IDs:", Array.from(allIds));
 		}
 	};
 
@@ -75,77 +84,96 @@ const AddStudent = ({
 				{ sectionId, studentIds: studentIdsArray }
 			);
 			fetchSectionDetails();
+			showToast("success", response.data.message);
 			console.log(response);
-		} catch (error) {
+		} catch (error: any) {
+			showToast("error", error.message);
 			console.error(error);
 		}
 	};
 
 	return (
 		<div className='flex flex-col mt-5 mx-6 h-[95%] relative'>
-			<div className='flex items-center py-4 h-[10%] relative '>
-				<Input
-					placeholder='Search by name, roll number, parent name'
-					value={searchTerm}
-					onChange={handleSearchChange}
-					className='max-w-full pl-10 placeholder:text-gray-400'
-				/>
-				<Search
-					className='absolute left-3'
-					size={20}
-				/>
-			</div>
-			<div className='h-[80%] '>
-				<div className='flex items-center justify-between h-[5%] overflow-y-hidden'>
-					<div className='flex items-center'>
-						<Checkbox
-							checked={selectedIds.size === data.length}
-							onChange={handleSelectAllChange}
-							className='mr-2 '
-						/>
-						<div className='text-gray-800 text-sm font-medium'>
-							Select All
-						</div>
-					</div>
-					<div className='text-xs text-gray-800 font-medium'>
-						{selectedIds.size} of {filteredData.length} row(s)
-						selected.
-					</div>
+			{/* Search Bar */}
+			<div className='mb-4 flex items-center justify-between flex-row-reverse'>
+				<div className='flex items-center py-4 h-[10%] relative '>
+					<Input
+						placeholder='Search by name...'
+						value={searchTerm}
+						onChange={handleSearchChange}
+						className='max-w-full placeholder:text-gray-400 w-64 border-lms-200'
+						style={{ padding: 0, paddingLeft: "40px" }}
+					/>
+					<Search
+						className='absolute left-3'
+						size={20}
+					/>
 				</div>
-				<div className='mt-5 h-[95%] overflow-y-auto'>
-					{filteredData.map((item) => (
-						<div
-							key={item.studentId}
-							className='flex items-center px-8 py-2.5 bg-gray-100 mb-2 rounded-sm '
-						>
-							<Checkbox
-								checked={selectedIds.has(item.studentId)}
-								onChange={() =>
-									handleCheckboxChange(item.studentId)
-								}
-								className='mr-6'
-							/>
-							<div className='flex-shrink-0 h-10 w-10 rounded-full bg-red-200 flex items-center justify-center text-white font-bold'>
-								{item.studentName[0]}
-							</div>
-							<div className='ml-4'>
-								<div className='text-sm font-medium text-gray-900'>
-									{item.studentName}
-								</div>
-								<div className='text-xs font-medium text-gray-500 mt-1'>
-									{item.rollNumber} | {item.parentName}
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
+				<h5 className='text-xl text-lmsPrimary font-semibold'>
+					Total Unassigned Students
+				</h5>
 			</div>
 
+			{/* Students Table */}
+			<Table>
+				<TableCaption>List of Unassigned Students</TableCaption>
+				<TableHeader>
+					<TableRow>
+						<TableHead className='w-[50px] px-5 py-0 font-bold text-lmsPrimary uppercase text-left'>
+							<Checkbox
+								checked={
+									selectedIds.size === filteredData.length
+								}
+								onChange={handleSelectAllChange}
+							/>
+						</TableHead>
+						<TableHead className='w-[100px] font-bold text-lmsPrimary uppercase text-left'>
+							Roll No
+						</TableHead>
+						<TableHead className='font-bold text-lmsPrimary uppercase text-left'>
+							Student Name
+						</TableHead>
+						<TableHead className='font-bold text-lmsPrimary uppercase text-left'>
+							Parent Name
+						</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{filteredData.map((item, index) => (
+						<TableRow
+							key={item.studentId}
+							className={`${
+								index % 2 === 0 ? "bg-white" : "bg-lms-50"
+							} font-medium tracking-wide text-sm text-lmsPrimary h-12 border`}
+						>
+							<TableCell className='w-[50px] border px-5 py-0 text-left'>
+								<Checkbox
+									checked={selectedIds.has(item.studentId)}
+									onChange={() =>
+										handleCheckboxChange(item.studentId)
+									}
+								/>
+							</TableCell>
+							<TableCell className='w-[100px] border px-5 py-0 text-left '>
+								{item.rollNumber}
+							</TableCell>
+							<TableCell className='border px-5 py-0 text-left text-lmsAccent'>
+								{item.studentName}
+							</TableCell>
+							<TableCell className='border px-5 py-0 text-left'>
+								{item.parentName}
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+
+			{/* Footer for Assign Button */}
 			<div className='absolute bottom-2 w-full'>
 				<SheetFooter>
 					<SheetClose asChild>
 						<Button
-							variant={"destructive"}
+							variant={"lmsActive"}
 							className='w-full'
 							disabled={selectedIds.size === 0}
 							onClick={handleAssignStudent}

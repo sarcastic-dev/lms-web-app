@@ -37,7 +37,7 @@ type DynamicTabsProps = {
 	onTabChange: (value: string) => void;
 	step: number;
 	setStep: (step: number) => void;
-	userType: "student" | "staff";
+	userType: "student" | "staff" | string | null;
 };
 
 const DynamicTabs: React.FC<DynamicTabsProps> = ({
@@ -144,6 +144,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 				dispatch(setBankDetailsData(data));
 			} else if (step === 7) {
 				setLoading(true);
+				console.log("Here not!!");
 				const modifiedRegistrationData = {
 					...registrationStaffData,
 					basicInfo: {
@@ -164,6 +165,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					// 		modifiedRegistrationData
 					// 	);
 					// } else {
+					console.log("Here!!!");
 					await axiosInstance.post(
 						"/staffs",
 						modifiedRegistrationData
@@ -283,7 +285,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					variant={"lmsNext"}
 					className='text-white'
 					onClick={() => {
-						if (step === 6) {
+						if (step === 6 || step === 7) {
 							handleNext({});
 						} else {
 							document.querySelector("form")?.dispatchEvent(

@@ -115,12 +115,15 @@ body {
 /* styles.css */
 input[type="date"] {
   position: relative;
-  font-weight: 600; /* Tailwind's font-semibold */
-  color: #9DACBE; /* Initial text color */
+  font-weight: 600;
+  /* Tailwind's font-semibold */
+  color: #9DACBE;
+  /* Initial text color */
 }
 
 input[type="date"].has-value {
-  color: #092F5C; /* Text color after choosing a date */
+  color: #092F5C;
+  /* Text color after choosing a date */
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -132,11 +135,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 input[type="date"].has-value::-webkit-calendar-picker-indicator {
-  color: #092F5C; /* Icon color after choosing a date */
+  color: #092F5C;
+  /* Icon color after choosing a date */
 }
 
 input[type="date"]::placeholder {
-  color: #9DACBE; /* Placeholder color */
+  color: #9DACBE;
+  /* Placeholder color */
 }
 
 /* General input styles for autofill */

@@ -1,12 +1,13 @@
 import { AddressInfo, BasicInfo, ParentInfo, MedicalInfo } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import Cookies from "js-cookie";
 interface RegistrationState {
 	basicInfo: Partial<BasicInfo>;
 	addressInfo: Partial<AddressInfo>;
 	parentInfo: Partial<ParentInfo>;
 	medicalInfo: Partial<MedicalInfo>;
 }
+const instituteId = Cookies.get("instituteId");
 
 const initialState: RegistrationState = {
 	basicInfo: {
@@ -20,7 +21,7 @@ const initialState: RegistrationState = {
 			middleName: "",
 			phone: "",
 			role: "student",
-			instituteId: "97cb57e0-067c-4210-aba1-279fd577494e",
+			instituteId: instituteId || "",
 		},
 		student: {
 			enrollmentId: "",
