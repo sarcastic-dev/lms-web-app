@@ -40,7 +40,7 @@ export function DataTable<TData, TValue>({
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] =
 		React.useState<ColumnFiltersState>([]);
-	const table = useReactTable({
+	const  table = useReactTable({
 		data,
 		columns,
 		initialState: {
@@ -132,7 +132,7 @@ export function DataTable<TData, TValue>({
 					/>
 					<Search
 						className='absolute left-7 text-lmgSecondary'
-						size={20}
+						size={20} 
 					/>
 				</div>
 				<h5 className='py-4 font-bold text-xl text-lmsPrimary'>

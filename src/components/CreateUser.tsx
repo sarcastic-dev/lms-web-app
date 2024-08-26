@@ -152,7 +152,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
                   className="rounded"
                   placeholder="Mobile No."
                   {...field}
-                  readOnly
+                  // readOnly
                 />
               </FormControl>
               <FormMessage />

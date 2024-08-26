@@ -18,6 +18,8 @@ const Carousel: React.FC<CarouselProps> = ({ formType }) => {
     otp: 1,
     createProfile: 2,
     createInstitute: 3,
+    forgotpassword: 0,
+    createnewpassword: 0
   };
 
   // Determine active index based on formType
@@ -47,6 +49,18 @@ const Carousel: React.FC<CarouselProps> = ({ formType }) => {
         <span className="text-center space-y-3">
           <h1>Create Institute!</h1>
           <p className="text-lg opacity-60">Create your own institute.</p>
+        </span>
+      )}
+      {formType === "forgotpassword" && (
+        <span className="text-center space-y-3">
+          <h1>Forgot Password?</h1>
+          <p className="text-lg opacity-60">Reset in few seconds.</p>
+        </span>
+      )}
+      {formType === "createnewpassword" && (
+        <span className="text-center space-y-3">
+          <h1>Recreate Password!</h1>
+          <p className="text-lg opacity-60">Create your new password.</p>
         </span>
       )}
       <span>
