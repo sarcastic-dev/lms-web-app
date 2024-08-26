@@ -1,105 +1,197 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { CheckCircleIcon, Pencil, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { DataTable } from "./data-table";
+
 import { columns } from "./columns";
 import Drawer from "@/components/Drawer";
 import AddTeacher from "@/components/AddTeacher";
 import AddStudent from "@/components/AddStudent";
 import { useSearchParams } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
+import { DataTable } from "@/components/LmsDataTable";
+import { toast } from "@/components/ui/use-toast";
 
 const Page = () => {
-  const searchParams = useSearchParams();
-  const sectionId: string | null = searchParams.get("sectionId");
-  const sectionName: string | null = searchParams.get("sectionName");
-  const classLevel: string | number | null = searchParams.get("classLevel");
+	const searchParams = useSearchParams();
+	const sectionId: string | null = searchParams.get("sectionId");
+	const sectionName: string | null = searchParams.get("sectionName");
+	const classLevel: string | number | null = searchParams.get("classLevel");
 
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fullData, setFullData] = useState([]);
+	const [data, setData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [totalStudent, setTotalStudent] = useState();
+	const [unassignStudent, setTotalUnassignStudent] = useState([]);
+	const [assignedTeacher, setAssignedTeacher] = useState("");
 
-  const fetchClassData = async () => {
-    setIsLoading(true);
-    try {
-      const { data } = await axiosInstance.get(
-        `/classes/section-details?instituteId=97cb57e0-067c-4210-aba1-279fd577494e&classLevel=${classLevel}&section=${sectionName}`
-      );
-      console.log(data);
-      setFullData(data.unenrolled);
-      const filteredData = data?.enrolled?.map((obj: any) => {
-        const enrolledStudentObj: any = {};
-        enrolledStudentObj.studentName = obj?.studentName;
-        enrolledStudentObj.parentName = obj?.parentName;
-        enrolledStudentObj.class = `${classLevel} - ${sectionName}`;
-        enrolledStudentObj.rollNumber = obj?.rollNumber;
-        return enrolledStudentObj;
-      });
-      setData(filteredData);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.error(error);
-    }
-  };
+	const fetchClassData = async () => {
+		setIsLoading(true);
+		try {
+			const { data } = await axiosInstance.get(
+				`/classes/section-details?instituteId=97cb57e0-067c-4210-aba1-279fd577494e&classLevel=${classLevel}&section=${sectionName}`
+			);
 
-  useEffect(() => {
-    fetchClassData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+			setTotalStudent(data.enrolled.length);
+			setTotalUnassignStudent(data.unenrolled);
+			const teacherName = data?.teacher?.teacherName;
+			setAssignedTeacher(teacherName);
 
-  return (
-    <div className="m-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <h3 className="text-2xl font-bold">{`${classLevel} - ${sectionName}`}</h3>
-          <Pencil size={15} color="blue" />
-        </div>
-        <Trash2 size={20} color="red" />
-      </div>
+			const filteredData = data?.enrolled?.map((obj: any) => {
+				const enrolledStudentObj: any = {};
+				enrolledStudentObj.name = obj?.studentName;
+				enrolledStudentObj.parentName = obj?.parentName;
+				enrolledStudentObj.class = `${classLevel} - ${sectionName}`;
+				enrolledStudentObj.rollNumber = obj?.rollNumber;
 
-      <div className="flex flex-col p-5 mt-5 w-full h-fit bg-gray-50 rounded shadow-lg overflow-hidden">
-        <div className="flex items-center justify-center p-2 bg-orange-100 w-16 rounded">
-          <p className="text-[10px] font-semibold text-orange-400">Pending</p>
-        </div>
-        <p className="mt-3 text-sm font-bold">{`Manage class teacher, attendance for ${classLevel} - ${sectionName}`}</p>
-        <p className="mt-2 text-xs text-gray-400 font-medium">
-          Class teacher is responsible for day to day activities of the class
-        </p>
-      </div>
+				return enrolledStudentObj;
+			});
+			setData(filteredData);
+			setIsLoading(false);
+		} catch (error) {
+			setIsLoading(false);
+			console.error(error);
+		}
+	};
 
-      <div className="flex mt-[2px] bg-gray-50 w-full rounded shadow-lg overflow-hidden">
-        <Drawer title="Assign Teacher To Classroom" triggerText="Add Teacher">
-          <AddTeacher
-            sectionId={sectionId}
-            fetchSectionDetails={fetchClassData}
-          />
-        </Drawer>
-      </div>
+	useEffect(() => {
+		fetchClassData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-      <div className="flex flex-col p-5 mt-5 w-full h-fit bg-gray-50 rounded shadow-lg overflow-hidden">
-        <p className="text-sm font-bold">{`Manage students for ${classLevel} - ${sectionName}`}</p>
-        <p className="mt-2 text-xs text-gray-400 font-medium">
-          Add or remove students for the class
-        </p>
-      </div>
+	return (
+		<div className='w-full relative'>
+			<div className='flex items-center justify-between px-6 py-4 border-b border-lms-100'>
+				<h4 className='text-2xl font-semibold text-lmsPrimary'>{`${classLevel}${
+					classLevel === "1"
+						? "st"
+						: classLevel === "2"
+						? "nd"
+						: classLevel === "3"
+						? "rd"
+						: classLevel === "P"
+						? "re-Nursery"
+						: classLevel === "U"
+						? "KG"
+						: classLevel === "L"
+						? "KG"
+						: classLevel === "N"
+						? "ursery"
+						: "th"
+				} - ${sectionName}`}</h4>
+			</div>
+			<div className='h-36 bg-gradient-to-tl from-[#B06AB3] to-[#4568DC] p-6 m-7 rounded-sm text-white grid grid-cols-3 gap-y-5'>
+				<div>
+					<h6 className='text-xs text-lms-100'>Class Teacher</h6>
+					{assignedTeacher ? (
+						<h5 className='text-sm font-medium'>
+							{assignedTeacher}
+						</h5>
+					) : (
+						<Drawer
+							title='Class Teacher'
+							triggerText='Assign Class Teacher'
+						>
+							<AddTeacher
+								sectionId={sectionId}
+								fetchSectionDetails={fetchClassData}
+							/>
+						</Drawer>
+					)}
+				</div>
+				<div>
+					<h6 className='text-xs text-lms-100'>Class</h6>
+					<h5 className='text-sm font-medium'>
+						{`${classLevel}${
+							classLevel === "1"
+								? "st"
+								: classLevel === "2"
+								? "nd"
+								: classLevel === "3"
+								? "rd"
+								: classLevel === "P"
+								? "re-Nursery"
+								: classLevel === "U"
+								? "KG"
+								: classLevel === "L"
+								? "KG"
+								: classLevel === "N"
+								? "ursery"
+								: "th"
+						}`}
+					</h5>
+				</div>
+				<div>
+					<h6 className='text-xs text-lms-100'>Section</h6>
+					<h5 className='text-sm font-medium'>{`${sectionName}`}</h5>
+				</div>
+				<div>
+					<h6 className='text-xs text-lms-100'>Total Students</h6>
+					<h5 className='text-sm font-medium'>
+						{totalStudent ? totalStudent : "0"}
+					</h5>
+				</div>
+				<div>
+					<h6 className='text-xs text-lms-100'>Present</h6>
+					<h5 className='text-sm font-medium'>28</h5>
+				</div>
+				<div>
+					<h6 className='text-xs text-lms-100'>Absent</h6>
+					<h5 className='text-sm font-medium'>2</h5>
+				</div>
+			</div>
+			{/* <Button
+				onClick={() => {
+					toast({
+						title: "",
+						description: (
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+								}}
+							>
+								<CheckCircleIcon
+									size={24}
+									style={{ marginRight: "18px" }}
+									className='text-lmsSuccess'
+								/>
+								<div>
+									<strong>Success</strong>
+									<p>
+										You can access all the files in this
+										folder.
+									</p>
+								</div>
+							</div>
+						),
+						style: {
+							backgroundColor: "#baf8c6",
+							color: "#092F5C",
+							padding: "12px 16px",
+							borderRadius: "8px",
+							borderLeft: "4px solid #24A148", // Left border color and thickness
+							boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+							maxWidth: "350px",
+						},
+						duration: 3000, // Auto-hide after 3 seconds
+					});
+				}}
+			>
+				Show Toast
+			</Button> */}
 
-      <div className="flex mt-[2px] bg-gray-50 w-full rounded shadow-lg overflow-hidden">
-        <Drawer title="Assign Student To Classroom" triggerText="Add Students">
-          <AddStudent
-            students={fullData}
-            sectionId={sectionId}
-            fetchSectionDetails={fetchClassData}
-          />
-        </Drawer>
-      </div>
-
-      <div className="flex mt-5 bg-gray-50 w-full rounded">
-        <DataTable columns={columns} data={data} isLoading={isLoading} />
-      </div>
-    </div>
-  );
+			<div className=' w-full rounded px-7'>
+				<DataTable
+					columns={columns}
+					data={data}
+					isLoading={isLoading}
+					students={unassignStudent}
+					sectionId={sectionId}
+					fetchSectionDetails={fetchClassData}
+				/>
+			</div>
+		</div>
+	);
 };
 
 export default Page;

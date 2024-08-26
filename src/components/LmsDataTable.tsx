@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	ColumnDef,
 	ColumnFiltersState,
@@ -23,12 +23,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
+import Drawer from "./Drawer";
+import AddStudent from "./AddStudent";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	isLoading: boolean;
 	skeletonRowCount?: number;
+	students: any[];
+	sectionId: string | null;
+	fetchSectionDetails: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -36,6 +41,9 @@ export function DataTable<TData, TValue>({
 	data,
 	isLoading,
 	skeletonRowCount = 3,
+	students,
+	sectionId,
+	fetchSectionDetails,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] =
@@ -57,14 +65,20 @@ export function DataTable<TData, TValue>({
 			columnFilters,
 		},
 	});
+	const [currentPath, setCurrentPath] = useState("");
 
 	const totalStudents = data.length;
+
+	useEffect(() => {
+		setCurrentPath(window.location.pathname);
+		// console.log(currentPath);
+	});
 
 	if (isLoading) {
 		return (
 			<div className=''>
 				<div className='flex items-center justify-between py-4 px-4 '>
-					<Skeleton className="h-8 w-64"/>
+					<Skeleton className='h-8 w-64' />
 					<Skeleton className='h-10 w-80' />
 				</div>
 				<Table className='w-full text-left border-collapse'>
@@ -115,26 +129,44 @@ export function DataTable<TData, TValue>({
 	return (
 		<div>
 			<div className='flex flex-row-reverse justify-between items-center mb-6 mt-2'>
-				<div className='flex items-center py-4 px-4 relative w-80 h-10'>
-					<Input
-						placeholder='Filter by student name...'
-						value={
-							(table
-								.getColumn("name")
-								?.getFilterValue() as string) ?? ""
-						}
-						onChange={(event) =>
-							table
-								.getColumn("name")
-								?.setFilterValue(event.target.value)
-						}
-						className='pl-10 rounded border-lms-200 placeholder:text-lms-500'
-					/>
-					<Search
-						className='absolute left-7 text-lmgSecondary'
-						size={20}
-					/>
+				<div className='flex items-center'>
+					<div className='flex items-center py-4 px-4 relative w-80 h-10'>
+						<Input
+							placeholder='Filter by student name...'
+							value={
+								(table
+									.getColumn("name")
+									?.getFilterValue() as string) ?? ""
+							}
+							onChange={(event) =>
+								table
+									.getColumn("name")
+									?.setFilterValue(event.target.value)
+							}
+							className='pl-10 rounded border-lms-200 placeholder:text-lms-500'
+							style={{ paddingTop: 0, paddingBottom: 0 }}
+						/>
+						<Search
+							className='absolute left-7 text-lmgSecondary'
+							size={20}
+						/>
+					</div>
+					{currentPath === "/viewclass" ? (
+						<Drawer
+							title='Assign Student To Classroom'
+							triggerText='Assign Students'
+						>
+							<AddStudent
+								students={students}
+								sectionId={sectionId}
+								fetchSectionDetails={fetchSectionDetails}
+							/>
+						</Drawer>
+					) : (
+						""
+					)}
 				</div>
+
 				<h5 className='py-4 font-bold text-xl text-lmsPrimary'>
 					Total Students ({totalStudents})
 				</h5>
@@ -151,7 +183,7 @@ export function DataTable<TData, TValue>({
 								{headerGroup.headers.map((header) => (
 									<TableHead
 										key={header.id}
-										className='px-4 py-2 text-left border-lms-100'
+										className=' px-5 py-0  text-left border-lms-100'
 									>
 										{header.isPlaceholder
 											? null
@@ -182,7 +214,7 @@ export function DataTable<TData, TValue>({
 									{row.getVisibleCells().map((cell) => (
 										<TableCell
 											key={cell.id}
-											className={`py-2.5 px-4 border-b border-lms-100 text-sm h-16 text-left border-r border-l font-medium text-lmsPrimary ${
+											className={` px-5 py-0 	border-b border-lms-100 text-sm h-12 text-left border-r  border-l font-medium text-lmsPrimary ${
 												cell.column.id === "name"
 													? "text-lmsAccent font-semibold"
 													: ""
@@ -200,7 +232,7 @@ export function DataTable<TData, TValue>({
 							<TableRow>
 								<TableCell
 									colSpan={columns.length}
-									className='h-24 text-center border-b border-lms-100 font-medium text-lmsPrimary'
+									className='h-24 px-5 py-0 text-center border-b border-lms-100 font-medium text-lmsPrimary'
 								>
 									No results.
 								</TableCell>
