@@ -203,8 +203,9 @@ const Page = () => {
 			<DataTable
 				columns={columns}
 				data={data}
-				isLoading={loading}
-			/>
+				isLoading={loading} students={[]} sectionId={null} fetchSectionDetails={function (): void {
+					throw new Error("Function not implemented.");
+				} }			/>
 		</div>
 	);
 };
