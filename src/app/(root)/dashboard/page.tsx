@@ -2,8 +2,8 @@
 import withAuthCheck from "@/components/withAuthCheck";
 import React from "react";
 
-const page = () => {
-	return <div>Dashboard</div>;
+const Page: React.FC = () => {
+  return <div>Dashboard</div>;
 };
 
-export default withAuthCheck(page);
+export default withAuthCheck(Page);
