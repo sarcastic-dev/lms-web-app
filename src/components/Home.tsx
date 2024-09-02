@@ -11,8 +11,10 @@ import ForgotPassword from "./ForgotPassword";
 import CreateNewPassword from "./CreateNewPassword";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthSchema, AuthSchemaType } from "../schema/createInstitute/AuthSchema"; // Adjust the path as necessary
-
+import {
+  AuthSchema,
+  AuthSchemaType,
+} from "../schema/createInstitute/AuthSchema"; // Adjust the path as necessary
 
 const HomePage: React.FC = () => {
   const [formType, setFormType] = useState<FormType>("login");
@@ -76,11 +78,15 @@ const HomePage: React.FC = () => {
                 <CreateInstitute userId={userId} />
               )}
               {formType === "forgotpassword" && (
-                <ForgotPassword setFormType={setFormType} formData={{
-                  email: ""
-                }} />
+                <ForgotPassword
+                  setFormType={setFormType}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
               )}
-              {formType === "createnewpassword" && <CreateNewPassword setFormType={setFormType} />}
+              {formType === "createnewpassword" && (
+                <CreateNewPassword setFormType={setFormType} formData={{ email: formData.email }} />
+              )}
             </FormProvider>
           </div>
         </div>
