@@ -21,6 +21,7 @@ interface ActionCellProps<T> {
 	fetchById: (id: string) => any;
 	setViewState: (state: T) => any;
 	pathName: string;
+	userType: string;
 }
 
 const ActionCell = <T extends string | null>({
@@ -28,16 +29,17 @@ const ActionCell = <T extends string | null>({
 	fetchById,
 	setViewState,
 	pathName,
+	userType,
 }: ActionCellProps<T>) => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const handleViewClick = () => {
-		dispatch(fetchById(id));
+		// dispatch(fetchById(id));
 		dispatch(setViewState("view" as T));
 	};
 
 	const handleEditClick = () => {
-		dispatch(fetchById(id));
+		// dispatch(fetchById(id));
 		dispatch(setViewState("edit" as T));
 	};
 
@@ -59,7 +61,12 @@ const ActionCell = <T extends string | null>({
 				className='w-[200px]'
 			>
 				<DropdownMenuGroup>
-					<Link href={{ pathname: `/${pathName}`, query: { id } }}>
+					<Link
+						href={{
+							pathname: `/information`,
+							query: { userType, id },
+						}}
+					>
 						<DropdownMenuItem
 							onClick={handleViewClick}
 							className='text-lmgSecondary font-semibold'
@@ -68,7 +75,12 @@ const ActionCell = <T extends string | null>({
 						</DropdownMenuItem>
 					</Link>
 					<DropdownMenuSeparator />
-					<Link href={{ pathname: `/${pathName}`, query: { id } }}>
+					<Link
+						href={{
+							pathname: `/${pathName}`,
+							query: { userType, id },
+						}}
+					>
 						<DropdownMenuItem
 							onClick={handleEditClick}
 							className='text-lmgSecondary font-semibold'

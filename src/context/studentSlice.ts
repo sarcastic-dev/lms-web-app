@@ -104,20 +104,20 @@ const studentSlice = createSlice({
     builder
       .addCase(fetchStudentById.pending, (state) => {
         state.status = "loading";
-        // console.log(state.status);
+        console.log(state.status);
       })
       .addCase(
         fetchStudentById.fulfilled,
         (state, action: PayloadAction<Student>) => {
           state.status = "succeeded";
           state.studentData = action.payload;
-          // console.log(state.studentData);
+          console.log(state.studentData);
         }
       )
       .addCase(fetchStudentById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || null;
-        // console.log(state.error);
+        console.log(state.error);
       });
   },
 });

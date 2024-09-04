@@ -13,16 +13,14 @@ const basicSchemaStaff = z.object({
 		.refine((value) => value.trim() !== "", {
 			message: "Email is required",
 		}),
-	firstName: z
-		.string()
-		.refine((value) => value.trim() !== "", {
-			message: "First Name is required",
-		}),
+	firstName: z.string().refine((value) => value.trim() !== "", {
+		message: "First Name is required",
+	}),
 	middleName: z.string().optional(),
 	lastName: z.string().optional(),
 	dob: z.string().optional(), // Assuming date validation is not required here
-    gender: z.string().optional(),
-    bloodGroup: z.string().optional(),
+	gender: z.string().optional(),
+	bloodGroup: z.string().optional(),
 	role: z
 		.enum(["owner", "teacher", "non-teaching"], {
 			message:
@@ -31,14 +29,13 @@ const basicSchemaStaff = z.object({
 		.refine((value) => value?.trim() !== "", {
 			message: "User Role is required",
 		}), // Ensures non-empty role
+	instituteId: z.string().optional(),
 });
 
 export default basicSchemaStaff;
 export type BasicInfoSchemaStaffType = z.infer<typeof basicSchemaStaff>;
 
-
-
-// 
+//
 
 // import { z } from "zod";
 

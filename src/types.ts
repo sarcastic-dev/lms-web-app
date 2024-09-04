@@ -1,75 +1,75 @@
 import { LucideIcon } from "lucide-react";
 
 export interface SidebarItems {
-  links: Array<{
-    label: string;
-    href: string;
-    icon: LucideIcon;
-    className: string;
-  }>;
+	links: Array<{
+		label: string;
+		href: string;
+		icon: LucideIcon;
+		className: string;
+	}>;
 }
 
 export interface StepProps {
-  step: number;
-  currentStep: number;
-  description: string;
-  icon: LucideIcon;
+	step: number;
+	currentStep: number;
+	description: string;
+	icon: LucideIcon;
 }
 
 export interface StepperProps {
-  step: number;
+	step: number;
 }
 
 export interface IconProps {
-  className: string;
+	className: string;
 }
 
 export interface BasicInfoUser {
-  bloodGroup: string;
-  dob: string;
-  email: string;
-  firstName: string;
-  gender?: string;
-  lastName: string;
-  middleName: string;
-  phone: string;
-  role: string;
-  instituteId: string;
+	bloodGroup: string;
+	dob: string;
+	email: string;
+	firstName: string;
+	gender?: string;
+	lastName: string;
+	middleName: string;
+	phone: string;
+	role: string;
+	instituteId: string;
 }
 
 export interface BasicInfoStudent {
-  enrollmentId: string;
-  admissionDate: string;
-  boardUniversity: string;
-  class: string;
-  rollNumber: string;
-  section: string;
+	enrollmentId: string;
+	admissionDate: string;
+	boardUniversity: string;
+	class: string;
+	rollNumber: string;
+	section: string;
 }
 
 export interface BasicInfo {
-  user: BasicInfoUser;
-  student: BasicInfoStudent;
+	user: BasicInfoUser;
+	student: BasicInfoStudent;
 }
 
 export interface AddressInfo {
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  country: string;
-  pinCode: string;
-  state: string;
+	addressLine1: string;
+	addressLine2: string;
+	city: string;
+	country: string;
+	pinCode: string;
+	state: string;
 }
 
 export interface ParentInfo {
-  name: string;
-  relation: string;
-  email: string;
-  phone: string;
-  qualification: string;
-  occupation: string;
-  workOrganizationName: string;
-  designation: string;
-  annualIncome: string;
+	name: string;
+	relation: string;
+	email: string;
+	phone: string;
+	qualification: string;
+	occupation: string;
+	workOrganizationName: string;
+	designation: string;
+	annualIncome: string;
 }
 
 // export interface GuardianInfo {
@@ -85,141 +85,161 @@ export interface ParentInfo {
 // }
 
 export interface MedicalInfo {
-  allergies: string;
-  bmi: string;
-  haemoglobin: string;
-  heightCm: string;
-  reportIssueDate: string;
-  pulseRate: string;
-  weightKg: string;
+	allergies: string;
+	bmi: string;
+	haemoglobin: string;
+	heightCm: string;
+	reportIssueDate: string;
+	pulseRate: string;
+	weightKg: string;
 }
 
 // Staff information types
 export interface BasicInfoStaffUser {
-  bloodGroup: string;
-  dob: string;
-  email: string;
-  firstName: string;
-  gender?: string;
-  lastName: string;
-  middleName: string;
-  phone: string;
-  role: "owner" | "teacher" | "non-teaching";
+	bloodGroup: string;
+	dob: string;
+	email: string;
+	firstName: string;
+	gender?: string;
+	lastName: string;
+	middleName: string;
+	phone: string;
+	role: "owner" | "teacher" | "non-teaching";
+	instituteId: string;
 }
 
 export interface BasicInfoStaff {
-  employeeId: string;
-  appointmentDate: string;
-  department: string;
-  designation: string;
-  employmentType: string;
-  esiCodeNumber: string;
-  experienceYears: string;
-  highestQualification: string;
-  jobTitle: string;
-  pfAccountNumber: string;
-  reportingManager: string;
-  uan: string;
+	employeeId: string;
+	appointmentDate: string;
+	department: string;
+	designation: string;
+	employmentType: string;
+	experienceYears: string;
+	highestQualification: string;
+	jobTitle: string;
 }
 
 export interface BasicInfoEmployee {
-  user: BasicInfoStaffUser;
-  staff: BasicInfoStaff;
+	user: BasicInfoStaffUser;
+	staff: BasicInfoStaff;
 }
 
 export interface AddressStaffInfo {
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  country: string;
-  pinCode: string;
-  state: string;
+	addressLine1: string;
+	addressLine2: string;
+	city: string;
+	country: string;
+	pinCode: string;
+	state: string;
 }
 
 export interface AdditionalDetails {
-  aadharNumber: string;
-  category: string;
-  emergencyContactNumber: string;
-  fatherName: string;
-  maritalStatus: string;
-  motherName: string;
-  panNumber: string;
-  religion: string;
-  spouseName: string;
+	aadharNumber: string;
+	category: string;
+	emergencyContactNumber: string;
+	fatherName: string;
+	maritalStatus: string;
+	motherName: string;
+	panNumber: string;
+	religion: string;
+	spouseName: string;
 }
 
 export interface PreviousExperience {
-  instituteName: string;
-  jobTitle: string;
-  joiningDate: string;
-  location: string;
-  referenceName: string;
-  referenceMobileNumber: string;
-  relievingDate: string;
+	instituteName: string;
+	jobTitle: string;
+	joiningDate: string;
+	location: string;
+	referenceName: string;
+	referenceMobileNumber: string;
+	relievingDate: string;
 }
 
 export interface BankDetails {
-  bankAccountNumber: string;
-  bankName: string;
-  accountHolderName: string;
-  ifscCode: string;
+	bankAccountNumber: string;
+	bankName: string;
+	accountHolderName: string;
+	ifscCode: string;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // STAFF SLICE
 export interface Staff {
-  basicInfo: {
-    user: BasicInfoStaffUser;
-    staff: BasicInfoStaff;
-  };
-  addressInfo: AddressStaffInfo;
-  additionalInfo: AdditionalDetails;
-  previousExperienceInfo: PreviousExperience;
-  bankDetailInfo: BankDetails;
+	basicInfo: {
+		user: BasicInfoStaffUser;
+		staff: BasicInfoStaff;
+	};
+	addressInfo: AddressStaffInfo;
+	additionalInfo: AdditionalDetails;
+	previousExperienceInfo: PreviousExperience;
+	bankDetailInfo: BankDetails;
 }
 
 export interface StaffState {
-  staffData: Staff;
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  viewState: "view" | "edit" | null;
+	staffData: Staff;
+	status: "idle" | "loading" | "succeeded" | "failed";
+	error: string | null;
+	viewState: "view" | "edit" | null;
 }
 
 // STUDENT SLICE
 
 export interface Student {
-  basicInfo: {
-    user: BasicInfoUser;
-    student: BasicInfoStudent;
-  };
-  addressInfo: AddressInfo;
-  parentInfo: ParentInfo;
-  medicalInfo: MedicalInfo;
+	basicInfo: {
+		user: BasicInfoUser;
+		student: BasicInfoStudent;
+	};
+	addressInfo: AddressInfo;
+	parentInfo: ParentInfo;
+	medicalInfo: MedicalInfo;
 }
 
 export interface StudentState {
-  studentData: Student;
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  viewState: "view" | "edit" | "add";
+	studentData: Student;
+	status: "idle" | "loading" | "succeeded" | "failed";
+	error: string | null;
+	viewState: "view" | "edit" | "add";
 }
 
 interface Section {
-  id: string;
-  name: string;
+	id: string;
+	name: string;
 }
 
 interface Class {
-  id: string;
-  name: string;
-  level: string;
-  status: string;
-  sections: Section[];
+	id: string;
+	name: string;
+	level: string;
+	status: string;
+	sections: Section[];
 }
 
 export interface Stage {
-  stage: string;
-  classes: Class[];
+	stage: string;
+	classes: Class[];
 }
 
-export type FormType = "login" | "otp" | "forgotpassword" | "createnewpassword" | "createProfile" | "createInstitute";
+export type FormType =
+	| "login"
+	| "otp"
+	| "forgotpassword"
+	| "createnewpassword"
+	| "createProfile"
+	| "createInstitute";
+
+export interface StructuredStaffResponse {
+	basicInfo: Omit<BasicInfoStaffUser, "role" | "instituteId">;
+	staffInfo: Omit<BasicInfoStaff, "staffId">;
+	addressInfo: AddressInfo;
+	additionalInfo: AdditionalDetails;
+	previousExperienceInfo: PreviousExperience;
+	bankDetailInfo: BankDetails;
+}
+
+export interface StructuredResponse {
+	basicInfo: Omit<BasicInfoUser, "role" | "instituteId">;
+	academicInfo: BasicInfoStudent;
+	addressInfo: AddressInfo;
+	parentInfo: ParentInfo;
+	medicalInfo: MedicalInfo;
+}

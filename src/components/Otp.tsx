@@ -5,14 +5,17 @@ import useCookie from "../hooks/useCookie";
 import axiosInstance from "../lib/axiosInstance";
 import { Button } from "./ui/button";
 import { FormType } from "@/types";
+import { showToast } from "@/utils/toastHelper";
+import { upperFirst } from "lodash";
+import { CircleX } from "lucide-react";
 
 interface OTPProps {
-  setFormType: (type: FormType) => void;
-  onEdit: () => void;
-  formData: {
-    email: string;
-    phone: string;
-  };
+	setFormType: (type: FormType) => void;
+	onEdit: () => void;
+	formData: {
+		email: string;
+		phone: string;
+	};
 }
 
 const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
@@ -21,6 +24,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 	const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
 	const [isSubmitting, setIsSubmitting] = useState(false); // State to track if OTP is being submitted
 	const [token, setToken, deleteToken] = useCookie("token");
+	const [errorMessage, setErrorMessage] = useState("");
 	const { toast } = useToast();
 	useEffect(() => {
 		if (resendTimer > 0) {
@@ -32,69 +36,72 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 		}
 	}, [resendTimer]);
 
-  const handleOTPChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const { value } = e.target;
-    const newOTP = [...otp];
-    newOTP[index] = value.slice(0, 1);
-    setOTP(newOTP);
+	const handleOTPChange = (
+		e: React.ChangeEvent<HTMLInputElement>,
+		index: number
+	) => {
+		const { value } = e.target;
+		const newOTP = [...otp];
+		newOTP[index] = value.slice(0, 1);
+		setOTP(newOTP);
 
-    if (value && index < otp.length - 1) {
-      const nextInput = document.getElementById(`otp-input-${index + 1}`);
-      if (nextInput) {
-        nextInput.focus();
-      }
-    } else if (!value && index > 0) {
-      const prevInput = document.getElementById(`otp-input-${index - 1}`);
-      if (prevInput) {
-        prevInput.focus();
-      }
-    }
-  };
+		if (value && index < otp.length - 1) {
+			const nextInput = document.getElementById(`otp-input-${index + 1}`);
+			if (nextInput) {
+				nextInput.focus();
+			}
+		} else if (!value && index > 0) {
+			const prevInput = document.getElementById(`otp-input-${index - 1}`);
+			if (prevInput) {
+				prevInput.focus();
+			}
+		}
+	};
 
-  const handleOTPSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    const otpValue = otp.join("");
-    console.log("OTP submitted:", otpValue);
-    console.log(token);
-    try {
-      const { data } = await axiosInstance.post("/verify-otp", {
-        email: formData.email,
-        otp: otpValue,
-        token,
-      });
-      deleteToken();
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setSubmitted(true);
-        setFormType("createProfile");
-      }, 2000);
-    } catch (error: any) {
-      console.log("Failed to verify OTP:", error.response.data.error);
-      toast({
-        variant: "destructive",
-        title: error.response.data.error,
-      });
-      setIsSubmitting(false);
-      deleteToken();
-    }
-  };
+	const handleOTPSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setIsSubmitting(true);
+		const otpValue = otp.join("");
+		console.log("OTP submitted:", otpValue);
+		console.log(token);
+		try {
+			const { data } = await axiosInstance.post("/verify-otp", {
+				email: formData.email,
+				otp: otpValue,
+				token,
+			});
+			deleteToken();
+			setTimeout(() => {
+				setIsSubmitting(false);
+				setSubmitted(true);
+				setFormType("createProfile");
+			}, 2000);
+		} catch (error: any) {
+			// console.log("Failed to verify OTP:", error.response.data.error);
+			setErrorMessage(error.response.data.error);
+			// showToast("error", upperFirst(error.response.data.error));
+			setIsSubmitting(false);
+			deleteToken();
+		}
+	};
 
-  const handleResend = async () => {
-    console.log("resend otp clicked");
-    const { data } = await axiosInstance.post("/request-otp", {
-      email: formData.email,
-    });
-    setToken({
-      value: data.token,
-      expirationDate: new Date(
-        new Date().getTime() + 24 * 60 * 60 * 1000
-      ).toISOString(),
-    });
-  };
+	const handleResend = async () => {
+		console.log("resend otp clicked");
+		try {
+			const { data } = await axiosInstance.post("/request-otp", {
+				email: formData.email,
+			});
+			setToken({
+				value: data.token,
+				expirationDate: new Date(
+					new Date().getTime() + 24 * 60 * 60 * 1000
+				).toISOString(),
+			});
+			showToast("success", "New OTP has been sent successfully");
+		} catch (erro: any) {
+			showToast("error", "Something went wrong");
+		}
+	};
 
 	return (
 		<div className='bg-white p-8 rounded sm:w-[320px] md:w-[380px] lg:w-[466px] h-3/6 z-10'>
@@ -102,17 +109,17 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 				Verify OTP
 			</h1>
 			<div className='flex justify-between items-center text-start mt-3 mb-8'>
-				<p className='text-[#07254A] text-sm'>
+				<p className='text-lmsPrimary text-sm'>
 					OTP sent to <span>{formData.email || formData.phone}</span>
 				</p>
 				<button
 					onClick={onEdit}
-					className='text-[#115DB8] font-semibold'
+					className='text-lmsAccent font-semibold'
 				>
 					edit
 				</button>
 			</div>
-			<p className='text-[#07254A] mb-2 text-sm'>Enter OTP</p>
+			<p className='text-lmsPrimary mb-2 text-sm'>Enter OTP</p>
 
 			<div className='flex flex-col items-center'>
 				<div className='flex space-x-4 mb-3 sm:mr-[35px] md:mr-[48px] lg:mr-[80px]'>
@@ -140,16 +147,21 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 					</button>
 				</div>
 
-        <Button
-          variant={"lmsActive"}
-          type="submit"
-          className="sm:w-[255px] md:w-[320px] lg:w-[402px]"
-          onClick={handleOTPSubmit}
-        >
-          {isSubmitting ? "Submitting OTP..." : "Submit OTP"}
-        </Button>
-      </div>
-    </div>
-  );
+				<Button
+					variant={"lmsActive"}
+					type='submit'
+					className='sm:w-[255px] md:w-[320px] lg:w-[402px]'
+					onClick={handleOTPSubmit}
+				>
+					{isSubmitting ? "Submitting OTP..." : "Submit OTP"}
+				</Button>
+				{errorMessage && (
+					<div className='bg-red-200 text-lmsError h-10 px-3 w-full mt-5 rounded flex items-center gap-2 text-sm'>
+						<CircleX size={20} /> {upperFirst(errorMessage)}
+					</div>
+				)}
+			</div>
+		</div>
+	);
 };
 export default Otp;

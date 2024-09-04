@@ -12,7 +12,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 			<Sidebar
 				open={sidebarOpen}
 				setOpen={setSidebarOpen}
-				className='fixed top-0 left-0 h-screen overflow-y-hidden overflow-x-hidden bg-gray-200 border border-r-lms-200'
+				className='fixed top-0 left-0 h-screen overflow-y-hidden overflow-x-hidden bg-gray-200 border border-r-lms-100'
 			/>
 			<section
 				className={`transition-all duration-500 ${

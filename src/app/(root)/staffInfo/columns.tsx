@@ -110,7 +110,8 @@ const columns: ColumnDef<Teacher>[] = [
 				id={row.original.id}
 				fetchById={fetchStaffById}
 				setViewState={setViewState}
-				pathName='staffs'
+				pathName='users'
+				userType="staff"
 			/>
 		),
 	},
