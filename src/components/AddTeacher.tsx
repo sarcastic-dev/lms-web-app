@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
 import { Button } from "./ui/button";
 import { SheetClose } from "./ui/sheet";
-
+import Cookies from "js-cookie";
 import {
 	Table,
 	TableBody,
@@ -38,8 +38,9 @@ const AddTeacher = ({
 	// Fetch unassigned teachers
 	const fetchTeacherInfo = async () => {
 		try {
+			const instituteId = Cookies.get("instituteId");
 			const { data } = await axiosInstance.get(
-				`/institutes/unassigned-teachers?instituteId=97cb57e0-067c-4210-aba1-279fd577494e`
+				`/institutes/unassigned-teachers?instituteId=${instituteId}`
 			);
 			const filteredData = data.map((obj: Teacher) => ({
 				teacherId: obj.teacherId,

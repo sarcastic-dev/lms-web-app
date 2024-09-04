@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { DataTable } from "@/components/LmsDataTable";
 import { toast } from "@/components/ui/use-toast";
+import Cookies from "js-cookie";
 
 const Page = () => {
 	const searchParams = useSearchParams();
@@ -26,9 +27,10 @@ const Page = () => {
 
 	const fetchClassData = async () => {
 		setIsLoading(true);
+		const instituteId = Cookies.get("instituteId");
 		try {
 			const { data } = await axiosInstance.get(
-				`/classes/section-details?instituteId=97cb57e0-067c-4210-aba1-279fd577494e&classLevel=${classLevel}&section=${sectionName}`
+				`/classes/section-details?instituteId=${instituteId}&classLevel=${classLevel}&section=${sectionName}`
 			);
 
 			setTotalStudent(data.enrolled.length);

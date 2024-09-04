@@ -14,6 +14,7 @@ const initialStaffData: Staff = {
       middleName: "",
       phone: "",
       role: "teacher",
+      instituteId:""
     },
     staff: {
       employeeId: "",
@@ -21,13 +22,9 @@ const initialStaffData: Staff = {
       department: "",
       designation: "",
       employmentType: "",
-      esiCodeNumber: "",
       experienceYears: "",
       highestQualification: "",
       jobTitle: "",
-      pfAccountNumber: "",
-      reportingManager: "",
-      uan: "",
     },
   },
   addressInfo: {

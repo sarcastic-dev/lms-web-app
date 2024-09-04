@@ -6,7 +6,7 @@ import {
 	BasicInfoEmployee,
 	PreviousExperience,
 } from "@/types";
-
+import Cookies from "js-cookie";
 interface RegistrationState {
 	basicInfo: Partial<BasicInfoEmployee>;
 	addressInfo: Partial<AddressStaffInfo>;
@@ -14,6 +14,8 @@ interface RegistrationState {
 	previousExperienceInfo: Partial<PreviousExperience>;
 	bankDetailInfo: Partial<BankDetails>;
 }
+
+const instituteId = Cookies.get("instituteId");
 
 const initialState: RegistrationState = {
 	basicInfo: {
@@ -27,6 +29,7 @@ const initialState: RegistrationState = {
 			middleName: "",
 			phone: "",
 			role: "teacher",
+			instituteId: instituteId || "",
 		},
 		staff: {
 			employeeId: "",
@@ -34,13 +37,9 @@ const initialState: RegistrationState = {
 			department: "",
 			designation: "",
 			employmentType: "",
-			esiCodeNumber: "",
 			experienceYears: "",
 			highestQualification: "",
 			jobTitle: "",
-			pfAccountNumber: "",
-			reportingManager: "",
-			uan: "",
 		},
 	},
 	addressInfo: {},

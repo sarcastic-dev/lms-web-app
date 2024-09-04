@@ -53,6 +53,7 @@ const BasicInfo = ({
 			middleName: basicStaffInfo?.user?.middleName || "",
 			phone: basicStaffInfo?.user?.phone || "",
 			role: basicStaffInfo?.user?.role || "teacher",
+			instituteId: basicStaffInfo?.user?.instituteId || "",
 		},
 	});
 

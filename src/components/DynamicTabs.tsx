@@ -74,7 +74,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 			} else if (step === 3) {
 				dispatch(setParentInfoData(data));
 			} else if (step === 4) {
-				dispatch(setStaffAddress(data));
+				dispatch(setAddressInfoData(data));
 			} else if (step === 5) {
 				dispatch(setMedicalInfoData(data));
 			} else if (step === 6) {
@@ -111,12 +111,12 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					).get("id");
 					if (studentId) {
 						await axiosInstance.put(
-							`http://16.170.155.154:3300/api/students/${studentId}`,
+							`/students/${studentId}`,
 							modifiedRegistrationData
 						);
 					} else {
 						await axiosInstance.post(
-							"http://16.170.155.154:3300/api/students",
+							"/students",
 							modifiedRegistrationData
 						);
 					}
@@ -129,13 +129,14 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 				}
 				return;
 			}
+			console.log(registrationData);
 		} else if (userType === "staff") {
 			if (step === 1) {
 				dispatch(setBasicInfoUserDetailData(data));
 			} else if (step === 2) {
 				dispatch(setBasicInfoStaffData(data));
 			} else if (step === 3) {
-				dispatch(setAddressInfoData(data));
+				dispatch(setStaffAddress(data));
 			} else if (step === 4) {
 				dispatch(setAdditionalDetailsData(data));
 			} else if (step === 5) {

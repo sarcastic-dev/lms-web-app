@@ -20,13 +20,13 @@ import {
 import { Button } from "./ui/button";
 import { School } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
-
+import Cookies from "js-cookie";
 const CreateClassroomModal: React.FC = () => {
 	const [stage, setStage] = useState<string>("");
 	const [className, setClassName] = useState<string>("");
 	const [level, setLevel] = useState<string>("");
 	// const [teacher, setTeacher] = useState<string>("");
-
+	const instituteId = Cookies.get("instituteId");
 	const handleStageChange = (value: string) => {
 		setStage(value);
 		setClassName("");
@@ -53,7 +53,7 @@ const CreateClassroomModal: React.FC = () => {
 			level: level,
 			stage: stage,
 			status: "active",
-			instituteId: "29cd064d-3367-4601-9093-3d7902181042",
+			instituteId: instituteId,
 		};
 
 		try {

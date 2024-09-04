@@ -102,7 +102,8 @@ const columns: ColumnDef<Student>[] = [
 					id={row.original.id}
 					fetchById={fetchStudentById}
 					setViewState={setViewState}
-					pathName='students'
+					pathName='users'
+					userType="student"
 				/>
 			</div>
 		),

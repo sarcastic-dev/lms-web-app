@@ -12,87 +12,90 @@ import CreateNewPassword from "./CreateNewPassword";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  AuthSchema,
-  AuthSchemaType,
+	AuthSchema,
+	AuthSchemaType,
 } from "../schema/createInstitute/AuthSchema"; // Adjust the path as necessary
 
 const HomePage: React.FC = () => {
-  const [formType, setFormType] = useState<FormType>("login");
-  const [formData, setFormData] = useState({
-    email: "",
-    phone: "",
-  });
-  const [userId, setUserId] = useState<string | null>(null);
+	const [formType, setFormType] = useState<FormType>("login");
+	const [formData, setFormData] = useState({
+		email: "",
+		phone: "",
+	});
+	const [userId, setUserId] = useState<string | null>(null);
 
-  const methods = useForm<AuthSchemaType>({
-    resolver: zodResolver(AuthSchema),
-  });
+	const methods = useForm<AuthSchemaType>({
+		resolver: zodResolver(AuthSchema),
+	});
 
-  const handleShowOTP = (contact: { email: string; phone: string }) => {
-    setFormType("otp");
-  };
-
-  return (
-    <>
-      <div className="flex justify-between">
-        <div className="w-1/2 relative h-screen">
-          <div className="h-fit">
-            <Image
-              src="/MainBG.png"
-              alt="Background Image"
-              layout="fill"
-              sizes="(max-width: 640px)"
-              objectFit="cover"
-              priority
-            />
-          </div>
-          <div className="relative flex h-screen justify-center text-white items-end text-4xl font-bold pb-10 z-50">
-            <Carousel formType={formType} />
-          </div>
-        </div>
-        <div className="w-1/2 flex justify-center items-center">
-          <div>
-            <FormProvider {...methods}>
-              {formType === "login" && (
-                <Login
-                  onShowOTP={handleShowOTP}
-                  setFormData={setFormData}
-                  setFormType={setFormType}
-                />
-              )}
-              {formType === "otp" && (
-                <Otp
-                  setFormType={setFormType}
-                  onEdit={() => setFormType("login")}
-                  formData={formData}
-                />
-              )}
-              {formType === "createProfile" && (
-                <CreateProfile
-                  setFormType={setFormType}
-                  formData={formData}
-                  setUserId={setUserId}
-                />
-              )}
-              {formType === "createInstitute" && (
-                <CreateInstitute userId={userId} />
-              )}
-              {formType === "forgotpassword" && (
-                <ForgotPassword
-                  setFormType={setFormType}
-                  formData={formData}
-                  setFormData={setFormData}
-                />
-              )}
-              {formType === "createnewpassword" && (
-                <CreateNewPassword setFormType={setFormType} formData={{ email: formData.email }} />
-              )}
-            </FormProvider>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+	const handleShowOTP = (contact: { email: string; phone: string }) => {
+		setFormType("otp");
+	};
+	return (
+		<>
+			<div className='flex justify-between'>
+				<div className='w-1/2 relative h-screen'>
+					<div className='h-fit'>
+						<Image
+							src='/MainBG.png'
+							alt='Background Image'
+							layout='fill'
+							sizes='(max-width: 640px)'
+							objectFit='cover'
+							priority
+						/>
+					</div>
+					<div className='relative flex h-screen justify-center text-white items-end text-4xl font-bold pb-10 z-50'>
+						<Carousel formType={formType} />
+					</div>
+				</div>
+				<div className='w-1/2 flex justify-center items-center'>
+					<div>
+						<FormProvider {...methods}>
+							{formType === "login" && (
+								<Login
+									onShowOTP={handleShowOTP}
+									setFormData={setFormData}
+									setFormType={setFormType}
+								/>
+							)}
+							{formType === "otp" && (
+								<Otp
+									setFormType={setFormType}
+									onEdit={() => setFormType("login")}
+									formData={formData}
+								/>
+							)}
+							{formType === "createProfile" && (
+								<CreateProfile
+									setFormType={setFormType}
+									formData={formData}
+									setUserId={setUserId}
+								/>
+							)}
+							{formType === "createInstitute" && (
+								<CreateInstitute
+									userId={userId}
+									setFormType={setFormType}
+								/>
+							)}
+							{formType === "forgotpassword" && (
+								<ForgotPassword
+									setFormType={setFormType}
+									formData={{
+										email: "",
+									}}
+								/>
+							)}
+							{formType === "createnewpassword" && (
+								<CreateNewPassword setFormType={setFormType} />
+							)}
+						</FormProvider>
+					</div>
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default HomePage;

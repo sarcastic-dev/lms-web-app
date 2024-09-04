@@ -56,9 +56,7 @@ const BasicInfo = ({
 			middleName: basicInfo?.user?.middleName || "",
 			phone: basicInfo?.user?.phone || "",
 			role: basicInfo?.user?.role || "student",
-			instituteId:
-				basicInfo?.user?.instituteId ||
-				"97cb57e0-067c-4210-aba1-279fd577494e",
+			instituteId: basicInfo?.user?.instituteId || "",
 		},
 	});
 

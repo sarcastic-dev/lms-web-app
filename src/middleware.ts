@@ -38,12 +38,12 @@ export async function middleware(request: NextRequest) {
 				60 * 60
 			}; Path=/`
 		);
-		response.headers.append(
-			"Set-Cookie",
-			`refreshToken=${data.refreshToken}; HttpOnly; Secure; Max-Age=${
-				60 * 60 * 24 * 7
-			}; Path=/`
-		);
+		// response.headers.append(
+		// 	"Set-Cookie",
+		// 	`refreshToken=${data.refreshToken}; HttpOnly; Secure; Max-Age=${
+		// 		60 * 60 * 24 * 7
+		// 	}; Path=/`
+		// );
 
 		console.log("Tokens refreshed successfully");
 
