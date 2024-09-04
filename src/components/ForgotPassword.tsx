@@ -5,15 +5,22 @@ import { Button } from "./ui/button";
 import { Mail } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
 import { FormType } from "@/types";
-import { useToast } from "@/components/ui/use-toast"; // Assuming you have a toast hook
-import { setToken, getToken, deleteToken } from "../lib/tokenService"; // Token management functions
+import { useToast } from "@/components/ui/use-toast";
+import { setToken, getToken, deleteToken } from "../lib/tokenService";
 
 interface ForgotPasswordProps {
   setFormType: (type: FormType) => void;
-  formData: { email: string }; // Pass formData as prop
+  formData: {
+    email: string;
+  };
+  setFormData: (data: any) => void;
 }
 
-const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setFormType, formData }) => {
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({
+  setFormType,
+  formData,
+  setFormData,
+}) => {
   const [email, setEmail] = useState(formData.email || "");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -26,7 +33,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setFormType, formData }
     }
   }, [formData.email]);
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -39,146 +46,138 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setFormType, formData }
       return;
     }
 
-    try {
-      const response = await axiosInstance.post("/request-otp", { email });
-      const { token } = response.data;
-      setToken(token);
-      setIsOtpSent(true);
-      toast({
-        variant: "default",
-        title: "OTP sent successfully.",
-      });
-    } catch (error: any) {
-      console.error("Error requesting OTP:", error);
-      toast({
-        variant: "destructive",
-        title: error.response?.data?.message || "Failed to send OTP. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    if (!isOtpSent) {
+      try {
+        const response = await axiosInstance.post("/reset-password-otp", {
+          email,
+        });
+        const { token } = response.data;
+        setToken(token);
+        setIsOtpSent(true);
+        setFormData({ ...formData, email });
+        toast({
+          variant: "default",
+          title: "OTP sent successfully.",
+        });
+      } catch (error: any) {
+        console.error("Error requesting OTP:", error);
+        toast({
+          variant: "destructive",
+          title:
+            error.response?.data?.message ||
+            "Failed to send OTP. Please try again.",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      if (!otp) {
+        toast({
+          variant: "destructive",
+          title: "OTP is required.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
 
-  const handleOtpSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+      const token = getToken();
 
-    if (!otp) {
-      toast({
-        variant: "destructive",
-        title: "OTP is required.",
-      });
-      setIsSubmitting(false);
-      return;
-    }
+      if (!token) {
+        toast({
+          variant: "destructive",
+          title: "OTP token is missing. Please request a new OTP.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
 
-    const token = getToken();
-
-    if (!token) {
-      toast({
-        variant: "destructive",
-        title: "OTP token is missing. Please request a new OTP.",
-      });
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      await axiosInstance.post("/verify-otp", { email, otp, token });
-      deleteToken();
-      toast({
-        variant: "default",
-        title: "OTP verified successfully.",
-      });
-      setFormType("createnewpassword"); // Proceed to create new password
-    } catch (error: any) {
-      console.error("Error verifying OTP:", error);
-      toast({
-        variant: "destructive",
-        title: error.response?.data?.message || "Invalid OTP. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleResendOtp = async () => {
-    setIsSubmitting(true);
-
-    try {
-      const response = await axiosInstance.post("/request-otp", { email });
-      const { token } = response.data;
-      setToken(token);
-      toast({
-        variant: "default",
-        title: "OTP resent successfully.",
-      });
-    } catch (error: any) {
-      console.error("Error resending OTP:", error);
-      toast({
-        variant: "destructive",
-        title: error.response?.data?.message || "Failed to resend OTP. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
+      try {
+        await axiosInstance.post("/verify-otp", { email, otp, token });
+        deleteToken();
+        toast({
+          variant: "default",
+          title: "OTP verified successfully.",
+        });
+        setFormType("createnewpassword");
+      } catch (error: any) {
+        console.error("Error verifying OTP:", error);
+        toast({
+          variant: "destructive",
+          title:
+            error.response?.data?.message || "Invalid OTP. Please try again.",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
-    <div className="relative w-[366px]">
-      {!isOtpSent ? (
-        <form onSubmit={handleEmailSubmit}>
-          <FormLabel htmlFor="email" className="mb-2 text-gray-700">
-            Enter Email
-          </FormLabel>
-          <FormControl>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 text-gray-400" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </FormControl>
-          <Button type="submit" className="w-full mt-4 rounded" disabled={isSubmitting}>
-            {isSubmitting ? "Sending OTP..." : "Send OTP"}
-          </Button>
-        </form>
-      ) : (
-        <form onSubmit={handleOtpSubmit}>
-          <FormLabel htmlFor="otp" className="mb-2 text-gray-700">
-            Enter OTP sent to your email
-          </FormLabel>
-          <FormControl>
+    <div className="flex flex-col sm:w-[320px] md:w-[380px] lg:w-[466px] space-y-5 bg-white p-8 rounded z-10">
+      <form onSubmit={handleSubmit}>
+        <h4 className="text-2xl font-bold mb-5">Forgot Your Password ?</h4>
+        <FormLabel
+          htmlFor="email_or_phone_number"
+          className="text-gray-500 text-sm"
+        >
+          Email
+        </FormLabel>
+        <FormControl>
+          <div className="relative">
             <Input
-              id="otp"
+              id="email_or_phone_number"
               type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
+              className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 mt-2 ${
+                email && "pl-10"
+              }`}
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-          </FormControl>
-          <Button type="submit" className="w-full rounded mt-4" disabled={isSubmitting}>
-            {isSubmitting ? "Verifying OTP..." : "Verify OTP"}
-          </Button>
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={handleResendOtp}
-              disabled={isSubmitting}
-              className="text-blue-500 hover:underline"
-            >
-              Resend OTP
-            </button>
+            {email && (
+              <Mail
+                size={20}
+                className="absolute left-2 sm:top-[2px] lg:top-[4px] xl:top-[23px] text-gray-500 ml-1"
+              />
+            )}
           </div>
-        </form>
-      )}
+        </FormControl>
+
+        {isOtpSent && (
+          <div className="mt-3">
+            <FormLabel htmlFor="otp" className={`mb-2 text-gray-700`}>
+              Enter OTP sent to your email
+            </FormLabel>
+            <FormControl>
+              <div className="relative">
+                <Input
+                  id="otp"
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  className="mt-2"
+                  required
+                />
+              </div>
+            </FormControl>
+          </div>
+        )}
+
+        <Button
+          variant={"lmsActive"}
+          type="submit"
+          className="sm:w-[250px] md:w-[320px] lg:w-[402px] mt-3 rounded"
+        >
+          {isSubmitting
+            ? isOtpSent
+              ? "Verifying OTP..."
+              : "Sending OTP..."
+            : isOtpSent
+            ? "Verify OTP"
+            : "Send OTP"}
+        </Button>
+      </form>
     </div>
   );
 };

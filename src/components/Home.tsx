@@ -31,7 +31,6 @@ const HomePage: React.FC = () => {
 	const handleShowOTP = (contact: { email: string; phone: string }) => {
 		setFormType("otp");
 	};
-
 	return (
 		<>
 			<div className='flex justify-between'>
