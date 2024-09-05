@@ -21,7 +21,7 @@ import { resetStaffData, setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/LmsDataTable";
 import { Separator } from "@/components/ui/separator";
-import withAuthCheck from "@/components/withAuthCheck";
+import withAuthCheck from "@/components/WithAuthCheck";
 
 const Page: React.FC = () => {
 	const [data, setData] = useState([]);

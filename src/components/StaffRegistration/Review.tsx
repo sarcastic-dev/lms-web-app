@@ -51,7 +51,6 @@ const Review = ({ onNext }: any) => {
 			highestQualification:
 				registrationData.basicInfo.staff?.highestQualification,
 			jobTitle: registrationData.basicInfo.staff?.jobTitle,
-			pfAccountNumber: registrationData.basicInfo.staff?.pfAccountNumber,
 		},
 
 		addressInfo: {
@@ -133,8 +132,14 @@ const Review = ({ onNext }: any) => {
 				structuredResponse.employeeInfo
 			)}
 			{renderInfoSection("Address Info", structuredResponse.addressInfo)}
-			{renderInfoSection("Additional Info", structuredResponse.additionalInfo)}
-			{renderInfoSection("Previous Info", structuredResponse.previousExperienceInfo)}
+			{renderInfoSection(
+				"Additional Info",
+				structuredResponse.additionalInfo
+			)}
+			{renderInfoSection(
+				"Previous Info",
+				structuredResponse.previousExperienceInfo
+			)}
 			{renderInfoSection("Bank Info", structuredResponse.bankDetailInfo)}
 		</div>
 	);

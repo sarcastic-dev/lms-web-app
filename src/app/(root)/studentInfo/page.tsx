@@ -21,7 +21,7 @@ import { resetStudentData, setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "@/components/LmsDataTable";
-import withAuthCheck from "@/components/withAuthCheck";
+import withAuthCheck from "@/components/WithAuthCheck";
 
 const Page: React.FC = () => {
 	const [data, setData] = useState([]);
