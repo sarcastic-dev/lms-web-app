@@ -329,6 +329,7 @@ const Login: React.FC<LoginProps> = ({
 					formData={{
 						email: "",
 					}}
+					setFormData={setFormData}
 				/>
 			)}
 		</div>

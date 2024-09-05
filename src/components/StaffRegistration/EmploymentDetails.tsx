@@ -56,11 +56,11 @@ const EmploymentDetails = ({
 			experienceYears: employeeInfo?.staff?.experienceYears || "",
 			highestQualification:
 				employeeInfo?.staff?.highestQualification || "",
-			uan: employeeInfo?.staff?.uan || "",
-			pfAccountNumber: employeeInfo?.staff?.pfAccountNumber || "",
-			esiCodeNumber: employeeInfo?.staff?.esiCodeNumber || "",
-			reportingManager: (employeeInfo?.staff?.reportingManager ||
-				"") as EmploymentStaffSchemaType["reportingManager"],
+			// uan: employeeInfo?.staff?.uan || "",
+			// pfAccountNumber: employeeInfo?.staff?.pfAccountNumber || "",
+			// esiCodeNumber: employeeInfo?.staff?.esiCodeNumber || "",
+			// reportingManager: (employeeInfo?.staff?.reportingManager ||
+			// 	"") as EmploymentStaffSchemaType["reportingManager"],
 		},
 	});
 
@@ -88,10 +88,7 @@ const EmploymentDetails = ({
 								render={({ field }) => (
 									<FormItem>
 										<div className=''>
-											<FormLabel
-												htmlFor='employeeID'
-	
-											>
+											<FormLabel htmlFor='employeeID'>
 												Employee ID{" "}
 												<span className='text-red-500'>
 													*
@@ -144,10 +141,7 @@ const EmploymentDetails = ({
 								name='jobTitle'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='job_title'
-
-										>
+										<FormLabel htmlFor='job_title'>
 											Job Title
 										</FormLabel>
 										<FormControl>
@@ -169,10 +163,7 @@ const EmploymentDetails = ({
 								name='employmentType'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='employment_type'
-
-										>
+										<FormLabel htmlFor='employment_type'>
 											Employment Type
 										</FormLabel>
 										<FormControl>
@@ -194,10 +185,7 @@ const EmploymentDetails = ({
 								name='designation'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='designation'
-
-										>
+										<FormLabel htmlFor='designation'>
 											Designation
 										</FormLabel>
 										<FormControl>
@@ -248,10 +236,7 @@ const EmploymentDetails = ({
 								name='department'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='department'
-
-										>
+										<FormLabel htmlFor='department'>
 											Department
 										</FormLabel>
 										<FormControl>
@@ -302,10 +287,7 @@ const EmploymentDetails = ({
 								name='appointmentDate'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='appointmentDate'
-
-										>
+										<FormLabel htmlFor='appointmentDate'>
 											Appointment Date
 										</FormLabel>
 										<FormControl>
@@ -338,10 +320,7 @@ const EmploymentDetails = ({
 								name='experienceYears'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='experience_years'
-
-										>
+										<FormLabel htmlFor='experience_years'>
 											Experience (Years)
 										</FormLabel>
 										<FormControl>
@@ -363,10 +342,7 @@ const EmploymentDetails = ({
 								name='highestQualification'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel
-											htmlFor='highest_qualification'
-
-										>
+										<FormLabel htmlFor='highest_qualification'>
 											Highest Qualification
 										</FormLabel>
 										<FormControl>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import withAuthCheck from "@/components/withAuthCheck";
+import withAuthCheck from "@/components/WithAuthCheck";
 import { Button } from "@/components/ui/button";
 import {
 	CloudUpload,

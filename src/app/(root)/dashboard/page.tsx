@@ -3,7 +3,8 @@ import { Chart } from "@/components/Chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import withAuthCheck from "@/components/withAuthCheck";
+import WithAuthCheck from "@/components/WithAuthCheck";
+import { NextPage } from "next";
 import {
 	Bell,
 	BellRing,
@@ -14,7 +15,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const page = () => {
+const Page: NextPage = () => {
 	return (
 		<div>
 			<div className='flex items-center justify-between'>
@@ -178,4 +179,4 @@ const page = () => {
 	);
 };
 
-export default withAuthCheck(page);
+export default WithAuthCheck(Page);

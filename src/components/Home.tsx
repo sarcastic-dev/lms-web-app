@@ -85,10 +85,14 @@ const HomePage: React.FC = () => {
 									formData={{
 										email: "",
 									}}
+									setFormData={setFormData}
 								/>
 							)}
 							{formType === "createnewpassword" && (
-								<CreateNewPassword setFormType={setFormType} />
+								<CreateNewPassword
+									setFormType={setFormType}
+									formData={{ email: formData.email }}
+								/>
 							)}
 						</FormProvider>
 					</div>
