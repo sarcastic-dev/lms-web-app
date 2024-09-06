@@ -33,7 +33,7 @@ interface DataTableProps<TData, TValue> {
 	skeletonRowCount?: number;
 	students: any[];
 	sectionId: string | null;
-	fetchSectionDetails: () => any; // No arguments expected
+	fetchSectionDetails: () => void;
 }
 
 export function DataTable<TData, TValue>({
