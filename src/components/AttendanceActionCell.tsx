@@ -22,13 +22,13 @@ import { DataTable } from "@/components/LmsDataTable"; // Assuming you already h
 type ViewState = "view" | "add" | "edit";
 
 interface ActionCellProps<T> {
-  sectionId: string;
-  fetchById: (sectionId: string) => any;
+  studentId: string;
+  fetchById: (studentId: string) => any;
   setViewState: (state: ViewState) => any; // Strictly typed
 }
 
 const ActionCell = <T extends string | null>({
-  sectionId,
+  studentId,
   fetchById,
   setViewState,
 }: ActionCellProps<T>) => {
@@ -39,7 +39,7 @@ const ActionCell = <T extends string | null>({
   const handleShowStudentsClick = async () => {
     try {
       // Modify this part to fetch attendance records by student ID
-      const response = await fetchById(sectionId);
+      const response = await fetchById(studentId);
 
       if (response?.attendanceRecords) {
         setStudentsData(response.attendanceRecords); // Extract attendanceRecords array
@@ -61,7 +61,7 @@ const ActionCell = <T extends string | null>({
         className="p-0"
         onClick={handleShowStudentsClick}
       >
-        Show Data
+        Show Students
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>

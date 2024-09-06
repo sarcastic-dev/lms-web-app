@@ -2,7 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -13,7 +17,7 @@ import axiosInstance from "@/lib/axiosInstance";
 
 // Update the Attendance interface to match your API response fields
 interface Attendance {
-  attendanceRecords: string
+  attendanceRecords: string;
   classId: string;
   className: string;
   sectionId: string;
@@ -72,6 +76,9 @@ const Page = () => {
     return section ? section.attendanceRecords : [];
   };
 
+  const getSectionDetailsFetcher = (sectionId: string) => () =>
+    fetchSectionDetails(sectionId);
+
   return (
     <div className="w-full h-screen my-4 space-y-4 2xl:px-5 2xl:py-3 xl:px-8 xl:py-2 lg:px-12 lg:py-4">
       <div className="flex justify-center items-center">
@@ -115,8 +122,8 @@ const Page = () => {
             isLoading={loading}
             students={[]}
             sectionId={null}
-            fetchSectionDetails={(sectionId: string) => fetchSectionDetails(sectionId)} // Properly passing sectionId here
-            />
+            fetchSectionDetails={getSectionDetailsFetcher(sectionId)} // This will work as a function without arguments
+          />
         </div>
       </div>
     </div>
