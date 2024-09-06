@@ -84,6 +84,7 @@ const HomePage: React.FC = () => {
 									setFormType={setFormType}
 									formData={{
 										email: "",
+<<<<<<< Updated upstream
 									}}
 									setFormData={setFormData}
 								/>
@@ -93,6 +94,16 @@ const HomePage: React.FC = () => {
 									setFormType={setFormType}
 									formData={{ email: formData.email }}
 								/>
+=======
+									}} setFormData={function (data: any): void {
+										throw new Error("Function not implemented.");
+									} }								/>
+							)}
+							{formType === "createnewpassword" && (
+								<CreateNewPassword setFormType={setFormType} formData={{
+									email: ""
+								}} />
+>>>>>>> Stashed changes
 							)}
 						</FormProvider>
 					</div>
