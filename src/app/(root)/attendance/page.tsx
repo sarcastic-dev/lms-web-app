@@ -1,343 +1,66 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-
-import {
-  attendanceOverview,
-  Class,
-  detailedReport,
-  insights,
-  Section,
-} from "@/Constant";
-import { CalendarIcon } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { addDays, format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import { DataTable } from "@/components/LmsDataTable";
-import columns from "../studentInfo/columns";
+import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axiosInstance";
+import { AttendanceSummaryBySection } from "./attendanceBySection/AttendanceSummaryBySection";
+import { AttendanceByStudent } from "./attendanceByStudent/AttendanceByStudent";
+import AllSectionsAttendance from "./allSectionsAttendance/AllSectionsAttendance";
+
+export interface SectionResponse {
+  id: string;
+  name: string;
+}
+
+export interface ClassResponse {
+  id: string;
+  name: string;
+  level: string;
+  sections: SectionResponse[];
+}
+
+export interface ClassSectionResponse {
+  classes: ClassResponse[];
+}
 
 const Page = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedClass, setSelectedClass] = useState<string | null>(null);
-  const [selectedSection, setSelectedSection] = useState<string | null>(null);
+  const [classSectionData, setClassSectionData] = useState<ClassResponse[]>([]);
 
-  const fetchStudentList = async () => {
-    if (!selectedClass || !selectedSection) return;
+  useEffect(() => {
+    fetchClassSectionData();
+    // fetchAttendanceData();
+  }, []);
+
+  const fetchClassSectionData = async () => {
+    const instituteId = Cookies.get("instituteId");
+    if (!instituteId) return;
 
     setLoading(true);
 
-    const { data } = await axiosInstance.get(
-      `/students/institute/97cb57e0-067c-4210-aba1-279fd577494e?class=${selectedClass}&section=${selectedSection}&date=${format(
-        date,
-        "yyyy-MM-dd"
-      )}`
-    );
-    
-    const filteredData = data.map((obj: any) => {
-      const studentObj: any = {};
+    try {
+      // Fetch attendance data
+      const classSectionDataResponse = await axiosInstance.get<
+        ClassSectionResponse[]
+      >(`/classes/institute/${instituteId}`);
 
-      const user = obj.basicInfo.user;
-      const student = obj.basicInfo.student;
+      const filteredData = classSectionDataResponse.data
+        .map((obj: ClassSectionResponse) => obj.classes)
+        .flat();
 
-      studentObj.id = user.id;
-      studentObj.name =
-        user.firstName + " " + user.middleName + " " + user.lastName;
-      studentObj.class = student.class + "-" + student.section;
-      studentObj.contact = user.phone;
-      studentObj.parentName = obj.parentInfo.name;
-      studentObj.email = user.email;
-
-      return studentObj;
-    });
-
-    setData(filteredData);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (selectedClass && selectedSection) {
-      fetchStudentList();
-    }
-  }, [selectedClass, selectedSection, date]);
-
-  const handleDateSelect = (day: Date | undefined) => {
-    if (day) {
-      setDate(day);
+      setClassSectionData(filteredData || []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
-    <div className=" w-full h-screen my-4 space-y-4 2xl:px-16 2xl:py-3 xl:px-8 xl:py-2 lg:px-12 lg:py-4">
-      <div className="flex flex-wrap items-center justify-between">
-        <h2 className="font-bold text-2xl text-lmsPrimary">
-          Student Attendance
-        </h2>
-      </div>
-
-      <div className="bg-gray-50 p-5">
-        <div>
-          <h1 className="py-4 font-bold text-xl text-lmsPrimary">
-            Attendance Overview
-          </h1>
-        </div>
-
-        <div className="flex space-x-5">
-          <div className="w-fit h-fit grid grid-cols-2 gap-x-3 gap-y-5">
-            {attendanceOverview.map((item, index) => (
-              <Card key={index} className={`lg:w-28  xl:w-36 2xl:w-40 flex flex-col justify-center items-center ${item.backgroundColor}`}>
-                <CardHeader className="flex text-center justify-center items-center">
-                  <CardTitle className={`lg:text-xs xl:text-sm 2xl:text-md ${item.headingColor} `}>
-                    {item.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent
-                  className={`lg:text-lg xl:text-xl 2xl:text-2xl font-semibold ${item.color}`}
-                >
-                  <p>{item.data}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div>
-            <Card className="lg:w-[400px] xl:w-[550px] 2xl:w-[650px]">
-              <CardHeader>
-                <CardTitle>Insights</CardTitle>
-              </CardHeader>
-              {insights.map((item, index) => (
-                <CardContent key={index}>
-                  <p
-                    className={`flex lg:p-[11px] xl:p-[8px] 2xl:p-[9px] text-sm font-medium text-gray-600 rounded-md ${item.bgColor}`}
-                  >
-                    <span className={`mr-3 ${item.color}`}>
-                      {<item.emoji />}
-                    </span>
-                    {item.content}
-                  </p>
-                </CardContent>
-              ))}
-            </Card>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <h1 className="py-4 font-bold text-xl text-lmsPrimary">
-          Detailed Report
-        </h1>
-        <div className="flex justify-around items-center space-x-5 lg:w-[520px] xl:w-[700px]">
-          <div className="w-full">
-            <Select
-              onValueChange={setSelectedClass}
-              value={selectedClass || ""}
-            >
-              <SelectTrigger className={`border w-full tracking-wider `}>
-                <SelectValue placeholder="Select Class" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Class</SelectLabel>
-                  {Class.map((item, index) => (
-                    <SelectItem key={index} value={item.value}>
-                      {item.option}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="w-full">
-            <Select
-              onValueChange={setSelectedSection}
-              value={selectedSection || ""}
-            >
-              <SelectTrigger className={`border w-full tracking-wider `}>
-                <SelectValue placeholder="Select Section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Section</SelectLabel>
-                  {Section.map((item, index) => (
-                    <SelectItem key={index} value={item.value}>
-                      {item.option}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="w-full">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "lg:w-[180px] xl:w-[280px] lg:p-4 xl:p-6 rounded border-lms-200 justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-                <Select
-                  onValueChange={(value) =>
-                    setDate(addDays(new Date(), parseInt(value)))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Date Range" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="0">Today</SelectItem>
-                    <SelectItem value="1">Yesterday</SelectItem>
-                    <SelectItem value="3">In a week</SelectItem>
-                    <SelectItem value="7">In a Month</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="rounded-md border">
-                  <Calendar mode="single" selected={date} onSelect={handleDateSelect} />
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-between w-full mt-5">
-        <div className="w-full">
-          {selectedClass && selectedSection && (
-            <DataTable columns={columns} data={data} isLoading={loading} students={[]} sectionId={null} fetchSectionDetails={function (): void {
-              throw new Error("Function not implemented.");
-            } } />
-          )}
-        </div>
-      </div>
+    <div className="w-full h-screen my-4 space-y-4 2xl:px-5 2xl:py-3 xl:px-8 xl:py-2 lg:px-12 lg:py-4">
+      <AllSectionsAttendance />
+      <AttendanceSummaryBySection classSectionData={classSectionData} />
+      <AttendanceByStudent classSectionData={classSectionData} />
     </div>
   );
 };
 
 export default Page;
-// =======
-// import { attendanceOverview, detailedReport, insights } from "@/Constant";
-// import withAuthCheck from "@/components/withAuthCheck";
-
-// const page = () => {
-// 	return (
-// 		<div className='m-5'>
-// 			<div className='flex flex-wrap items-center justify-between'>
-// 				<h2 className='text-3xl text-gray-800 font-semibold'>
-// 					Student Attendance
-// 				</h2>
-// 				{/* <div className="flex items-center">
-//           <div className='flex items-center'>
-//             <span className="mr-4 font-semibold text-sm">
-//               Show class Attendance
-//             </span>
-//             <Switch />
-//           </div>
-//           <Button className="ml-5" variant={"secondary"}>
-//             Edit Structure
-//           </Button>
-//         </div> */}
-// 			</div>
-// 			<div className='bg-gray-50 p-10 mt-5'>
-// 				<div>
-// 					<h1 className='text-2xl mb-5 text-gray-800 font-semibold'>
-// 						Attendance Overview
-// 					</h1>
-// 				</div>
-// 				<div className='flex space-x-5'>
-// 					<div className='w-fit h-fit grid grid-cols-2 gap-x-3 gap-y-5'>
-// 						{attendanceOverview.map((item, index) => (
-// 							<Card
-// 								key={index}
-// 								className='w-48 flex flex-col items-center'
-// 							>
-// 								<CardHeader>
-// 									<CardTitle className='text-md text-gray-400'>
-// 										{item.title}
-// 									</CardTitle>
-// 								</CardHeader>
-// 								<CardContent
-// 									className={`text-2xl font-semibold ${item.color}`}
-// 								>
-// 									<p>{item.data}</p>
-// 								</CardContent>
-// 							</Card>
-// 						))}
-// 					</div>
-// 					<div>
-// 						<Card className='w-[710px]'>
-// 							<CardHeader>
-// 								<CardTitle>Insights</CardTitle>
-// 							</CardHeader>
-// 							{insights.map((item, index) => (
-// 								<CardContent key={index}>
-// 									<p
-// 										className={`flex p-[10px] text-sm font-medium text-gray-600 rounded-md ${item.bgColor}`}
-// 									>
-// 										<span className={`mr-3 ${item.color}`}>
-// 											{<item.emoji />}
-// 										</span>
-// 										{item.content}
-// 									</p>
-// 								</CardContent>
-// 							))}
-// 						</Card>
-// 					</div>
-// 				</div>
-// 				<div>
-// 					<h1 className='text-2xl mt-10 text-gray-800 font-semibold'>
-// 						Detailed Report
-// 					</h1>
-// 				</div>
-// 				<div className='flex justify-between w-full mt-5'>
-// 					{detailedReport.map((item, index) => (
-// 						<div key={index}>
-// 							<p className='p-5 rounded-sm font-medium text-gray-400'>
-// 								{item.title}
-// 							</p>
-
-// 							<p className='p-5 rounded-sm font-medium text-gray-800'>
-// 								{item.data}
-// 							</p>
-// 						</div>
-// 					))}
-// 				</div>
-// 			</div>
-// 		</div>
-// 	);
-// };
-
-// export default withAuthCheck(page);
-
