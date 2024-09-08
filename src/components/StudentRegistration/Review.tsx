@@ -9,6 +9,8 @@ import {
 	MedicalInfo,
 	ParentInfo,
 } from "@/types";
+import { formatDate } from "@/utils/formatDate";
+import { upperFirst } from "lodash";
 
 interface RegistrationData {
 	basicInfo: {
@@ -42,8 +44,8 @@ const Review: React.FC = () => {
 			firstName: registrationData.basicInfo.user.firstName,
 			middleName: registrationData.basicInfo.user.middleName,
 			lastName: registrationData.basicInfo.user.lastName,
-			dob: registrationData.basicInfo.user.dob,
-			gender: registrationData.basicInfo.user.gender,
+			dob: formatDate(registrationData.basicInfo.user.dob),
+			gender: upperFirst(registrationData.basicInfo.user.gender),
 			bloodGroup: registrationData.basicInfo.user.bloodGroup,
 		},
 		academicInfo: {
@@ -51,7 +53,9 @@ const Review: React.FC = () => {
 			class: registrationData.basicInfo.student.class,
 			section: registrationData.basicInfo.student.section,
 			rollNumber: registrationData.basicInfo.student.rollNumber,
-			admissionDate: registrationData.basicInfo.student.admissionDate,
+			admissionDate: formatDate(
+				registrationData.basicInfo.student.admissionDate
+			),
 			boardUniversity: registrationData.basicInfo.student.boardUniversity,
 		},
 		addressInfo: {
@@ -64,14 +68,16 @@ const Review: React.FC = () => {
 		},
 		parentInfo: {
 			name: registrationData.parentInfo.name,
-			relation: registrationData.parentInfo.relation,
+			relation: upperFirst(registrationData.parentInfo.relation),
 			email: registrationData.parentInfo.email,
 			phone: registrationData.parentInfo.phone,
-			qualification: registrationData.parentInfo.qualification,
+			qualification: upperFirst(
+				registrationData.parentInfo.qualification
+			),
 			occupation: registrationData.parentInfo.occupation,
 			workOrganizationName:
 				registrationData.parentInfo.workOrganizationName,
-			designation: registrationData.parentInfo.designation,
+			designation: upperFirst(registrationData.parentInfo.designation),
 			annualIncome: registrationData.parentInfo.annualIncome,
 		},
 		medicalInfo: {
@@ -80,8 +86,10 @@ const Review: React.FC = () => {
 			bmi: registrationData.medicalInfo.bmi,
 			pulseRate: registrationData.medicalInfo.pulseRate,
 			haemoglobin: registrationData.medicalInfo.haemoglobin,
-			allergies: registrationData.medicalInfo.allergies,
-			reportIssueDate: registrationData.medicalInfo.reportIssueDate,
+			allergies: upperFirst(registrationData.medicalInfo.allergies),
+			reportIssueDate: formatDate(
+				registrationData.medicalInfo.reportIssueDate
+			),
 		},
 	};
 

@@ -3,7 +3,7 @@ import { Chart } from "@/components/Chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import WithAuthCheck from "@/components/WithAuthCheck";
+import WithAuthCheck from "@/components/withAuthCheck";
 import { NextPage } from "next";
 import {
 	Bell,

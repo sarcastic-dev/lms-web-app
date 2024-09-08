@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Tabs,
 	TabsContent,
@@ -25,11 +25,12 @@ import {
 	setBasicInfoStaffData,
 } from "@/context/staffRegistrationSlice";
 import axiosInstance from "@/lib/axiosInstance";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { RootState } from "@/context/store";
 import { Button } from "./ui/button";
 import { CircleDashed } from "lucide-react";
 import Image from "next/image";
+import getUserData from "@/utils/getUserData";
 
 type DynamicTabsProps = {
 	config: TabConfig[];
@@ -64,6 +65,10 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 	};
 
 	const formatLabel = (label: string) => label.replace(/^\d+\.\s*/, "");
+
+	const searchParams = useSearchParams();
+	const isEdit: string | null = searchParams.get("mode");
+	const id: string | null = searchParams.get("id");
 
 	const handleNext = async (data: any) => {
 		if (userType === "student") {
@@ -133,6 +138,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 		} else if (userType === "staff") {
 			if (step === 1) {
 				dispatch(setBasicInfoUserDetailData(data));
+				console.log(data);
 			} else if (step === 2) {
 				dispatch(setBasicInfoStaffData(data));
 			} else if (step === 3) {
@@ -143,6 +149,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 				dispatch(setPreviousExperienceData(data));
 			} else if (step === 6) {
 				dispatch(setBankDetailsData(data));
+				console.log(data);
 			} else if (step === 7) {
 				setLoading(true);
 				console.log("Here not!!");
@@ -201,6 +208,57 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 
 	const isTabCompleted = (index: number) =>
 		completedSteps.includes(index + 1);
+
+	useEffect(() => {
+		if (userType === "student") {
+			if (isEdit) {
+				if (id && userType) {
+					getUserData({ id, userType })
+						.then((data) => {
+							console.log(data);
+							dispatch(setBasicInfoUserData(data.basicInfo.user));
+							dispatch(
+								setBasicInfoStudentData(data.basicInfo.student)
+							);
+							dispatch(setParentInfoData(data.parentInfo));
+							dispatch(setAddressInfoData(data.addressInfo));
+							dispatch(setMedicalInfoData(data.medicalInfo));
+						})
+						.catch((error) =>
+							console.error("Error fetching user data:", error)
+						);
+				}
+			}
+		} else if (userType === "staff") {
+			if (isEdit) {
+				if (id && userType) {
+					getUserData({ id, userType })
+						.then((data) => {
+							console.log(data);
+							dispatch(
+								setBasicInfoUserDetailData(data.basicInfo.user)
+							);
+							dispatch(
+								setBasicInfoStaffData(data.basicInfo.staff)
+							);
+							dispatch(setStaffAddress(data.addressInfo));
+							dispatch(
+								setAdditionalDetailsData(data.additionalInfo)
+							);
+							dispatch(
+								setPreviousExperienceData(
+									data.previousExperienceInfo
+								)
+							);
+							dispatch(setBankDetailsData(data.bankDetailInfo));
+						})
+						.catch((error) =>
+							console.error("Error fetching user data:", error)
+						);
+				}
+			}
+		}
+	}, [userType, isEdit]);
 
 	return (
 		<Tabs
@@ -286,9 +344,34 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					variant={"lmsNext"}
 					className='text-white'
 					onClick={() => {
-						if (step === 6 || step === 7) {
-							handleNext({});
+						if (userType === "student") {
+							// If it's a student and the step is 6
+							if (step === 6) {
+								handleNext({});
+							} else {
+								// If it's a student but not on step 6, submit the form
+								document.querySelector("form")?.dispatchEvent(
+									new Event("submit", {
+										cancelable: true,
+										bubbles: true,
+									})
+								);
+							}
+						} else if (userType === "staff") {
+							// If it's a staff and the step is 7
+							if (step === 7) {
+								handleNext({});
+							} else {
+								// If it's staff but not on step 7, submit the form
+								document.querySelector("form")?.dispatchEvent(
+									new Event("submit", {
+										cancelable: true,
+										bubbles: true,
+									})
+								);
+							}
 						} else {
+							// If userType is neither student nor staff, submit the form
 							document.querySelector("form")?.dispatchEvent(
 								new Event("submit", {
 									cancelable: true,

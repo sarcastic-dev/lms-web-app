@@ -3,12 +3,20 @@ import React from "react";
 import { Staff, StructuredStaffResponse } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
-
+import { useSearchParams, useRouter } from "next/navigation";
+import { AppDispatch } from "@/context/store";
+import { useDispatch } from "react-redux";
+import { setViewState } from "@/context/staffSlice";
 interface StaffDetailsProps {
 	staffData: Staff;
 }
 
 const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const id: string | null = searchParams.get("id");
+	const userType: string | null = searchParams.get("userType");
+	const dispatch = useDispatch<AppDispatch>();
 	const structuredResponse: StructuredStaffResponse = {
 		basicInfo: {
 			phone: staffData?.basicInfo?.user?.phone,
@@ -101,6 +109,11 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 		</div>
 	);
 
+	const handleRedirectRoute = () => {
+		dispatch(setViewState("edit"));
+		router.push(`users?userType=${userType}&id=${id}&mode=edit`);
+	};
+
 	return (
 		<div className='flex flex-col'>
 			<div className='h-20 flex items-center justify-between border-b border-lms-100 px-16 '>
@@ -110,6 +123,7 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 				<Button
 					variant={"lmsOutline"}
 					className='py-0 h-10'
+					onClick={handleRedirectRoute}
 				>
 					<Pen
 						size={16}

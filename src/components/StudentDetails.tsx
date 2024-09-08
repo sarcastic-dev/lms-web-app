@@ -3,12 +3,21 @@ import React from "react";
 import { StructuredResponse, Student } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { AppDispatch } from "@/context/store";
+import { useDispatch } from "react-redux";
+import { setViewState } from "@/context/studentSlice";
 
 interface StudentDetailsProps {
 	studentData: Student;
 }
 
 const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const id: string | null = searchParams.get("id");
+	const userType: string | null = searchParams.get("userType");
+	const dispatch = useDispatch<AppDispatch>();
 	const structuredResponse: StructuredResponse = {
 		basicInfo: {
 			phone: studentData.basicInfo.user.phone,
@@ -90,6 +99,11 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 		</div>
 	);
 
+	const handleRedirectRoute = () => {
+		dispatch(setViewState("edit"));
+		router.push(`users?userType=${userType}&id=${id}&mode=edit`);
+	};
+
 	return (
 		<div className='flex flex-col'>
 			<div className='h-20 flex items-center justify-between border-b border-lms-100 px-16 '>
@@ -99,6 +113,7 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 				<Button
 					variant={"lmsOutline"}
 					className='py-0 h-10'
+					onClick={handleRedirectRoute}
 				>
 					<Pen
 						size={16}

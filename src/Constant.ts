@@ -1,16 +1,14 @@
 import { Ban, BellRing, Laugh, LucideIcon } from "lucide-react";
 
-const BASE_API_URL = "http://192.168.1.7:3300";
-
 interface SelectType {
 	value: string;
 	option: string;
 }
 
 export const Gender: SelectType[] = [
-	{ value: "Male", option: "Male" },
-	{ value: "Female", option: "Female" },
-	{ value: "Other", option: "Other" },
+	{ value: "male", option: "Male" },
+	{ value: "female", option: "Female" },
+	{ value: "other", option: "Other" },
 ];
 
 export const BloodGroups: SelectType[] = [
