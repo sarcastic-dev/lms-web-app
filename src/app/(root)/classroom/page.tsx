@@ -17,8 +17,9 @@ import Cookies from "js-cookie";
 
 import Link from "next/link"; // Import Link for navigation
 import { useRouter } from "next/navigation"; // Import useRouter for programmatic navigation
-import WithAuthCheck from "@/components/WithAuthCheck";
+
 import CreateClassroomModal from "@/components/CreateClassroomModal";
+import withAuthCheck from "@/components/withAuthCheck";
 
 // Custom sorting function for stages
 const stageOrder = [
@@ -217,4 +218,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default WithAuthCheck(Page);
+export default withAuthCheck(Page);

@@ -20,8 +20,8 @@ import { useDispatch } from "react-redux";
 import { setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/LmsDataTable";
-import WithAuthCheck from "@/components/WithAuthCheck";
 import { resetRegistrationData } from "@/context/studentRegistrationSlice";
+import withAuthCheck from "@/components/withAuthCheck";
 
 const Page: React.FC = () => {
   const [data, setData] = useState([]);
@@ -190,4 +190,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default WithAuthCheck(Page);
+export default withAuthCheck(Page);

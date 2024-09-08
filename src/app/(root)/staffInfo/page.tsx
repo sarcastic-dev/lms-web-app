@@ -20,8 +20,8 @@ import { useDispatch } from "react-redux";
 import { setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/LmsDataTable";
-import WithAuthCheck from "@/components/WithAuthCheck";
 import { resetRegistrationData } from "@/context/staffRegistrationSlice";
+import withAuthCheck from "@/components/withAuthCheck";
 
 const Page: React.FC = () => {
   const [data, setData] = useState([]);
@@ -107,8 +107,12 @@ const Page: React.FC = () => {
         <div className="flex justify-end items-center gap-3 rounded">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant={"lmsOutline"} iconName="cloudUpload" size={"lmsHome"}>
-                 Bulk Upload
+              <Button
+                variant={"lmsOutline"}
+                iconName="cloudUpload"
+                size={"lmsHome"}
+              >
+                Bulk Upload
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-4xl h-[500px] px-12">
@@ -150,7 +154,13 @@ const Page: React.FC = () => {
                 >
                   Upload File
                 </Button>
-                <Button variant="link" iconName="download" iconPosition="end" iconSize={15} className="absolute -left-5">
+                <Button
+                  variant="link"
+                  iconName="download"
+                  iconPosition="end"
+                  iconSize={15}
+                  className="absolute -left-5"
+                >
                   Download Sample List
                 </Button>
               </DialogFooter>
@@ -158,7 +168,12 @@ const Page: React.FC = () => {
           </Dialog>
 
           <Link href={"/users?userType=staff"}>
-            <Button variant={"lms"} size={"lmsHome"} iconName="userPlus" onClick={handleResetStaffData}>
+            <Button
+              variant={"lms"}
+              size={"lmsHome"}
+              iconName="userPlus"
+              onClick={handleResetStaffData}
+            >
               Add Staff
             </Button>
           </Link>
@@ -205,4 +220,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default WithAuthCheck(Page);
+export default withAuthCheck(Page);

@@ -8,7 +8,7 @@ type WithAuthCheckProps = {
   [key: string]: any;
 };
 
-const WithAuthCheck = <P extends WithAuthCheckProps>(
+const withAuthCheck = <P extends WithAuthCheckProps>(
   WrappedComponent: NextPage<P>
 ) => {
   const AuthCheckWrapper: NextPage<P> = (props: P) => {
@@ -48,4 +48,4 @@ const WithAuthCheck = <P extends WithAuthCheckProps>(
   return AuthCheckWrapper;
 };
 
-export default WithAuthCheck;
+export default withAuthCheck;

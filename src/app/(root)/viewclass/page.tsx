@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { DataTable } from "@/components/LmsDataTable";
 import Cookies from "js-cookie";
+import AddStudent from "@/components/AddStudent";
 
 const Page = () => {
   const searchParams = useSearchParams();
