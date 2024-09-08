@@ -90,6 +90,28 @@ const AllSectionsAttendance = () => {
     }
   };
 
+  const datePicker = (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "lg:w-[180px] xl:w-[280px] lg:p-4 xl:p-6 rounded border-lms-200 justify-start text-left font-normal",
+            !date && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {date ? format(date, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
+        <div className="rounded-md border">
+          <Calendar mode="single" selected={date} onSelect={handleDateSelect} />
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+
   return (
     <div>
       {" "}
@@ -100,42 +122,14 @@ const AllSectionsAttendance = () => {
         </h1>
       </div>
       {/* </div> */}
-      <div className="flex justify-start items-center px-14 lg:w-[520px] xl:w-[700px]">
-        <div className="w-full">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "lg:w-[180px] xl:w-[280px] lg:p-4 xl:p-6 rounded border-lms-200 justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-              <div className="rounded-md border">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={handleDateSelect}
-                />
-              </div>
-            </PopoverContent>
-          </Popover>
-        </div>
-      </div>
       <div className="flex w-full">
         <div className="w-full">
           <DataTable
             columns={columns} // Your columns should match the new fields
             data={data}
             isLoading={loading}
-            students={[]}
-            sectionId={selectedSectionId} // Pass the currently selected section ID here
-            fetchSectionDetails={() => {}} // Pass the sectionId to the function
+            headingText={`Total Sections (${data.length})`}
+            buttonComponent={datePicker}
           />
         </div>
       </div>

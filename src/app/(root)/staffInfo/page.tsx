@@ -188,23 +188,15 @@ const Page: React.FC = () => {
               columns={columns}
               data={data}
               isLoading={loading}
-              students={[]}
-              sectionId={null}
-              fetchSectionDetails={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              headingText={`Total Teaching Staff (${data.length})`}
             />
           </TabsContent>
           <TabsContent value="non-teaching">
             <DataTable
               columns={columns}
               data={data}
+              headingText={`Total Non-Teaching Staff (${data.length})`}
               isLoading={loading}
-              students={[]}
-              sectionId={null}
-              fetchSectionDetails={function (): void {
-                throw new Error("Function not implemented.");
-              }}
             />
           </TabsContent>
         </Tabs>

@@ -175,11 +175,7 @@ const Page: React.FC = () => {
         columns={columns}
         data={data}
         isLoading={loading}
-        students={[]}
-        sectionId={null}
-        fetchSectionDetails={function (): void {
-          throw new Error("Function not implemented.");
-        }}
+        headingText={`Total Students (${data.length})`}
       />
     </div>
   );

@@ -201,9 +201,7 @@ export const AttendanceSummaryBySection: React.FC<
               columns={columns}
               data={attendanceData?.detailedAttendance!}
               isLoading={loading}
-              students={[]}
-              sectionId={null}
-              fetchSectionDetails={() => {}}
+              headingText={`Total Students (${attendanceData.detailedAttendance.length})`}
             />
           )}
         </div>
