@@ -107,7 +107,9 @@ const columns: ColumnDef<Attendance>[] = [
       <div>
         <ActionCell
           sectionId={row.original.sectionId} // Pass sectionId or any other identifier
-          attendanceRecords={row.original.attendanceRecords} // Pass attendanceRecords
+          attendanceRecords={
+            row.original.attendanceRecords ? row.original.attendanceRecords : []
+          } // Pass attendanceRecords
           fetchById={() => {}} // If you still need a fetch function, pass it here
           setViewState={() => {}} // Pass setViewState if needed
         />

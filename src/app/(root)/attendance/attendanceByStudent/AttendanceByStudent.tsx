@@ -242,9 +242,6 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
               columns={columns}
               data={attendanceData}
               isLoading={loading}
-              students={[]}
-              sectionId={null}
-              fetchSectionDetails={() => {}}
             />
           )}
         </div>

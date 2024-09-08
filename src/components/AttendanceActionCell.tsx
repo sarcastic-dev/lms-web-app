@@ -46,9 +46,6 @@ const ActionCell: React.FC<ActionCellProps> = ({
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-7xl">
-          <DialogHeader>
-            <DialogTitle>Class Students</DialogTitle>
-          </DialogHeader>
           <div>
             {/* Render the DataTable component here to show student data */}
             <DataTable
@@ -100,11 +97,9 @@ const ActionCell: React.FC<ActionCellProps> = ({
                   ),
                 },
               ]}
+              headingText={`Total Students (${attendanceRecords.length})`}
               data={attendanceRecords} // Pass the attendanceRecords data
               isLoading={false}
-              students={[]} // If not needed, remove
-              sectionId={null} // Also remove if unnecessary
-              fetchSectionDetails={() => {}}
             />
           </div>
         </DialogContent>
