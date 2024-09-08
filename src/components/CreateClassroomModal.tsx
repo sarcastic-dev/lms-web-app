@@ -21,7 +21,13 @@ import { Button } from "./ui/button";
 import { School } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
 import Cookies from "js-cookie";
-const CreateClassroomModal: React.FC = () => {
+
+interface CreateClassroomModalProps {
+	handleInitialState: () => void;
+}
+const CreateClassroomModal: React.FC<CreateClassroomModalProps> = ({
+	handleInitialState,
+}) => {
 	const [stage, setStage] = useState<string>("");
 	const [className, setClassName] = useState<string>("");
 	const [level, setLevel] = useState<string>("");
@@ -55,10 +61,11 @@ const CreateClassroomModal: React.FC = () => {
 			status: "active",
 			instituteId: instituteId,
 		};
+		console.log(classroomData);
 
 		try {
 			const response = await axiosInstance.post(
-				"/classes", // /classes/bulk   /bulk/sections
+				"/classes",
 				classroomData,
 				{
 					headers: {
@@ -67,14 +74,23 @@ const CreateClassroomModal: React.FC = () => {
 				}
 			);
 
-			if (response.status !== 200) {
+			if (response.status !== 201) {
 				throw new Error("Failed to create classroom");
 			}
-
+			console.log("Hello from here!!")
+			handleInitialState();
+			console.log("Hii there!!")
 			console.log("Classroom created successfully");
 		} catch (error) {
 			console.error("Error creating classroom:", error);
 		}
+	};
+
+	const handleClassWithSection = () => {
+		console.log("Hello");
+	};
+	const handleClassWithoutSection = () => {
+		console.log("Hello there!");
 	};
 
 	const filteredClasses =
@@ -215,6 +231,7 @@ const CreateClassroomModal: React.FC = () => {
 					<Button
 						variant={"outline"}
 						className='w-56 text-lg text-gray-700'
+						onClick={handleClassWithSection}
 					>
 						K To 12
 					</Button>
@@ -223,6 +240,7 @@ const CreateClassroomModal: React.FC = () => {
 					<Button
 						variant={"outline"}
 						className='w-56 text-lg text-gray-700'
+						onClick={handleClassWithoutSection}
 					>
 						K To 12
 					</Button>

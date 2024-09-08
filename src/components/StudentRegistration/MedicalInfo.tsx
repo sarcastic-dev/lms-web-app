@@ -15,6 +15,7 @@ import {
 import { healthInfoSchema } from "@/schema/studentFormSchema/medicalInfoSchema";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
+import { formatDate } from "@/utils/formatDate";
 
 type HealthInfoSchemaType = z.infer<typeof healthInfoSchema>;
 
@@ -210,26 +211,37 @@ const MedicalInfoForm = ({
 											htmlFor='dateOfBirth'
 											className='pl-1'
 										>
-											Date of Birth
+											Report Issue Date
 										</FormLabel>
 										<FormControl>
 											<Input
 												{...field}
 												id='dateOfBirth'
 												type='date'
+												value={
+													field.value
+														? formatDate(
+																field.value
+														  )
+														: ""
+												}
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
-												} border tracking-wider placeholder:text-gray-400`}
+												} border tracking-wider placeholder:text-lms-400`}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
-												onClick={(
-													e: React.MouseEvent<HTMLInputElement>
-												) =>
+												onClick={(e) =>
 													e.currentTarget.showPicker()
 												}
 												onChange={(e) => {
+													const formattedDate =
+														formatDate(
+															e.target.value
+														);
 													handleChange(e);
-													field.onChange(e);
+													field.onChange(
+														formattedDate
+													);
 												}}
 											/>
 										</FormControl>

@@ -78,7 +78,7 @@ const ActionCell = <T extends string | null>({
 					<Link
 						href={{
 							pathname: `/${pathName}`,
-							query: { userType, id },
+							query: { userType, id, mode: "edit" },
 						}}
 					>
 						<DropdownMenuItem

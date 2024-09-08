@@ -125,13 +125,13 @@ const ParentInfo = ({
 														<SelectLabel>
 															Relations
 														</SelectLabel>
-														<SelectItem value='Father'>
+														<SelectItem value='father'>
 															Father
 														</SelectItem>
-														<SelectItem value='Mother'>
+														<SelectItem value='mother'>
 															Mother
 														</SelectItem>
-														<SelectItem value='Guardian'>
+														<SelectItem value='guardian'>
 															Guardian
 														</SelectItem>
 													</SelectGroup>

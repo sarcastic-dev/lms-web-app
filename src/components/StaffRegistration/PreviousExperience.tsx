@@ -16,6 +16,7 @@ import { PreviousExperienceSchemaStaffType } from "@/schema/staffRegistrationSch
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
+import { formatDate } from "@/utils/formatDate";
 
 const PreviousExperience = ({
 	onNext,
@@ -121,19 +122,30 @@ const PreviousExperience = ({
 												{...field}
 												id='join_date'
 												type='date'
+												value={
+													field.value
+														? formatDate(
+																field.value
+														  )
+														: ""
+												}
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
-												} border tracking-wider placeholder:text-lms-400`}
+												} border tracking-wider`}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
-												onClick={(
-													e: React.MouseEvent<HTMLInputElement>
-												) =>
+												onClick={(e) =>
 													e.currentTarget.showPicker()
 												}
 												onChange={(e) => {
+													const formattedDate =
+														formatDate(
+															e.target.value
+														);
 													handleChange(e);
-													field.onChange(e);
+													field.onChange(
+														formattedDate
+													);
 												}}
 											/>
 										</FormControl>
@@ -157,19 +169,30 @@ const PreviousExperience = ({
 												{...field}
 												id='relieving_date'
 												type='date'
+												value={
+													field.value
+														? formatDate(
+																field.value
+														  )
+														: ""
+												}
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
-												} border tracking-wider placeholder:text-lms-400`}
+												} border tracking-wider`}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
-												onClick={(
-													e: React.MouseEvent<HTMLInputElement>
-												) =>
+												onClick={(e) =>
 													e.currentTarget.showPicker()
 												}
 												onChange={(e) => {
+													const formattedDate =
+														formatDate(
+															e.target.value
+														);
 													handleChange(e);
-													field.onChange(e);
+													field.onChange(
+														formattedDate
+													);
 												}}
 											/>
 										</FormControl>

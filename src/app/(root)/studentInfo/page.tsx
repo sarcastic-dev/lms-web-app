@@ -17,11 +17,11 @@ import columns from "./columns";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
-import { resetStudentData, setViewState } from "@/context/studentSlice";
+import { setViewState } from "@/context/studentSlice";
 import { useRouter } from "next/navigation";
-import { Separator } from "@/components/ui/separator";
 import { DataTable } from "@/components/LmsDataTable";
 import WithAuthCheck from "@/components/WithAuthCheck";
+import { resetRegistrationData } from "@/context/studentRegistrationSlice";
 
 const Page: React.FC = () => {
   const [data, setData] = useState([]);
@@ -29,6 +29,7 @@ const Page: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const dispatch = useDispatch();
+
   const router = useRouter();
 
   const fetchStudentList = async () => {
@@ -91,8 +92,10 @@ const Page: React.FC = () => {
   };
 
   const handleResetStaffData = () => {
-    dispatch(resetStudentData());
+    console.log("clicking");
+    dispatch(resetRegistrationData());
     dispatch(setViewState("add"));
+    router.push("/users?userType=student");
   };
   useEffect(() => {
     fetchStudentList();
@@ -159,11 +162,11 @@ const Page: React.FC = () => {
             </DialogContent>
           </Dialog>
 
-          <Link href={"/users?userType=student"}>
-            <Button variant={"lms"} size={"lms"} onClick={handleResetStaffData}>
-              <UserPlus size={18} className="mr-2" /> Add Student
-            </Button>
-          </Link>
+          <Button variant={"lms"} size={"lms"} onClick={handleResetStaffData}>
+            <UserPlus size={18} className="mr-2" /> Add Student
+          </Button>
+
+          {/* <Link href={"/users?userType=student"}></Link> */}
         </div>
       </div>
       {/* <Separator /> */}

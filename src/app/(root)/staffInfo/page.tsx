@@ -17,11 +17,11 @@ import columns from "./columns";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useDispatch } from "react-redux";
-import { resetStaffData, setViewState } from "@/context/staffSlice";
+import { setViewState } from "@/context/staffSlice";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/LmsDataTable";
-import { Separator } from "@/components/ui/separator";
 import WithAuthCheck from "@/components/WithAuthCheck";
+import { resetRegistrationData } from "@/context/staffRegistrationSlice";
 
 const Page: React.FC = () => {
   const [data, setData] = useState([]);
@@ -93,7 +93,7 @@ const Page: React.FC = () => {
   };
 
   const handleResetStaffData = () => {
-    dispatch(resetStaffData());
+    dispatch(resetRegistrationData());
     dispatch(setViewState(null));
   };
   return (

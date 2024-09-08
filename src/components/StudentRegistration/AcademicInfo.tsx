@@ -23,6 +23,7 @@ import {
 	TooltipTrigger,
 } from "../ui/tooltip";
 import { Separator } from "../ui/separator";
+import { formatDate } from "@/utils/formatDate";
 
 type AcademicInfoSchemaType = z.infer<typeof programInfoSchema>;
 
@@ -172,7 +173,7 @@ const AcademicInfoForm = ({
 												id='section'
 												type='text'
 												className='border  px-3 py-6 text-md tracking-wider '
-												placeholder='"A"'
+												placeholder='A'
 												disabled={viewState === "view"}
 												{...field}
 											/>
@@ -212,19 +213,26 @@ const AcademicInfoForm = ({
 								render={({ field }) => (
 									<FormItem className=''>
 										<FormLabel
-											htmlFor='dateOfBirth'
+											htmlFor='admissionDate'
 											className='pl-1'
 										>
-											Date of Birth
+											Date Of Admission
 										</FormLabel>
 										<FormControl>
 											<Input
 												{...field}
-												id='dateOfBirth'
+												id='admissionDate'
 												type='date'
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
 												} border tracking-wider placeholder:text-gray-400`}
+												value={
+													field.value
+														? formatDate(
+																field.value
+														  )
+														: ""
+												}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
 												onClick={(
@@ -233,8 +241,14 @@ const AcademicInfoForm = ({
 													e.currentTarget.showPicker()
 												}
 												onChange={(e) => {
+													const formattedDate =
+														formatDate(
+															e.target.value
+														);
 													handleChange(e);
-													field.onChange(e);
+													field.onChange(
+														formattedDate
+													);
 												}}
 											/>
 										</FormControl>

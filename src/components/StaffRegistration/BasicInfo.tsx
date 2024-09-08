@@ -26,6 +26,7 @@ import {
 import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
+import { formatDate } from "@/utils/formatDate";
 
 const BasicInfo = ({
 	onNext,
@@ -212,19 +213,30 @@ const BasicInfo = ({
 												{...field}
 												id='dob'
 												type='date'
+												value={
+													field.value
+														? formatDate(
+																field.value
+														  )
+														: ""
+												}
 												className={`custom-date-input ${
 													hasValue ? "has-value" : ""
-												} border tracking-wider placeholder:text-lms-400`}
+												} border tracking-wider`}
 												disabled={viewState === "view"}
 												placeholder='dd/mm/yyyy'
-												onClick={(
-													e: React.MouseEvent<HTMLInputElement>
-												) =>
+												onClick={(e) =>
 													e.currentTarget.showPicker()
 												}
 												onChange={(e) => {
+													const formattedDate =
+														formatDate(
+															e.target.value
+														);
 													handleChange(e);
-													field.onChange(e);
+													field.onChange(
+														formattedDate
+													);
 												}}
 											/>
 										</FormControl>
