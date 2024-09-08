@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useToast } from "./ui/use-toast";
 import useCookie from "../hooks/useCookie";
 import axiosInstance from "../lib/axiosInstance";
-import { Button } from "./ui/button";
+import { Button } from "./ui/newButton";
 import { FormType } from "@/types";
 import { showToast } from "@/utils/toastHelper";
 import { upperFirst } from "lodash";
@@ -152,6 +152,7 @@ const Otp: React.FC<OTPProps> = ({ formData, onEdit, setFormType }) => {
 					type='submit'
 					className='sm:w-[255px] md:w-[320px] lg:w-[402px]'
 					onClick={handleOTPSubmit}
+					disabled={isSubmitting}
 				>
 					{isSubmitting ? "Submitting OTP..." : "Submit OTP"}
 				</Button>

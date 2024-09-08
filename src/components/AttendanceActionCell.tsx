@@ -23,7 +23,6 @@ interface ActionCellProps {
 }
 
 const ActionCell: React.FC<ActionCellProps> = ({
-  sectionId,
   attendanceRecords,
   setViewState,
 }) => {

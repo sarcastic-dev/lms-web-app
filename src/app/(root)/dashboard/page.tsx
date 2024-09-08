@@ -1,17 +1,14 @@
 "use client";
 import { Chart } from "@/components/Chart";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/newButton";
 import { Separator } from "@/components/ui/separator";
 import WithAuthCheck from "@/components/withAuthCheck";
 import { NextPage } from "next";
 import {
 	Bell,
-	BellRing,
 	CalendarDays,
 	UserRoundX,
-	Users,
-	UsersRound,
 } from "lucide-react";
 import React from "react";
 
@@ -44,11 +41,7 @@ const Page: NextPage = () => {
 				</div>
 
 				<div>
-					<Button variant={"lmsActive"}>
-						<BellRing
-							size={18}
-							className='mr-2'
-						/>{" "}
+					<Button variant={"lmsActive"} iconName={"bellRing"}>
 						Send Greetings
 					</Button>
 				</div>

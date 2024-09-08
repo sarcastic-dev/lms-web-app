@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/newButton";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
@@ -214,22 +214,23 @@ export function DataTable<TData, TValue>({
             <Button
               variant="lmsOutline"
               size="lg"
+              iconName="arrowLeft"
               className="flex items-center mr-1"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <ArrowLeft className="text-lmsAccent mr-1" size={15} />
               Previous
             </Button>
 
             <Button
               variant="lms"
               size="lg"
+              iconName="arrowRight"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
               className="flex items-center"
             >
-              Next <ArrowRight className="text-white ml-1" size={15} />
+              Next{" "}
             </Button>
           </div>
         </div>

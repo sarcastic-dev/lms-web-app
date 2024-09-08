@@ -26,6 +26,7 @@ import axiosInstance from "@/lib/axiosInstance";
 import { DateRange } from "react-day-picker";
 import columns from "./columns";
 import { ClassResponse } from "../page";
+import EmptyData from "../EmptyData";
 
 export type Attendance = {
   date: string;
@@ -95,6 +96,7 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           "yyyy-MM-dd"
         )}&endDate=${format(date?.to!, "yyyy-MM-dd")}`
       );
+      console.log("Selected Student ID:", selectedStudent);
 
       setAttendanceData(attendanceResponse.data || []);
     } catch (error) {
@@ -114,7 +116,8 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
   };
 
   const onStudentSelected = (value: string) => {
-    fetchAttendanceData(value);
+    setSelectedStudent(value); // Update the selected student
+    fetchAttendanceData(value); // Fetch attendance data for the selected student
   };
 
   const sectionsData = () => {
@@ -130,10 +133,10 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           Student Wise Attendance
         </h1>
       </div>
-      <div className="flex flex-row justify-start mt-10 items-center px-14 lg:w-[520px] xl:w-[700px]">
+      <div className="flex flex-row justify-start space-x-5 mt-10 items-center px-14 lg:w-[520px] xl:w-[1200px]">
         <Select onValueChange={onSelectClass} value={selectedClass}>
           <SelectTrigger
-            className={`h-10 border tracking-wider ${
+            className={`h-10 w-[300px] border tracking-wider ${
               !selectedClass ? "text-lms-300 font-medium" : ""
             }`}
           >
@@ -156,11 +159,11 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           disabled={!selectedClass}
         >
           <SelectTrigger
-            className={`h-10 border tracking-wider ${
+            className={`h-10 w-[300px] border tracking-wider ${
               !selectedSection ? "text-lms-300 font-medium" : ""
             }`}
           >
-            <SelectValue placeholder="Select Class" />
+            <SelectValue placeholder="Select Section" />
           </SelectTrigger>
           <SelectContent className="bg-white text-md tracking-wider">
             <SelectGroup>
@@ -180,11 +183,11 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           disabled={!selectedSection}
         >
           <SelectTrigger
-            className={`h-10 border tracking-wider ${
+            className={`h-10 w-[300px] border tracking-wider ${
               !selectedStudent ? "text-lms-300 font-medium" : ""
             }`}
           >
-            <SelectValue placeholder="Select Class" />
+            <SelectValue placeholder="Select Student" />
           </SelectTrigger>
           <SelectContent className="bg-white text-md tracking-wider">
             <SelectGroup>
@@ -204,7 +207,7 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
               id="date"
               variant={"outline"}
               className={cn(
-                "w-[300px] justify-start text-left font-normal",
+                "w-[300px] p-6 rounded justify-start text-left font-normal",
                 !date && "text-muted-foreground"
               )}
             >
@@ -235,6 +238,69 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           </PopoverContent>
         </Popover>
       </div>
+      <div className="mt-5">
+        {!attendanceData ? (
+          <EmptyData message={"Please select the above fields"} />
+        ) : (
+          <div className="border ml-14 mr-16 flex items-center h-10 space-x-10 pl-5">
+            {/* Selected Class */}
+            <label htmlFor="Selected Class" className="font-medium text-sm">
+              <span className="font-bold">Selected Class:</span>{" "}
+              {selectedClass || "N/A"}
+            </label>
+
+            {/* Selected Section */}
+            <label htmlFor="Selected Section" className="font-medium text-sm">
+              <span className="font-bold">Selected Section:</span>{" "}
+              {selectedSection || "N/A"}
+            </label>
+
+            {/* Selected Student */}
+            <label htmlFor="Selected Student" className="font-medium text-sm">
+              <span className="font-bold">Student:</span>{" "}
+              {studentsList.find(
+                (student) => student.studentId === selectedStudent
+              )?.studentName || "N/A"}
+            </label>
+
+            {/* Parent Name */}
+            <label htmlFor="Parent Name" className="font-medium text-sm">
+              <span className="font-bold">Parent Name:</span>{" "}
+              {studentsList.find(
+                (student) => student.studentId === selectedStudent
+              )?.parentName || "N/A"}
+            </label>
+
+            {/* Roll Number */}
+            <label htmlFor="Roll Number" className="font-medium text-sm">
+              <span className="font-bold">Roll Number:</span>{" "}
+              {studentsList.find(
+                (student) => student.studentId === selectedStudent
+              )?.rollNumber || "N/A"}
+            </label>
+
+            {/* Attendance Percentage */}
+            {/* <label
+              htmlFor="Attendance Percentage"
+              className="font-medium text-sm"
+            >
+              <span className="font-semibold text-base">
+                Attendance Percentage:
+              </span>{" "}
+              {attendanceData?.length
+                ? `${(
+                    (attendanceData.filter(
+                      (attendance) => attendance.status === "Present"
+                    ).length /
+                      attendanceData.length) *
+                    100
+                  ).toFixed(2)}%`
+                : "N/A"}
+            </label> */}
+          </div>
+        )}
+      </div>
+
       <div className="flex w-full">
         <div className="w-full">
           {attendanceData && (

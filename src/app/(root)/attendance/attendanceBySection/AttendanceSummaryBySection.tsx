@@ -25,6 +25,7 @@ import axiosInstance from "@/lib/axiosInstance";
 import { DateRange } from "react-day-picker";
 import columns from "./columns";
 import { ClassResponse } from "../page";
+import EmptyData from "../EmptyData";
 
 export type Attendance = {
   studentId: string;
@@ -110,7 +111,7 @@ export const AttendanceSummaryBySection: React.FC<
           Section Wise Students Attendance
         </h1>
       </div>
-      <div className="flex flex-row justify-start mt-10 items-center px-14 lg:w-[520px] xl:w-[700px]">
+      <div className="flex flex-row space-x-5 justify-start mt-10 items-center px-14 lg:w-[520px] xl:w-[900px]">
         {/* <div className="w-full">
           
         </div> */}
@@ -120,7 +121,7 @@ export const AttendanceSummaryBySection: React.FC<
               id="date"
               variant={"outline"}
               className={cn(
-                "w-[300px] justify-start text-left font-normal",
+                "w-[300px] rounded p-6 justify-start text-left font-normal",
                 !date && "text-muted-foreground"
               )}
             >
@@ -152,7 +153,7 @@ export const AttendanceSummaryBySection: React.FC<
         </Popover>
         <Select onValueChange={onSelectClass} value={selectedClass}>
           <SelectTrigger
-            className={`h-10 border tracking-wider ${
+            className={`h-10 w-[700px] border tracking-wider ${
               !selectedClass ? "text-lms-300 font-medium" : ""
             }`}
           >
@@ -175,11 +176,11 @@ export const AttendanceSummaryBySection: React.FC<
           disabled={!selectedClass}
         >
           <SelectTrigger
-            className={`h-10 border tracking-wider ${
+            className={`h-10 w-[700px] border tracking-wider ${
               !selectedClass ? "text-lms-300 font-medium" : ""
             }`}
           >
-            <SelectValue placeholder="Select Class" />
+            <SelectValue placeholder="Select Section" />
           </SelectTrigger>
           <SelectContent className="bg-white text-md tracking-wider">
             <SelectGroup>
@@ -193,6 +194,30 @@ export const AttendanceSummaryBySection: React.FC<
             </SelectGroup>
           </SelectContent>
         </Select>
+      </div>
+      <div className="mt-5">
+        {!attendanceData ? (
+          <EmptyData message={"Please select the above fields"} />
+        ) : (
+          <div className="border ml-14 mr-16 flex items-center h-10 space-x-10 pl-5">
+            <label htmlFor="Selected Class" className="font-medium text-sm">
+              <span className="font-bold">Selected Class:</span>{" "}
+              {attendanceData?.className || selectedClass}
+            </label>
+            <label htmlFor="Selected Section" className="font-medium text-sm">
+              <span className="font-bold">Selected Section:</span>{" "}
+              {attendanceData?.sectionName || selectedSection}
+            </label>
+            <label htmlFor="Total Sessions" className="font-medium text-sm">
+              <span className="font-bold">Total Sessions:</span>{" "}
+              {attendanceData?.totalDaysInSession || 0}
+            </label>
+            <label htmlFor="Average Percentage" className="font-medium text-sm">
+              <span className="font-bold">Average Class Percentage:</span>{" "}
+              {Math.round(attendanceData?.averageAttendancePercentage || 0)}%
+            </label>
+          </div>
+        )}
       </div>
       <div className="flex w-full">
         <div className="w-full">

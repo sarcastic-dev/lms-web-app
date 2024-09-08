@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/newButton";
 import {
 	Form,
 	FormControl,
@@ -194,6 +194,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({
 					variant={"lmsActive"}
 					className='w-full'
 					type='submit'
+					disabled={isCreating}
 				>
 					{isCreating ? "Creating..." : "Create Account"}
 				</Button>

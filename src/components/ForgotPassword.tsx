@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FormControl, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Button } from "./ui/newButton";
 import { Mail } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
 import { FormType } from "@/types";
@@ -167,7 +167,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
         <Button
           variant={"lmsActive"}
           type="submit"
-          className="sm:w-[250px] md:w-[320px] lg:w-[402px] mt-3 rounded"
+          // className="sm:w-[250px] md:w-[320px] lg:w-[402px] mt-3 rounded"
+          size={"lms"}
+          disabled={isSubmitting}
         >
           {isSubmitting
             ? isOtpSent
