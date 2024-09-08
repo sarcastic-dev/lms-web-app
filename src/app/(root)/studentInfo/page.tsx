@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/newButton";
 import Link from "next/link";
-import { Pencil, UserPlus, CloudUpload, Download } from "lucide-react";
+import { UserPlus, CloudUpload, Download } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -112,8 +112,12 @@ const Page: React.FC = () => {
         <div className="flex justify-end items-center gap-3 rounded">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant={"lmsOutline"} size={"lms"}>
-                <CloudUpload size={18} className="mr-2" /> Bulk Upload
+              <Button
+                variant={"lmsOutline"}
+                iconName="cloudUpload"
+                size={"lmsHome"}
+              >
+                Bulk Upload
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-4xl h-[500px] px-12">
@@ -162,11 +166,16 @@ const Page: React.FC = () => {
             </DialogContent>
           </Dialog>
 
-          <Button variant={"lms"} size={"lms"} onClick={handleResetStaffData}>
-            <UserPlus size={18} className="mr-2" /> Add Student
-          </Button>
-
-          {/* <Link href={"/users?userType=student"}></Link> */}
+          <Link href={"/users?userType=student"}>
+            <Button
+              variant={"lms"}
+              iconName="userPlus"
+              size={"lmsHome"}
+              onClick={handleResetStaffData}
+            >
+              Add Student
+            </Button>
+          </Link>
         </div>
       </div>
       {/* <Separator /> */}

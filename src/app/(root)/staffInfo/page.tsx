@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/newButton";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { UserPlus, CloudUpload, Download } from "lucide-react";
+import { CloudUpload, Download } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -107,8 +107,8 @@ const Page: React.FC = () => {
         <div className="flex justify-end items-center gap-3 rounded">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant={"lmsOutline"} size={"lms"}>
-                <CloudUpload size={18} className="mr-2" /> Bulk Upload
+              <Button variant={"lmsOutline"} iconName="cloudUpload" size={"lmsHome"}>
+                 Bulk Upload
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-4xl h-[500px] px-12">
@@ -150,16 +150,16 @@ const Page: React.FC = () => {
                 >
                   Upload File
                 </Button>
-                <Button variant="link" className="absolute -left-5">
-                  Download Sample List <Download className="ml-2" size={15} />
+                <Button variant="link" iconName="download" iconPosition="end" iconSize={15} className="absolute -left-5">
+                  Download Sample List
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
 
           <Link href={"/users?userType=staff"}>
-            <Button variant={"lms"} size={"lms"} onClick={handleResetStaffData}>
-              <UserPlus size={18} className="mr-2" /> Add Staff
+            <Button variant={"lms"} size={"lmsHome"} iconName="userPlus" onClick={handleResetStaffData}>
+              Add Staff
             </Button>
           </Link>
         </div>

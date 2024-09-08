@@ -1,15 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  CloudUpload,
-  Delete,
-  EllipsisVertical,
-  Plus,
-  Recycle,
-  Trash2,
-  ChevronRight,
-} from "lucide-react";
+import { Button } from "@/components/ui/newButton";
+import { CloudUpload, EllipsisVertical, Plus, Trash2 } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
 import { Stage } from "@/types";
 import { colorPalette } from "@/Constant";
@@ -122,8 +114,12 @@ const Page: React.FC = () => {
         <div className="flex flex-col">
           <div className="h-20 flex items-center justify-between border-b border-lms-100 px-16">
             <h4 className="font-bold text-lmsPrimary text-2xl">Classroom</h4>
-            <Button variant={"lmsOutline"} className="py-0 h-9">
-              <CloudUpload size={18} className="mr-2" />
+            <Button
+              variant={"lmsOutline"}
+              iconName="cloudUpload"
+              className="py-0 h-9"
+            >
+              {/* <CloudUpload size={18} className="mr-2" /> */}
               Bulk Upload
             </Button>
           </div>
@@ -139,7 +135,6 @@ const Page: React.FC = () => {
               <div className="flex flex-row items-center flex-wrap gap-9">
                 {stage.classes.map((classData, classIndex) => {
                   const color = colorPalette[classIndex % colorPalette.length];
-
                   return (
                     <div
                       className={`bg-white p-4 shadow-md rounded-md w-80 ${color.shadowColor} outline outline-1 ${color.outlineColor}`}
@@ -154,10 +149,9 @@ const Page: React.FC = () => {
                             <DropdownMenuTrigger asChild className="rounded">
                               <Button
                                 variant="ghost"
+                                iconName="ellipsisVertical"
                                 className="border-none bg-none py-0 px-0 hover:bg-white"
-                              >
-                                <EllipsisVertical size={20} />
-                              </Button>
+                              ></Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
                               align="start"
@@ -168,15 +162,24 @@ const Page: React.FC = () => {
                                   onClick={() => handleAddSection(classData.id)}
                                   className="text-lmgSecondary font-semibold text-xs"
                                 >
-                                  <Plus size={15} className="mr-2" /> Add
-                                  Section
-                                </DropdownMenuItem>
+                                  <DropdownMenuGroup>
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        handleAddSection(classData.id)
+                                      }
+                                      className="text-lmgSecondary font-semibold text-xs"
+                                    >
+                                      <Plus size={15} className="mr-2" /> Add
+                                      Section
+                                    </DropdownMenuItem>
 
-                                <DropdownMenuSeparator />
+                                    <DropdownMenuSeparator />
 
-                                <DropdownMenuItem className="text-red-600 font-semibold text-xs">
-                                  <Trash2 size={15} className="mr-2" /> Delete
-                                  Section
+                                    <DropdownMenuItem className="text-red-600 font-semibold text-xs">
+                                      <Trash2 size={15} className="mr-2" />{" "}
+                                      Delete Section
+                                    </DropdownMenuItem>
+                                  </DropdownMenuGroup>
                                 </DropdownMenuItem>
                               </DropdownMenuGroup>
                             </DropdownMenuContent>

@@ -6,12 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
 	CloudUpload,
-	ExternalLink,
 	ExternalLinkIcon,
 	Pencil,
-	School,
-	Settings,
-	User,
+	
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

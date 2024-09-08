@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
 import { Eye, EyeOff, KeyRound } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "./ui/newButton";
 import axiosInstance from "@/lib/axiosInstance";
 
 interface CreateNewPasswordProps {
@@ -113,6 +113,7 @@ const CreateNewPassword: React.FC<CreateNewPasswordProps> = ({
             type="submit"
             variant={"lmsActive"}
             className="w-full mt-3 mb-8"
+            disabled
           >
             Set New Password
           </Button>

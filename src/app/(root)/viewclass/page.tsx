@@ -1,16 +1,12 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { CheckCircleIcon, Pencil, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { columns } from "./columns";
 import Drawer from "@/components/Drawer";
 import AddTeacher from "@/components/AddTeacher";
-import AddStudent from "@/components/AddStudent";
 import { useSearchParams } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { DataTable } from "@/components/LmsDataTable";
-import { toast } from "@/components/ui/use-toast";
 import Cookies from "js-cookie";
 
 const Page = () => {
