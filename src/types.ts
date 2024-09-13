@@ -220,6 +220,7 @@ export interface Stage {
 }
 
 export type FormType =
+  | "welcomeHome"
 	| "login"
 	| "otp"
 	| "forgotpassword"

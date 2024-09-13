@@ -308,6 +308,7 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
               columns={columns}
               data={attendanceData}
               isLoading={loading}
+              searchColumn="date"
             />
           )}
         </div>

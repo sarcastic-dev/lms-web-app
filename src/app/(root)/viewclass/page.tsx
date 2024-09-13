@@ -192,6 +192,7 @@ const Page = () => {
               />
             </Drawer>
           }
+          searchColumn="name"
         />
       </div>
     </div>

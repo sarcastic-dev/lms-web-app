@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react"; // Adjust the import path based on your project structure
+import { ArrowUpDown } from "lucide-react";
 import ActionCell from "@/components/AttendanceActionCell";
 
 export type Attendance = {
@@ -10,7 +10,7 @@ export type Attendance = {
     studentName: string;
     fatherName: string;
     status: string;
-  }[]; // Define attendance record structure
+  }[]; 
   classId: string;
   className: string;
   sectionId: string;
@@ -106,12 +106,12 @@ const columns: ColumnDef<Attendance>[] = [
     cell: ({ row }) => (
       <div>
         <ActionCell
-          sectionId={row.original.sectionId} // Pass sectionId or any other identifier
+          sectionId={row.original.sectionId}
           attendanceRecords={
             row.original.attendanceRecords ? row.original.attendanceRecords : []
-          } // Pass attendanceRecords
-          fetchById={() => {}} // If you still need a fetch function, pass it here
-          setViewState={() => {}} // Pass setViewState if needed
+          }
+          fetchById={() => {}}
+          setViewState={() => {}}
         />
       </div>
     ),

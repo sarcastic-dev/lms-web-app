@@ -19,7 +19,8 @@ const Carousel: React.FC<CarouselProps> = ({ formType }) => {
     createProfile: 2,
     createInstitute: 3,
     forgotpassword: 0,
-    createnewpassword: 0
+    createnewpassword: 0,
+    welcomeHome: 0,
   };
 
   // Determine active index based on formType

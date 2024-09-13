@@ -117,7 +117,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
       <form onSubmit={handleSubmit}>
         <h4 className="text-2xl font-bold mb-5">Forgot Your Password ?</h4>
         <FormLabel
-          htmlFor="email_or_phone_number"
+          htmlFor="email"
           className="text-gray-500 text-sm"
         >
           Email
@@ -125,7 +125,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
         <FormControl>
           <div className="relative">
             <Input
-              id="email_or_phone_number"
+              id="email"
               type="text"
               className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 mt-2 ${
                 email && "pl-10"
@@ -167,7 +167,6 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
         <Button
           variant={"lmsActive"}
           type="submit"
-          // className="sm:w-[250px] md:w-[320px] lg:w-[402px] mt-3 rounded"
           size={"lms"}
           disabled={isSubmitting}
         >
