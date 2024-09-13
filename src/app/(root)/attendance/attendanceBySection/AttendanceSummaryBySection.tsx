@@ -227,6 +227,7 @@ export const AttendanceSummaryBySection: React.FC<
               data={attendanceData?.detailedAttendance!}
               isLoading={loading}
               headingText={`Total Students (${attendanceData.detailedAttendance.length})`}
+              searchColumn="studentName"
             />
           )}
         </div>

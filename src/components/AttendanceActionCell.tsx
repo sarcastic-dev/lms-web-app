@@ -99,6 +99,7 @@ const ActionCell: React.FC<ActionCellProps> = ({
               headingText={`Total Students (${attendanceRecords.length})`}
               data={attendanceRecords} // Pass the attendanceRecords data
               isLoading={false}
+              searchColumn="studentName"
             />
           </div>
         </DialogContent>

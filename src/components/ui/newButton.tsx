@@ -11,9 +11,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-white hover:bg-primary/90",
+        lmsBorder:
+          "bg-white text-lmsAccent border-2 border-lmsAccent rounded font-semibold",
         lms: "bg-lmsAccent text-white rounded font-semibold text-sm",
         lmsOutline:
-          "outline-lmsAccent outline rounded text-lmsAccent font-semibold text-sm",
+          "border-2 border-lmsAccent text-lmsAccent text-sm rounded font-bold",
         lmsNext:
           "text-white w-20 h-10 rounded bg-lmsAccent text-semibold text-sm disabled:bg-lms-200 disabled:text-lms-600   transition-all duration-300 hover:bg-gradient-to-r hover:from-[#115DB8] hover:to-[#0F4A95]",
         lmsBack:

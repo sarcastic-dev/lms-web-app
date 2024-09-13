@@ -185,6 +185,7 @@ const Page: React.FC = () => {
         data={data}
         isLoading={loading}
         headingText={`Total Students (${data.length})`}
+        searchColumn="name"
       />
     </div>
   );

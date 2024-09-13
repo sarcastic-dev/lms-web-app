@@ -24,7 +24,6 @@ import {
 import { FormType } from "@/types";
 import ForgotPassword from "./ForgotPassword";
 import Cookies from "js-cookie";
-import Otp from "./Otp";
 import { showToast } from "@/utils/toastHelper";
 import { upperFirst } from "lodash";
 
@@ -146,17 +145,16 @@ const Login: React.FC<LoginProps> = ({
       showToast("success", "Logged in successfully");
       router.push("/dashboard");
     } catch (error: any) {
-      // console.error("Error logging in:", error);
-      // showToast("error", `${error.response.data.error},`);
       setErrorMessage(`${error.response.data.error}`);
     } finally {
-      setIsSubmitting(false); // Re-enable the button after the request finishes
+      setIsSubmitting(false);
     }
   };
 
-  const handleForgotPasswordClick = () => {
+  const handleForgotPasswordClick = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsForgotPassword(true);
-    setFormType("forgotpassword"); // Set form type to forgot password
+    setFormType("forgotpassword");
   };
 
   const form = useForm<AuthSchemaType>({
@@ -268,17 +266,16 @@ const Login: React.FC<LoginProps> = ({
                   )}
                 />
                 <Button
+                  type="submit"
                   variant={"lmsActive"}
                   size={"lms"}
                   disabled={isSubmitting || isSendingOTP}
-                  >
-                  {isSendingOTP && !isSubmitting ? (
-                    null
-                  ) : showPasswordInput ? (
-                    "Login"
-                  ) : (
-                    "Submit"
-                  )}
+                >
+                  {isSendingOTP && !isSubmitting
+                    ? null
+                    : showPasswordInput
+                    ? "Login"
+                    : "Submit"}
                 </Button>
                 {errorMessage && (
                   <div className="bg-red-200 text-lmsError h-10 px-3  rounded flex items-center gap-2 text-sm">

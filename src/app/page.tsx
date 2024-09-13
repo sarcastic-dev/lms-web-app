@@ -1,17 +1,21 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
+import WelcomeHome from "../components/Welcome/WelcomeHome"; // Import the Welcome component
+import Home from "../components/Home"; // Import the Home component
 
-import AuthPage from "../components/Home";
-import Loader from "@/components/Loader";
-import CreateInstitute from "./pages/create-institute";
-// import CreateProfile from "@/components/CreateProfile";
+const App: React.FC = () => {
+  const [showHome, setShowHome] = useState(false);
 
-export default function Home() {
+  const handleNavigation = () => {
+    setShowHome(true); // Switch to Home component
+  };
+
   return (
-    <>
-      <AuthPage />
-      {/* <CreateProfile input={""}/> */}
-      {/* <Loader/> */}
-      {/* <CreateInstitute userId={null}/> */}
-    </>
+    <div>
+      {/* Conditional rendering based on state */}
+      {showHome ? <Home /> : <WelcomeHome onNavigateToHome={handleNavigation} />}
+    </div>
   );
-}
+};
+
+export default App;

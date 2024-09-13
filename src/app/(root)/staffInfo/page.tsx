@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/newButton";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { CloudUpload, Download } from "lucide-react";
+import { CloudUpload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +37,7 @@ const Page: React.FC = () => {
     const { data } = await axiosInstance.get(
       `/staffs/institute/${instituteId}`
     );
-    console.log(instituteId);
+    // console.log(instituteId);
     const filteredStaffData = data.map((obj: any) => {
       const staffObj: any = {};
 
@@ -204,6 +204,7 @@ const Page: React.FC = () => {
               data={data}
               isLoading={loading}
               headingText={`Total Teaching Staff (${data.length})`}
+              searchColumn="name"
             />
           </TabsContent>
           <TabsContent value="non-teaching">
@@ -212,6 +213,7 @@ const Page: React.FC = () => {
               data={data}
               headingText={`Total Non-Teaching Staff (${data.length})`}
               isLoading={loading}
+              searchColumn="name"
             />
           </TabsContent>
         </Tabs>

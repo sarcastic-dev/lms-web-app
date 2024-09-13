@@ -34,18 +34,17 @@ const HomePage: React.FC = () => {
 	return (
 		<>
 			<div className='flex justify-between'>
-				<div className='w-1/2 relative h-screen'>
-					<div className='h-fit'>
+				<div className='flex justify-center relative w-1/2'>
+					<div className='absolute h-full w-full'>
 						<Image
 							src='/MainBG.png'
 							alt='Background Image'
-							layout='fill'
+							fill
 							sizes='(max-width: 640px)'
-							objectFit='cover'
 							priority
 						/>
 					</div>
-					<div className='relative flex h-screen justify-center text-white items-end text-4xl font-bold pb-10 z-50'>
+					<div className='h-screen flex justify-center text-white items-end text-4xl font-bold pb-10 z-50'>
 						<Carousel formType={formType} />
 					</div>
 				</div>
@@ -82,9 +81,10 @@ const HomePage: React.FC = () => {
 							{formType === "forgotpassword" && (
 								<ForgotPassword
 									setFormType={setFormType}
-									formData={{
-										email: "",
-									}}
+									// formData={{
+									// 	email: "",
+									// }}
+									formData={formData}
 									setFormData={setFormData}
 								/>
 							)}

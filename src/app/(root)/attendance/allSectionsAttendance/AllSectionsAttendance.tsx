@@ -39,9 +39,6 @@ const AllSectionsAttendance = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [data, setData] = useState<Attendance[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedSectionId, setSelectedSectionId] = useState<string | null>(
-    null
-  );
 
   const fetchAttendanceData = async () => {
     const instituteId = Cookies.get("instituteId");
@@ -58,9 +55,9 @@ const AllSectionsAttendance = () => {
         )}&instituteId=${instituteId}`
       );
 
-      console.log("Attendance Response:", attendanceResponse.data);
+      // console.log("Attendance Response:", attendanceResponse.data);
       setData(attendanceResponse.data.sections || []);
-      console.log(attendanceResponse.data.sections);
+      // console.log(attendanceResponse.data.sections);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -130,6 +127,7 @@ const AllSectionsAttendance = () => {
             isLoading={loading}
             headingText={`Total Sections (${data.length})`}
             buttonComponent={datePicker}
+            searchColumn="className"
           />
         </div>
       </div>

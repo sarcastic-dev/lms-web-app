@@ -22,7 +22,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/newButton";
-import { ArrowLeft, ArrowRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   skeletonRowCount?: number;
   buttonComponent?: React.ReactNode;
   headingText?: string;
+  searchColumn?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -40,6 +41,7 @@ export function DataTable<TData, TValue>({
   skeletonRowCount = 3,
   headingText,
   buttonComponent,
+  searchColumn,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -117,10 +119,13 @@ export function DataTable<TData, TValue>({
             <Input
               placeholder="Filter by student name..."
               value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                (table.getColumn(searchColumn!)?.getFilterValue() as string) ??
+                ""
               }
               onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
+                table
+                  .getColumn(searchColumn!)
+                  ?.setFilterValue(event.target.value)
               }
               className="pl-10 rounded border-lms-200 placeholder:text-lms-500"
               style={{ paddingTop: 0, paddingBottom: 0 }}
@@ -226,6 +231,7 @@ export function DataTable<TData, TValue>({
               variant="lms"
               size="lg"
               iconName="arrowRight"
+              iconPosition="end"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
               className="flex items-center"
