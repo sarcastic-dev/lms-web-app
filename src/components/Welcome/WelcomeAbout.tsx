@@ -8,7 +8,7 @@ const WelcomeAbout = () => {
           About Us
         </h2>
 
-        <p className="text-center text-lg px-48 mt-5 tracking-wide font-medium">
+        <p className="text-center lg:text-base xl:text-lg px-48 mt-5 tracking-wide font-medium">
           At LMSBuddy, we revolutionize the educational experience for teachers,
           students, administrators, and institutes as a whole. Our all-in-one
           Learning Management System offers an intuitive and powerful suite of

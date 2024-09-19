@@ -1,89 +1,51 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { FormType } from "@/types";
+import { usePathname } from "next/navigation";
 
-interface CarouselProps {
-  formType: FormType;
-}
+const Carousel: React.FC = () => {
+  const pathname = usePathname();
 
-const Carousel: React.FC<CarouselProps> = ({ formType }) => {
-  // Map formType to active index
-  const formTypeToIndex: { [key in FormType]: number } = {
-    login: 0,
-    otp: 1,
-    createProfile: 2,
-    createInstitute: 3,
-    forgotpassword: 0,
-    createnewpassword: 0,
-    welcomeHome: 0,
-  };
+  const routes = [
+    { path: "/login", title: "Welcome!", subtitle: "Get started with signup/login." },
+    { path: "/otp", title: "Verify!", subtitle: "Verify your Email/Phone." },
+    { path: "/createuser", title: "Create Account!", subtitle: "Create your user account." },
+    { path: "/createInstitute", title: "Create Institute!", subtitle: "Create your own institute." },
+    { path: "/forgotPassword", title: "Forgot Password?", subtitle: "Reset in a few seconds." },
+    { path: "/createNewPassword", title: "Recreate Password!", subtitle: "Create your new password." },
+  ];
 
-  // Determine active index based on formType
-  const activeIndex = formTypeToIndex[formType];
+  const currentRoute = routes.find((route) => route.path === pathname);
 
   return (
     <div>
-      {formType === "login" && (
-        <span className="text-center space-y-3">
-          <h1>Welcome!</h1>
-          <p className="text-lg opacity-60">Get started with signup/login.</p>
-        </span>
+      {currentRoute && (
+        <div className="text-center space-y-3">
+          <h1>{currentRoute.title}</h1>
+          <p className="text-lg opacity-60">{currentRoute.subtitle}</p>
+        </div>
       )}
-      {formType === "otp" && (
-        <span className="text-center space-y-3">
-          <h1>Verify!</h1>
-          <p className="text-lg opacity-60">Verify your Email/Phone.</p>
-        </span>
-      )}
-      {formType === "createProfile" && (
-        <span className="text-center space-y-3">
-          <h1>Create Account!</h1>
-          <p className="text-lg opacity-60">Create your user acoount.</p>
-        </span>
-      )}
-      {formType === "createInstitute" && (
-        <span className="text-center space-y-3">
-          <h1>Create Institute!</h1>
-          <p className="text-lg opacity-60">Create your own institute.</p>
-        </span>
-      )}
-      {formType === "forgotpassword" && (
-        <span className="text-center space-y-3">
-          <h1>Forgot Password?</h1>
-          <p className="text-lg opacity-60">Reset in few seconds.</p>
-        </span>
-      )}
-      {formType === "createnewpassword" && (
-        <span className="text-center space-y-3">
-          <h1>Recreate Password!</h1>
-          <p className="text-lg opacity-60">Create your new password.</p>
-        </span>
-      )}
-      <span>
+
+      <div>
         <Pagination>
           <PaginationContent className="space-x-3">
-            {["login", "otp", "createProfile", "createInstitute"].map(
-              (type, index) => (
-                <PaginationItem key={type} className="mt-5 flex items-center">
-                  <PaginationLink
-                    href="#"
-                    className={`rounded-full ${
-                      index === activeIndex
-                        ? "h-4 w-4 bg-[#115DB8]"
-                        : "h-2 w-2 bg-white"
-                    }`}
-                  />
-                </PaginationItem>
-              )
-            )}
+            {routes.map((route) => (
+              <PaginationItem key={route.path} className="mt-5 flex items-center">
+                <PaginationLink
+                  href={route.path} // Use route path as href for navigation
+                  className={`rounded-full ${
+                    pathname === route.path ? "h-4 w-4 bg-[#115DB8]" : "h-2 w-2 bg-white"
+                  }`}
+                />
+              </PaginationItem>
+            ))}
           </PaginationContent>
         </Pagination>
-      </span>
+      </div>
     </div>
   );
 };

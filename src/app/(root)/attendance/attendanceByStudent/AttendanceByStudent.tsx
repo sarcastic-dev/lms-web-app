@@ -96,7 +96,7 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
           "yyyy-MM-dd"
         )}&endDate=${format(date?.to!, "yyyy-MM-dd")}`
       );
-      console.log("Selected Student ID:", selectedStudent);
+      // console.log("Selected Student ID:", selectedStudent);
 
       setAttendanceData(attendanceResponse.data || []);
     } catch (error) {
