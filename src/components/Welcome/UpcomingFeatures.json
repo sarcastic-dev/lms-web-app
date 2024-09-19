@@ -1,0 +1,32 @@
+[
+  {
+    "heading": "Institute-Wide Management",
+    "info": "From managing student records to communicating with parents, streamline your administrative tasks and focus more on teaching.",
+    "icon": "School"
+  },
+  {
+    "heading": "Smart Attendance Tracking",
+    "info": "Keep track of student attendance with just a few swipes. Generate detailed reports to monitor participation and stay on top of class performance.",
+    "icon": "TabletSmartphone"
+  },
+  {
+    "heading": "Assign & Manage Classes",
+    "info": "Easily assign teachers to classes and create schedules that keep everyone organized. Manage class rosters and share updates with a few simple steps.",
+    "icon": "Presentation"
+  },
+  {
+    "heading": "Real-Time Progress Reports",
+    "info": "Track student progress with interactive dashboards. Monitor performance, identify trends, and offer personalized feedback to help students succeed.",
+    "icon": "BarChartBig"
+  },
+  {
+    "heading": "Access Anytime, Anywhere",
+    "info": "Our cloud-based platform is accessible from any device, letting you manage your classes, track progress, and access resources wherever you are.",
+    "icon": "Globe"
+  },
+  {
+    "heading": "Instant Notifications & Reminders",
+    "info": "Stay updated with automatic notifications for assignments, attendance, and important announcements. Keep students, teachers, and parents in the loop.",
+    "icon": "Bell"
+  }
+]

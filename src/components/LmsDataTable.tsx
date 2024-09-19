@@ -209,7 +209,7 @@ export function DataTable<TData, TValue>({
               // 	table.getState().pagination.pageIndex + 1
               // } of ${table.getPageCount()}`}
               className="w-28 disabled:text-lmsAccent disabled:border-lmsAccent rounded h-10 disabled:cursor-default disabled:border-1.5"
-              disabled
+              // disabled
             >
               Page {table.getState().pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}
@@ -233,7 +233,7 @@ export function DataTable<TData, TValue>({
               iconName="arrowRight"
               iconPosition="end"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              // disabled={!table.getCanNextPage()}
               className="flex items-center"
             >
               Next{" "}

@@ -92,7 +92,7 @@ export const AttendanceSummaryBySection: React.FC<
   };
 
   const onSelectSection = (value: string) => {
-    console.log("valueee=>", value);
+    // console.log("valueee=>", value);
     setSelectedSection(value);
     fetchAttendanceData(value);
     // fetchAttendanceData();
