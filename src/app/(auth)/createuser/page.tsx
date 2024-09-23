@@ -30,11 +30,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-interface CreateProfileProps {
-  setUserId: (id: string) => void;
-}
-
-const CreateProfile: React.FC<CreateProfileProps> = () => {
+const CreateProfile: React.FC = () => {
   const user = useSelector((state: RootState) => state.userInfo);
   const router = useRouter();
   const dispatch = useDispatch();

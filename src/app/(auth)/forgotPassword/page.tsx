@@ -13,11 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 import { useRouter } from "next/navigation";
 
-interface ForgotPasswordProps {
-  setFormType: (type: FormType) => void;
-}
-
-const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
+const ForgotPassword: React.FC = () => {
   const user = useSelector((state: RootState) => state.userInfo);
   const [email, setEmail] = useState(user.formData.userData.email);
   const [otp, setOtp] = useState("");
