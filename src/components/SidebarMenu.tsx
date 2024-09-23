@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/newButton";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarImage } from "./ui/avatar";
+import Cookies from "js-cookie";
 
 interface SidebarMenuProps {
   sidebarItems: SidebarItems;
@@ -26,6 +27,14 @@ interface SidebarMenuProps {
 
 const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
   const pathName = usePathname();
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken", { path: "/" });
+    Cookies.remove("instituteId", { path: "/" });
+    Cookies.remove("refreshToken", { path: "/" });
+
+    window.location.href = "/login";
+  };
 
   return (
     <aside
@@ -87,7 +96,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
                 variant="ghost"
                 iconName="chevronDown"
                 iconPosition="end"
-								iconAlign="start"
+                iconAlign="start"
                 iconSize={20}
                 className="gap-3 p-0 justify-start w-full"
               >
@@ -115,7 +124,11 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
                 </Button>
               </Link>
               <Link href="/logout" className="flex w-full">
-                <Button variant="ghost" className="gap-3 w-full justify-start">
+                <Button
+                  variant="ghost"
+                  className="gap-3 w-full justify-start"
+                  onClick={handleLogout}
+                >
                   <LogOut size={20} color="#0067ff" /> <span>Logout</span>
                 </Button>
               </Link>

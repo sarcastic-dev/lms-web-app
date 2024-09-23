@@ -14,11 +14,11 @@ import Autoplay from "embla-carousel-autoplay";
 const WelcomeCarousel = () => {
   return (
     <>
-      <Carousel plugins={[Autoplay()]} className="md:w-[650px] lg:w-[850px] xl:w-[1120px] 2xl:w-[1380px]">
+      <Carousel plugins={[Autoplay()]} className="md:w-[650px] lg:w-[850px] xl:w-[1120px] 2xl:w-[1350px] mt-20">
         <CarouselContent>
           {carouselData.map((data, index) => (
             <CarouselItem key={index}>
-              <div className="relative flex-col flex items-center justify-around h-[550px] space-y-10 lg:space-x-10">
+              <div className="relative flex items-center justify-around h-[550px] space-y-10 lg:space-x-10">
                 <div className="flex flex-col space-y-5 md:w-[500px] lg:w-[400px] xl:w-[500px]">
                   <h1 className="md:text-2xl xl:text-4xl text-lmsPrimary font-bold">
                     {data.title}

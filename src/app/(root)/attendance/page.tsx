@@ -33,7 +33,10 @@ const Page = () => {
 
   const fetchClassSectionData = async () => {
     const instituteId = Cookies.get("instituteId");
+    const accessToken = Cookies.get("accessToken");
     if (!instituteId) return;
+    if (!accessToken) return;
+
 
     setLoading(true);
 
@@ -41,7 +44,13 @@ const Page = () => {
       // Fetch attendance data
       const classSectionDataResponse = await axiosInstance.get<
         ClassSectionResponse[]
-      >(`/classes/institute/${instituteId}`);
+      >(`/classes/institute/${instituteId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
       const filteredData = classSectionDataResponse.data
         .map((obj: ClassSectionResponse) => obj.classes)

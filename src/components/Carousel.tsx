@@ -11,7 +11,8 @@ const Carousel: React.FC = () => {
   const pathname = usePathname();
 
   const routes = [
-    { path: "/login", title: "Welcome!", subtitle: "Get started with signup/login." },
+    { path: "/login", title: "Welcome!", subtitle: "Get started with login." },
+    { path: "/signup", title: "Welcome!", subtitle: "Get started with signup." },
     { path: "/otp", title: "Verify!", subtitle: "Verify your Email/Phone." },
     { path: "/createuser", title: "Create Account!", subtitle: "Create your user account." },
     { path: "/createInstitute", title: "Create Institute!", subtitle: "Create your own institute." },

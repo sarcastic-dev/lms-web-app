@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { CheckCircleIcon, CircleX, Search } from "lucide-react";
 import { Checkbox } from "antd";
 import { Button } from "./ui/button";
+import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axiosInstance";
 import { SheetClose, SheetFooter } from "./ui/sheet";
 import {
@@ -77,11 +78,15 @@ const AddStudent = ({
 	});
 
 	const handleAssignStudent = async () => {
+
+		const instituteId = Cookies.get("instituteId");
+    if (!instituteId) return;
+
 		try {
 			const studentIdsArray = Array.from(selectedIds);
 			const response = await axiosInstance.post(
 				"/sections/assign-students",
-				{ sectionId, studentIds: studentIdsArray }
+				{ sectionId, studentIds: studentIdsArray, instituteId }
 			);
 			fetchSectionDetails();
 			showToast("success", response.data.message);

@@ -26,6 +26,8 @@ import { DateRange } from "react-day-picker";
 import columns from "./columns";
 import { ClassResponse } from "../page";
 import EmptyData from "../EmptyData";
+import Cookies from "js-cookie";
+
 
 export type Attendance = {
   studentId: string;
@@ -66,7 +68,10 @@ export const AttendanceSummaryBySection: React.FC<
   });
 
   const fetchAttendanceData = async (sectionId: string) => {
+    const accessToken = Cookies.get("accessToken");
+
     if (!sectionId) return;
+    if (!accessToken) return;
 
     setLoading(true);
 
@@ -76,7 +81,12 @@ export const AttendanceSummaryBySection: React.FC<
         `/attendances/summary?startDate=${format(
           date?.from!,
           "yyyy-MM-dd"
-        )}&endDate=${format(date?.to!, "yyyy-MM-dd")}&sectionId=${sectionId}`
+        )}&endDate=${format(date?.to!, "yyyy-MM-dd")}&sectionId=${sectionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
       setAttendanceData(attendanceResponse.data || []);

@@ -115,7 +115,7 @@ const Login: React.FC = () => {
                           <Input
                             id="email_or_phone_number"
                             type="text"
-                            className={`sm:w-[250px] md:w-[320px] lg:w-[402px] ${
+                            className={`sm:w-[250px] md:w-[320px] lg:w-[402px] xl:h-10 xl:py-0 placeholder:text-xs ${
                               emailOrPhoneNumber && "pl-10"
                             }`}
                             placeholder="Enter Email"
