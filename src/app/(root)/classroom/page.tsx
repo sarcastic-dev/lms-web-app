@@ -49,12 +49,20 @@ const Page: React.FC = () => {
   const [data, setData] = useState<Stage[]>([]);
   const router = useRouter(); // useRouter for navigation
   const [initialState, setInitialState] = useState(true);
+  const instituteId = Cookies.get("instituteId");
+  const accessToken = Cookies.get("accessToken");
 
   const fetchData = async () => {
+    if (!instituteId) return;
+    if (!accessToken) return;
     try {
-      const instituteId = Cookies.get("instituteId");
       const { data } = await axiosInstance.get<Stage[]>(
-        `/classes/institute/${instituteId}`
+        `/classes/institute/${instituteId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setData(data);
     } catch (error) {
@@ -63,10 +71,22 @@ const Page: React.FC = () => {
   };
 
   const handleAddSection = async (id: string) => {
+    if (!instituteId) return;
+    if (!accessToken) return;
+
     try {
-      const res = await axiosInstance.post("/sections", {
-        classId: id,
-      });
+      const res = await axiosInstance.post(
+        "/sections",
+        {
+          classId: id,
+          instituteId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       console.log(res);
       fetchData();
     } catch (error) {
