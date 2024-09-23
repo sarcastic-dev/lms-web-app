@@ -35,8 +35,14 @@ const Page: React.FC = () => {
   const fetchStudentList = async () => {
     setLoading(true);
     const instituteId = Cookies.get("instituteId");
+    const accessToken = Cookies.get("accessToken");
     const { data } = await axiosInstance.get(
-      `/students/institute/${instituteId}`
+      `/students/institute/${instituteId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     const filteredData = data.map((obj: any) => {
       const studentObj: any = {};

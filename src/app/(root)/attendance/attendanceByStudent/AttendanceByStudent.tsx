@@ -66,13 +66,21 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
 
   const fetchStudentsData = async (section: string) => {
     const instituteId = Cookies.get("instituteId");
+    const accessToken = Cookies.get("accessToken");
+
     if (!instituteId) return;
+    if (!accessToken) return;
 
     setLoading(true);
 
     try {
       const studentsResponse = await axiosInstance.get<StudentResponse>(
-        `/classes/section-details?instituteId=${instituteId}&classLevel=${selectedClass}&section=${section}`
+        `/classes/section-details?instituteId=${instituteId}&classLevel=${selectedClass}&section=${section}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
       setStudentsList(studentsResponse.data.enrolled);

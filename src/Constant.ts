@@ -296,3 +296,4 @@ export const colorPalette = [
 		outlineColor: "outline-amber-200",
 	},
 ];
+

@@ -5,10 +5,73 @@ import { Button } from "@/components/ui/newButton";
 import { Separator } from "@/components/ui/separator";
 import { NextPage } from "next";
 import { Bell, CalendarDays, UserRoundX } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import withAuthCheck from "@/components/withAuthCheck";
+import Cookies from "js-cookie";
+import axiosInstance from "@/lib/axiosInstance";
 
 const Page: NextPage = () => {
+  const [attendanceData, setAttendanceData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      const instituteId = Cookies.get("instituteId");
+      const accessToken = Cookies.get("accessToken");
+
+      if (!instituteId) {
+        setError("Institute ID not found");
+        setLoading(false);
+        return;
+      }
+
+      if (!accessToken) {
+        setError("JWT not found");
+        setLoading(false);
+        return;
+      }
+
+      const presentDate = new Date().toISOString().split("T")[0]; // Current date
+
+      try {
+        // Update the API call to dynamically use the instituteId from the cookie
+        const response = await axiosInstance.get(
+          `/attendances/total_summary?instituteId=${instituteId}&date=${presentDate}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Attach JWT
+            },
+          }
+        );
+        setAttendanceData(response.data);
+      } catch (err) {
+        setError("Error fetching attendance data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttendanceData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!attendanceData) {
+    return <div>No attendance data available.</div>;
+  }
+
+  const totalStudents = attendanceData?.totalStudents ?? 0;
+  const totalPresent = attendanceData?.totalPresent ?? 0;
+  const totalAbsent = attendanceData?.totalAbsent ?? 0;
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -52,7 +115,9 @@ const Page: NextPage = () => {
             </svg>
           </div>
           <div className="space-y-2">
-            <h6 className="text-lmsPrimary text-2xl font-semibold">40</h6>
+            <h6 className="text-lmsPrimary text-2xl font-semibold">
+              {attendanceData.totalTeachers || "N/A"}
+            </h6>
             <h5 className="text-amber-500 text-sm font-semibold">
               Total Teachers
             </h5>
@@ -71,7 +136,9 @@ const Page: NextPage = () => {
             </svg>
           </div>
           <div className="space-y-2">
-            <h6 className="text-lmsPrimary text-2xl font-semibold">1800</h6>
+            <h6 className="text-lmsPrimary text-2xl font-semibold">
+              {attendanceData.totalStudents}
+            </h6>
             <h5 className="text-sky-500 text-sm font-semibold">
               Total Students
             </h5>
@@ -90,7 +157,10 @@ const Page: NextPage = () => {
             </svg>
           </div>
           <div className="space-y-2">
-            <h6 className="text-lmsPrimary text-2xl font-semibold">300</h6>
+            <h6 className="text-lmsPrimary text-2xl font-semibold">
+              {" "}
+              {attendanceData.totalClassrooms || "N/A"}
+            </h6>
             <h5 className="text-purple-400 text-sm font-semibold">
               Total Classrooms
             </h5>
@@ -109,7 +179,10 @@ const Page: NextPage = () => {
             </svg>
           </div>
           <div className="space-y-2">
-            <h6 className="text-lmsPrimary text-2xl font-semibold">1400</h6>
+            <h6 className="text-lmsPrimary text-2xl font-semibold">
+              {" "}
+              {attendanceData.totalPresent}
+            </h6>
             <h5 className="text-green-500  text-sm font-semibold">
               Total Present
             </h5>
@@ -120,7 +193,10 @@ const Page: NextPage = () => {
             <UserRoundX className="text-white" strokeWidth={3} size={22} />
           </div>
           <div className="space-y-2">
-            <h6 className="text-lmsPrimary text-2xl font-semibold">400</h6>
+            <h6 className="text-lmsPrimary text-2xl font-semibold">
+              {" "}
+              {attendanceData.totalAbsent}
+            </h6>
             <h5 className="text-lmsError text-sm font-semibold">
               Total Absent
             </h5>
@@ -130,14 +206,15 @@ const Page: NextPage = () => {
 
       <div className="mx-6 my-5">
         <h5 className="text-2xl font-bold text-lmsPrimary">Attendance</h5>
-        <div className="grid grid-cols-2 gap-x-10">
-          <div className=" rounded-sm  min-h-[300px] p-5 space-y-5">
+        <Separator className="bg-lms-100 my-3" />
+        <div className="flex justify-center items-center">
+          {/* <div className=" rounded-sm  min-h-[300px] p-5 space-y-5">
             <h5 className="text-base font-semibold text-lmsSecondary">
               Teacher Attendance
             </h5>
-            <Chart />
-          </div>
-          <div className=" rounded-sm  min-h-[300px] p-5 space-y-5">
+            <Chart date={""} />
+          </div> */}
+          <div className=" rounded-sm min-h-[300px] p-5 space-y-5">
             <h5 className="text-base font-semibold text-lmsSecondary">
               Student Attendance
             </h5>

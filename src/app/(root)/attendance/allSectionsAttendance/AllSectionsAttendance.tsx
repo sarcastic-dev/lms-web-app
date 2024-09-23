@@ -42,7 +42,9 @@ const AllSectionsAttendance = () => {
 
   const fetchAttendanceData = async () => {
     const instituteId = Cookies.get("instituteId");
+    const accessToken = Cookies.get("accessToken");
     if (!instituteId) return;
+    if (!accessToken) return;
 
     setLoading(true);
 
@@ -52,7 +54,12 @@ const AllSectionsAttendance = () => {
         `/attendances/records-by-date?date=${format(
           date,
           "yyyy-MM-dd"
-        )}&instituteId=${instituteId}`
+        )}&instituteId=${instituteId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
       // console.log("Attendance Response:", attendanceResponse.data);
@@ -75,17 +82,6 @@ const AllSectionsAttendance = () => {
     }
   };
 
-  const fetchSectionDetails = async (sectionId: string) => {
-    try {
-      const sectionData = data.find(
-        (section) => section.sectionId === sectionId
-      );
-      return sectionData ? sectionData : null; // Return the found section data
-    } catch (error) {
-      console.error("Error fetching section details:", error);
-      return null;
-    }
-  };
 
   const datePicker = (
     <Popover>

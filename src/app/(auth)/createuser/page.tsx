@@ -30,12 +30,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-interface CreateProfileProps {
-  setUserId: (id: string) => void;
-}
-
-const CreateProfile: React.FC<CreateProfileProps> = () => {
-  // const handleSetUserId = setUserId || ((id: string) => {});
+const CreateProfile: React.FC = () => {
   const user = useSelector((state: RootState) => state.userInfo);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -99,101 +94,107 @@ const CreateProfile: React.FC<CreateProfileProps> = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] h-5/6 z-10 space-y-5"
+        className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] h-5/6 z-10"
       >
-        <h1 className="text-2xl text-start text-[#07254A] font-bold mb-3">
-          Account Details
-        </h1>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm text-[#07254A]">Name</FormLabel>
-              <FormControl>
-                <Input
-                  className="rounded"
-                  placeholder="Enter Name"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col space-y-3 md:pt-14">
+          <h1 className="text-2xl text-start text-[#07254A] font-bold mb-3">
+            Account Details
+          </h1>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-[#07254A]">Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Enter Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm text-[#07254A]">Email ID</FormLabel>
-              <FormControl>
-                <Input
-                  className="rounded"
-                  placeholder="Enter Email ID"
-                  {...field}
-                  readOnly
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm text-[#07254A]">
-                Mobile No.
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className="rounded"
-                  placeholder="Mobile No."
-                  {...field}
-                  // readOnly
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-[#07254A]">
+                  Email ID
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Enter Email ID"
+                    {...field}
+                    readOnly
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-[#07254A]">
+                  Mobile No.
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Mobile No."
+                    {...field}
+                    // readOnly
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm text-[#07254A]">Password</FormLabel>
-              <FormControl>
-                <Input
-                  className="rounded"
-                  type="password"
-                  placeholder="Enter Password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-[#07254A]">
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    type="password"
+                    placeholder="Enter Password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            variant={"lmsActive"}
+            className="w-full"
+            type="submit"
+            disabled={isCreating}
+          >
+            {isCreating ? "Creating..." : "Create Account"}
+          </Button>
+
+          {errorMessage && (
+            <div className="bg-red-200 text-lmsError h-10 px-3 w-full mt-5 rounded flex items-center gap-2 text-sm">
+              <CircleX size={20} /> {upperFirst(errorMessage)}
+            </div>
           )}
-        />
-
-        <Button
-          variant={"lmsActive"}
-          className="w-full"
-          type="submit"
-          disabled={isCreating}
-        >
-          {isCreating ? "Creating..." : "Create Account"}
-        </Button>
-
-        {errorMessage && (
-          <div className="bg-red-200 text-lmsError h-10 px-3 w-full mt-5 rounded flex items-center gap-2 text-sm">
-            <CircleX size={20} /> {upperFirst(errorMessage)}
-          </div>
-        )}
+        </div>
       </form>
     </Form>
   );

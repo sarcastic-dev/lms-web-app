@@ -43,17 +43,17 @@ const CreateInstitute: React.FC = () => {
   });
   const userId = useSelector(
     (state: RootState) => state.userInfo.formData.userId
-  ); // Access userId from Redux store
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const subscription = methods.watch((value) => {
-      const isValid = instituteSchema.safeParse(value).success;
-    });
-    return () => subscription.unsubscribe();
-  }, [methods]);
+  // useEffect(() => {
+  //   const subscription = methods.watch((value) => {
+  //     const isValid = instituteSchema.safeParse(value).success;
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, [methods]);
 
   const validateForm = () => {
     const result = instituteSchema.safeParse(methods.getValues());
@@ -133,155 +133,173 @@ const CreateInstitute: React.FC = () => {
         onSubmit={methods.handleSubmit(onSubmit)}
         className="bg-white sm:w-[320px] md:w-[380px] lg:w-[466px] z-10"
       >
-        <h1 className="text-2xl text-start text-lmsPrimary font-bold mb-2">
+        <h1 className="text-2xl text-start text-lmsPrimary font-bold mb-5">
           Create Institute
         </h1>
 
-        <FormField
-          control={methods.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="">Institute Name</FormLabel>
-              <FormControl>
-                <Input className="" placeholder="Institute Name" {...field} />
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col space-y-3">
+          <FormField
+            control={methods.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="">Institute Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Institute Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[10px]" />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={methods.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="">Institute Type</FormLabel>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger
-                    className={`border w-full tracking-wider ${
-                      !field.value ? "text-lms-300 font-medium" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="Select Institute Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="School">School</SelectItem>
-                    <SelectItem value="College">College</SelectItem>
-                    <SelectItem value="Tuition">Tuition</SelectItem>
-                    <SelectItem value="Others">Others</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+          <div className="flex justify-between">
+            <FormField
+              control={methods.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="">Institute Type</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        className={`border md:w-44 lg:w-56 tracking-wider xl:h-10 xl:py-0 ${
+                          !field.value
+                            ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-2"
+                            : ""
+                        }`}
+                      >
+                        <SelectValue placeholder="Select Institute Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="School">School</SelectItem>
+                        <SelectItem value="College">College</SelectItem>
+                        <SelectItem value="Tuition">Tuition</SelectItem>
+                        <SelectItem value="Others">Others</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={methods.control}
-          name="boardUniversity"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="text-xs text-[#07254A]">
-                Academic Board
-              </FormLabel>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger
-                    className={`border w-full tracking-wider ${
-                      !field.value ? "text-lms-300 font-medium" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="Select Academic Board" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="CBSE">CBSE</SelectItem>
-                    <SelectItem value="ICSE">ICSE</SelectItem>
-                    <SelectItem value="State Board">State Board</SelectItem>
-                    <SelectItem value="IB">IB</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={methods.control}
+              name="boardUniversity"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-xs text-[#07254A]">
+                    Academic Board
+                  </FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        className={`border md:w-44 lg:w-56 tracking-wider xl:h-10 xl:py-0 ${
+                          !field.value ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-2" : ""
+                        }`}
+                      >
+                        <SelectValue placeholder="Select Academic Board" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="CBSE">CBSE</SelectItem>
+                        <SelectItem value="ICSE">ICSE</SelectItem>
+                        <SelectItem value="State Board">State Board</SelectItem>
+                        <SelectItem value="IB">IB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        <FormField
-          control={methods.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="">Email Address</FormLabel>
-              <FormControl>
-                <Input className="" placeholder="Email Address" {...field} />
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={methods.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="">Email Address</FormLabel>
+                <FormControl>
+                  <Input
+                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Email Address"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[10px]" />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={methods.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="">Phone Number</FormLabel>
-              <FormControl>
-                <Input className="" placeholder="Phone Number" {...field} />
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={methods.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="">Phone Number</FormLabel>
+                <FormControl>
+                  <Input
+                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Phone Number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[10px]" />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={methods.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="">Institute Address</FormLabel>
-              <FormControl>
-                <Input
-                  className=""
-                  placeholder="Institute Address"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={methods.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="">Institute Address</FormLabel>
+                <FormControl>
+                  <Input
+                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Institute Address"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[10px]" />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={methods.control}
-          name="city"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel className="">City</FormLabel>
-              <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger
-                    className={`border w-full tracking-wider ${
-                      !field.value ? "text-lms-300 font-medium" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="Select City" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Firozabad">Firozabad</SelectItem>
-                    <SelectItem value="New Delhi">New Delhi</SelectItem>
-                    <SelectItem value="Gurugram">Gurugram</SelectItem>
-                    <SelectItem value="Bangalore">Bangalore</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage className="text-[10px]" />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={methods.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="">City</FormLabel>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger
+                      className={`border w-full tracking-wider xl:h-10 xl:py-0 ${
+                        !field.value ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-4" : ""
+                      }`}
+                    >
+                      <SelectValue placeholder="Select City" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Firozabad">Firozabad</SelectItem>
+                      <SelectItem value="New Delhi">New Delhi</SelectItem>
+                      <SelectItem value="Gurugram">Gurugram</SelectItem>
+                      <SelectItem value="Bangalore">Bangalore</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage className="text-[10px]" />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button
           variant={"lmsActive"}

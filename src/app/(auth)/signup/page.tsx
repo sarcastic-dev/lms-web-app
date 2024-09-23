@@ -58,32 +58,31 @@ const Login: React.FC = () => {
       : { email: "", phone: emailOrPhoneNumber };
 
     try {
-        setIsSendingOTP(true);
-        const { data } = await axiosInstance.post("/request-otp", {
+      setIsSendingOTP(true);
+      const { data } = await axiosInstance.post("/request-otp", {
+        email: userObj.email,
+      });
+      setToken({
+        value: data.token,
+        expirationDate: new Date(
+          new Date().getTime() + 24 * 60 * 60 * 1000
+        ).toISOString(),
+      });
+      showToast("success", `OTP sent Successfully`);
+      console.log(userObj);
+      dispatch(
+        setUserInfoData({
           email: userObj.email,
-        });
-        setToken({
-          value: data.token,
-          expirationDate: new Date(
-            new Date().getTime() + 24 * 60 * 60 * 1000
-          ).toISOString(),
-        });
-        showToast("success", `OTP sent Successfully`);
-        console.log(userObj);
-        dispatch(
-          setUserInfoData({
-            email: userObj.email,
-            phone: "",
-          })
-        ),
-          router.push("/otp");
-      } catch (error) {
+          phone: "",
+        })
+      ),
+        router.push("/otp");
+    } catch (error) {
       setErrorMessage("Network error please try again.");
     } finally {
       setIsSendingOTP(false);
     }
   };
-
 
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(AuthSchema),
@@ -94,9 +93,7 @@ const Login: React.FC = () => {
       <div className="flex flex-col sm:w-[320px] md:w-[380px] lg:w-[466px] bg-white p-8 rounded z-10">
         <FormProvider {...form}>
           <Form {...form}>
-            <form
-              onSubmit={handleSubmit}
-            >
+            <form onSubmit={handleSubmit}>
               <div>
                 <h4 className="text-2xl font-bold mb-5">Get Start New</h4>
                 <FormField
@@ -115,7 +112,7 @@ const Login: React.FC = () => {
                           <Input
                             id="email_or_phone_number"
                             type="text"
-                            className={`sm:w-[250px] md:w-[320px] lg:w-[402px] ${
+                            className={`sm:w-[250px] md:w-[320px] lg:w-[402px] xl:h-10 xl:py-0 placeholder:text-xs ${
                               emailOrPhoneNumber && "pl-10"
                             }`}
                             placeholder="Enter Email"
@@ -152,9 +149,7 @@ const Login: React.FC = () => {
                   size={"lms"}
                   disabled={isSendingOTP}
                 >
-                  {isSendingOTP
-                    ? "Submitting"
-                    : "Submit"}
+                  {isSendingOTP ? "Submitting" : "Submit"}
                 </Button>
                 {errorMessage && (
                   <div className="bg-red-200 text-lmsError h-10 px-3  rounded flex items-center gap-2 text-sm">
