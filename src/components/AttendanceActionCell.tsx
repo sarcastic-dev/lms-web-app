@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogHeader,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { DataTable } from "@/components/LmsDataTable"; // Assuming you already have this
 import { ArrowUpDown } from "lucide-react";
@@ -35,6 +36,7 @@ const ActionCell: React.FC<ActionCellProps> = ({
 
   return (
     <>
+    <div className="flex justify-center">
       <Button
         variant={"link"}
         className="p-0"
@@ -44,6 +46,9 @@ const ActionCell: React.FC<ActionCellProps> = ({
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTitle></DialogTitle>
+          <DialogDescription>
+          </DialogDescription>
         <DialogContent className="max-w-7xl">
           <div>
             {/* Render the DataTable component here to show student data */}
@@ -104,6 +109,7 @@ const ActionCell: React.FC<ActionCellProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </>
   );
 };

@@ -107,6 +107,12 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <div className="flex flex-col sm:w-[320px] md:w-[380px] lg:w-[466px] space-y-5 bg-white p-8 rounded z-10">
@@ -120,17 +126,18 @@ const ForgotPassword: React.FC = () => {
               <Input
                 id="email"
                 type="text"
-                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 mt-2 ${
+                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 mt-2 xl:h-10 xl:py-0 placeholder:text-xs ${
                   email && "pl-10"
                 }`}
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={handleKeyDown} // Add this line
               />
               {email && (
                 <Mail
                   size={20}
-                  className="absolute left-2 sm:top-[2px] lg:top-[4px] xl:top-[23px] text-gray-500 ml-1"
+                  className="absolute left-2 sm:top-[19px] text-gray-500 ml-1"
                 />
               )}
             </div>
@@ -149,7 +156,8 @@ const ForgotPassword: React.FC = () => {
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="mt-2"
+                    onKeyDown={handleKeyDown}
+                    className="mt-2 xl:h-10 xl:py-0 placeholder:text-xs"
                     required
                   />
                 </div>

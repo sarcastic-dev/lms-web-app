@@ -32,6 +32,7 @@ const WelcomeCarousel = () => {
                     src={data.image}
                     alt={"dashboardImage"}
                     fill
+                    priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="rounded-sm shadow-2xl"
                   />

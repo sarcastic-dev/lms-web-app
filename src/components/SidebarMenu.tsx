@@ -1,6 +1,6 @@
 // SidebarMenu.tsx
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
 import {
   ChevronLeft,
@@ -15,7 +15,7 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/newButton";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import Cookies from "js-cookie";
 
@@ -27,12 +27,33 @@ interface SidebarMenuProps {
 
 const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
   const pathName = usePathname();
+  const router = useRouter();
+  const [name, setName] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if it's on the client side and fetch the name from cookies
+    if (typeof window !== "undefined") {
+      setName(Cookies.get("name") || "");
+    }
+
+    const storedProfileImage = Cookies.get("adminImageUrl");
+    if (storedProfileImage) {
+      setProfileImage(storedProfileImage);
+    }
+  }, []);
 
   const handleLogout = () => {
     Cookies.remove("accessToken", { path: "/" });
     Cookies.remove("instituteId", { path: "/" });
     Cookies.remove("refreshToken", { path: "/" });
-
+    Cookies.remove("email", { path: "/" });
+    Cookies.remove("name", { path: "/" });
+    Cookies.remove("userId", { path: "/" });
+    Cookies.remove("adminImageUrl", { path: "/" });
+    Cookies.remove("logoImageUrl", { path: "/" });
+    
+    // router.push("/login")
     window.location.href = "/login";
   };
 
@@ -88,7 +109,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
             <div className="flex justify-center px-4 space-x-2">
               <Avatar className="border-[0.5px]">
                 <AvatarImage
-                  src="/profileAvatar.png"
+                  src={profileImage ?? undefined} // If profileImage is null, use undefined
                   alt="profileImage"
                 ></AvatarImage>
               </Avatar>
@@ -107,7 +128,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
                     } origin-left`}
                     style={{ transformOrigin: "left" }}
                   >
-                    Arpita Saxena
+                    <span>{name}</span>
                     <span className="flex justify-start text-xs text-[#3A597D]">
                       Admin
                     </span>
@@ -116,14 +137,14 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
               </Button>
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-[220px] h-56 mb-2 bg-white">
+          <PopoverContent className="w-[220px] h-32 mb-2 bg-white">
             <div className="flex flex-col justify-start items-center text-xs gap-2">
               <Link href="/profile" className="flex w-full">
                 <Button variant="ghost" className="gap-3 w-full justify-start">
                   <User size={20} color="#0067ff" /> <span>Profile</span>
                 </Button>
               </Link>
-              <Link href="/logout" className="flex w-full">
+              <Link href="/login" className="flex w-full">
                 <Button
                   variant="ghost"
                   className="gap-3 w-full justify-start"

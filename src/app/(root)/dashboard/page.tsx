@@ -32,15 +32,14 @@ const Page: NextPage = () => {
         return;
       }
 
-      const presentDate = new Date().toISOString().split("T")[0]; // Current date
+      const presentDate = new Date().toISOString().split("T")[0];
 
       try {
-        // Update the API call to dynamically use the instituteId from the cookie
         const response = await axiosInstance.get(
-          `/attendances/total_summary?instituteId=${instituteId}&date=${presentDate}`,
+          `/attendances/institute_total_summary?instituteId=${instituteId}&date=${presentDate}`,
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`, // Attach JWT
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );

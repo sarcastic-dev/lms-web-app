@@ -14,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import useOtpRequest from "@/hooks/useOtpRequest";
 import useCookie from "@/hooks/useCookie";
 import axiosInstance from "@/lib/axiosInstance";
 import {
@@ -30,7 +29,7 @@ const Login: React.FC = () => {
   const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSendingOTP, setIsSendingOTP] = useState(false);
-  const [token, setToken] = useCookie("token");
+  const [, setToken] = useCookie("token");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -69,7 +68,6 @@ const Login: React.FC = () => {
         ).toISOString(),
       });
       showToast("success", `OTP sent Successfully`);
-      console.log(userObj);
       dispatch(
         setUserInfoData({
           email: userObj.email,
@@ -128,12 +126,12 @@ const Login: React.FC = () => {
                             /^[a-zA-Z]/.test(emailOrPhoneNumber) ? (
                               <Mail
                                 size={20}
-                                className="absolute left-2 sm:top-[2px] lg:top-[4px] xl:top-[8px] text-gray-500 ml-1"
+                                className="absolute left-2 sm:top-[2px] text-gray-500 ml-1"
                               />
                             ) : (
                               <Phone
                                 size={20}
-                                className="absolute left-2 sm:top-[2px] lg:top-[4px] xl:top-[8px] text-gray-500 ml-1"
+                                className="absolute left-2 sm:top-[2px] lg:top-[6px] xl:top-[6px] text-gray-500 ml-1"
                               />
                             )
                           ) : null}
@@ -156,6 +154,15 @@ const Login: React.FC = () => {
                     <CircleX size={20} /> {upperFirst(errorMessage)}
                   </div>
                 )}
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => router.push("/login")}
+                    type="button"
+                    className="bg-transparent tracking-wide text-xs font-medium text-lmsPrimary hover:text-lmsAccent pt-2"
+                  >
+                    Already have an account?
+                  </button>
+                </div>
               </div>
             </form>
           </Form>
