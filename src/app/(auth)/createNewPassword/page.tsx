@@ -23,7 +23,6 @@ const CreateNewPassword: React.FC = ({
   const user = useSelector((state: RootState) => state.userInfo);
 
   const methods = useForm();
-  const { handleSubmit } = methods;
 
   const handleSetNewPasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,18 +39,15 @@ const CreateNewPassword: React.FC = ({
 
     try {
       const response = await axiosInstance.post("/users/reset-password", {
-        email: user.formData.userData.email, // include the email in the request body
-        newPassword, // include the new password in the request body
+        email: user.formData.userData.email,
+        newPassword,
       });
 
       console.log("Password reset successful!", response.data);
 
-      // Reset the form fields
       setNewPassword("");
       setConfirmNewPassword("");
 
-      // Redirect to login page
-      // setFormType("login");
       router.push("/login");
     } catch (error) {
       console.error("Error resetting password:", error);
@@ -72,7 +68,7 @@ const CreateNewPassword: React.FC = ({
               <Input
                 id="newPassword"
                 type="password"
-                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-5 ${
+                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-5 xl:h-10 xl:py-0 placeholder:text-xs ${
                   newPassword && "pl-10"
                 }`}
                 placeholder="New Password"
@@ -80,7 +76,7 @@ const CreateNewPassword: React.FC = ({
                 onChange={(e) => setNewPassword(e.target.value)}
               />
               {newPassword && (
-                <KeyRound className="absolute left-2 bottom-[35px] w-5 h-5 text-gray-500" />
+                <KeyRound className="absolute left-2 bottom-[30px] w-5 h-5 text-gray-500" />
               )}
             </div>
             <FormLabel
@@ -93,7 +89,7 @@ const CreateNewPassword: React.FC = ({
               <Input
                 id="confirmNewPassword"
                 type={passwordVisible ? "text" : "password"}
-                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 ${
+                className={`sm:w-[250px] md:w-[320px] lg:w-[402px] mb-2 xl:h-10 xl:py-0 placeholder:text-xs ${
                   confirmNewPassword && "pl-10"
                 } `}
                 placeholder="Confirm New Password"
@@ -101,7 +97,7 @@ const CreateNewPassword: React.FC = ({
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
               />
               {confirmNewPassword && (
-                <KeyRound className="absolute left-2 bottom-[22px] w-5 h-5 text-gray-500" />
+                <KeyRound className="absolute left-2 bottom-[18px] w-5 h-5 text-gray-500" />
               )}
               <div
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"

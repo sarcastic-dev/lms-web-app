@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   instituteSchema,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
-import { Form, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/newButton";
 import {
@@ -48,13 +48,6 @@ const CreateInstitute: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const subscription = methods.watch((value) => {
-  //     const isValid = instituteSchema.safeParse(value).success;
-  //   });
-  //   return () => subscription.unsubscribe();
-  // }, [methods]);
-
   const validateForm = () => {
     const result = instituteSchema.safeParse(methods.getValues());
     if (!result.success) {
@@ -77,7 +70,6 @@ const CreateInstitute: React.FC = () => {
   const onSubmit = async (data: InstituteSchema) => {
     if (validateForm()) {
       setIsCreating(true);
-
       console.log("userId used in onSubmit:", userId);
 
       try {
@@ -93,20 +85,23 @@ const CreateInstitute: React.FC = () => {
               instituteId: response.data.id,
             });
             console.log("User updated with instituteId");
-            showToast("success", "Institute Create Successfully");
+            showToast("success", "Institute Created Successfully");
+
+            // Check if this line is reached
+            console.log("Redirecting to dashboard...");
           } catch (error: any) {
             console.error("Error creating institute:", error);
             showToast("error", error.message);
           }
         } else {
           console.error("userId is null");
-          showToast("error", "userId is nul");
+          showToast("error", "userId is null");
         }
 
         setTimeout(() => {
+          router.push("/login");
           setIsCreating(false);
         }, 2000);
-        router.push("/dashboard");
       } catch (error: any) {
         console.error("Error creating institute:", error);
         if (error.response) {
@@ -127,17 +122,25 @@ const CreateInstitute: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      methods.handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
+        onKeyDown={handleKeyDown}
         className="bg-white sm:w-[320px] md:w-[380px] lg:w-[466px] z-10"
       >
         <h1 className="text-2xl text-start text-lmsPrimary font-bold mb-5">
           Create Institute
         </h1>
 
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-[10px]">
           <FormField
             control={methods.control}
             name="name"
@@ -199,7 +202,9 @@ const CreateInstitute: React.FC = () => {
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger
                         className={`border md:w-44 lg:w-56 tracking-wider xl:h-10 xl:py-0 ${
-                          !field.value ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-2" : ""
+                          !field.value
+                            ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-2"
+                            : ""
                         }`}
                       >
                         <SelectValue placeholder="Select Academic Board" />
@@ -218,41 +223,43 @@ const CreateInstitute: React.FC = () => {
             />
           </div>
 
-          <FormField
-            control={methods.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="">Email Address</FormLabel>
-                <FormControl>
-                  <Input
-                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
-                    placeholder="Email Address"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[10px]" />
-              </FormItem>
-            )}
-          />
+          <div className="flex justify-between md:space-x-[27px] lg:space-x-[17px]">
+            <FormField
+              control={methods.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="">Email Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="md:w-44 lg:w-56 xl:h-10 xl:py-0  md:text-xs lg:text-sm"
+                      placeholder="Email Address"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={methods.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="">Phone Number</FormLabel>
-                <FormControl>
-                  <Input
-                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
-                    placeholder="Phone Number"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[10px]" />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={methods.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="">Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="md:w-44 lg:w-56 xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                      placeholder="Phone Number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={methods.control}
@@ -279,21 +286,11 @@ const CreateInstitute: React.FC = () => {
               <FormItem className="">
                 <FormLabel className="">City</FormLabel>
                 <FormControl>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger
-                      className={`border w-full tracking-wider xl:h-10 xl:py-0 ${
-                        !field.value ? "text-lms-300 md:font-medium lg:text-sm md:text-xs md:px-4" : ""
-                      }`}
-                    >
-                      <SelectValue placeholder="Select City" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Firozabad">Firozabad</SelectItem>
-                      <SelectItem value="New Delhi">New Delhi</SelectItem>
-                      <SelectItem value="Gurugram">Gurugram</SelectItem>
-                      <SelectItem value="Bangalore">Bangalore</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    className="xl:h-10 xl:py-0 md:text-xs lg:text-sm"
+                    placeholder="Institute City"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="text-[10px]" />
               </FormItem>

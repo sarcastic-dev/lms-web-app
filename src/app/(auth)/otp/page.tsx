@@ -1,31 +1,28 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 import useCookie from "@/hooks/useCookie";
 import axiosInstance from "@/lib/axiosInstance";
 import { Button } from "@/components/ui/newButton";
-import { FormType } from "@/types";
 import { showToast } from "@/utils/toastHelper";
 import { upperFirst } from "lodash";
 import { CircleX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
-
+import Cookies from "js-cookie";
 const Otp: React.FC = () => {
   const [otp, setOTP] = useState(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(30);
-  const [submitted, setSubmitted] = useState(false); // State to track if OTP has been submitted
-  const [isSubmitting, setIsSubmitting] = useState(false); // State to track if OTP is being submitted
-  const [token, setToken, deleteToken] = useCookie("token");
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, setToken, deleteToken] = useCookie("token");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  const { toast } = useToast();
 
   const user = useSelector((state: RootState) => state.userInfo);
-  // console.log(user);
-
+  const token = Cookies.get("token");
   useEffect(() => {
     if (resendTimer > 0) {
       const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
@@ -59,8 +56,6 @@ const Otp: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     const otpValue = otp.join("");
-    console.log("OTP submitted:", otpValue);
-    // console.log(token);
     try {
       const { data } = await axiosInstance.post("/verify-otp", {
         email: user.formData.userData.email,
@@ -71,8 +66,8 @@ const Otp: React.FC = () => {
       setTimeout(() => {
         setIsSubmitting(false);
         setSubmitted(true);
-        router.push("/createuser");
       }, 2000);
+      router.push("/createuser");
     } catch (error: any) {
       setErrorMessage(error.response.data.error);
       setIsSubmitting(false);
@@ -81,7 +76,6 @@ const Otp: React.FC = () => {
   };
 
   const handleResend = async () => {
-    console.log("resend otp clicked");
     try {
       const { data } = await axiosInstance.post("/request-otp", {
         email: user.formData.userData.email,
@@ -98,18 +92,28 @@ const Otp: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleOTPSubmit(e)    }
+  };
+
   return (
     <div className="bg-white p-8 rounded sm:w-[320px] md:w-[380px] lg:w-[466px] h-3/6 z-10">
       <h1 className="text-2xl text-start font-bold -mt-2 mb-2">Verify OTP</h1>
       <div className="flex justify-between items-center text-start mt-3 mb-8">
         <p className="text-lmsPrimary text-sm">
-          OTP sent to
+          OTP sent to{" "}
           <span>
             {user.formData.userData.email || user.formData.userData.phone}
           </span>
         </p>
-        {/* Add onClick function using redux */}
-        <button className="text-lmsAccent font-semibold">edit</button>
+        <button
+          type="button"
+          onClick={() => router.push("/signup")}
+          className="text-lmsAccent font-semibold"
+        >
+          edit
+        </button>
       </div>
       <p className="text-lmsPrimary mb-2 text-sm">Enter OTP</p>
 
@@ -123,6 +127,7 @@ const Otp: React.FC = () => {
               className="sm:w-6 sm:h-[6] md:w-8 md:h-8 lg:w-10 lg:h-10 text-center text-lg border focus:border-2 focus:border-lmsAccent outline-none rounded"
               value={digit}
               onChange={(e) => handleOTPChange(e, index)}
+              onKeyDown={handleKeyDown}
               maxLength={1}
               autoFocus={index === 0}
               autoComplete="off"
@@ -132,6 +137,7 @@ const Otp: React.FC = () => {
         <div className="flex justify-between w-full">
           <p className="w-full text-sm">Didn&lsquo;t get the code?</p>
           <button
+            type="button"
             className="text-sm font-semibold underline text-[#115DB8] mb-8"
             onClick={handleResend}
           >

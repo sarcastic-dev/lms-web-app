@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/newButton";
-import Image from "next/image";
 import WelcomeCarousel from "./WelcomeCarousel";
 import WelcomeAbout from "./WelcomeAbout";
 import WelcomeUpcoming from "./WelcomeUpcoming";
@@ -42,12 +41,17 @@ const WelcomeHome: React.FC = () => {
           >
             {" "}
             <div className="bg-gradient-to-r from-[#4568DC] via-[#C7DAFC] to-white absolute inset-0 z-0 opacity-10"></div>
-            <div className="flex items-center z-50">
-              <h3
-                className="md:text-2xl lg:text-3xl font-bold tracking-wider cursor-pointer"
-                onClick={() => handleScrollToSection("mainSection")}
-              >
-                LMS<span className="text-lmsAccent">Buddy</span>
+            <div
+              className="flex items-center z-50"
+              onClick={() => handleScrollToSection("mainSection")}
+            >
+              <h3 className="md:text-2xl lg:text-3xl font-bold tracking-wider cursor-pointer">
+                <img
+                  src="/lmsBuddyLogo.png"
+                  alt="Brand Logo"
+                  className="w-40"
+                />
+                {/* LMS<span className="text-lmsAccent">Buddy</span> */}
               </h3>
             </div>
             <div className="flex space-x-10 z-50">

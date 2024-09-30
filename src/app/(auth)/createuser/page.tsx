@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/lib/axiosInstance";
 import { useState } from "react";
-import { FormType } from "@/types";
 import { showToast } from "@/utils/toastHelper";
 import { upperFirst } from "lodash";
 import { CircleX } from "lucide-react";
@@ -30,7 +29,9 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const CreateProfile: React.FC = () => {
+const CreateUser: React.FC = () => {
+  const [isCreating, setIsCreating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state: RootState) => state.userInfo);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -44,8 +45,6 @@ const CreateProfile: React.FC = () => {
     },
   });
 
-  const [isCreating, setIsCreating] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   const parseName = (name: string) => {
     const nameParts = name.trim().split(" ");
@@ -77,16 +76,16 @@ const CreateProfile: React.FC = () => {
       const userId = response.data.id;
       console.log("Form submitted:", response);
       dispatch(setUserId(userId));
-      setIsCreating(false);
-      router.push("/createInstitute");
+      setIsCreating(true);
       showToast("success", "User created successfully");
+      router.push("/createInstitute");
     } catch (error: any) {
       console.error("Error during user creation:", error);
       setErrorMessage(
         error.response?.data?.error ||
           "An error occurred while creating the user."
       );
-      setIsCreating(false);
+      setIsCreating(true);
     }
   }
 
@@ -96,7 +95,7 @@ const CreateProfile: React.FC = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="bg-white p-8 sm:w-[320px] md:w-[380px] lg:w-[466px] h-5/6 z-10"
       >
-        <div className="flex flex-col space-y-3 md:pt-14">
+        <div className={`flex flex-col space-y-3 pt-10`}>
           <h1 className="text-2xl text-start text-[#07254A] font-bold mb-3">
             Account Details
           </h1>
@@ -131,7 +130,7 @@ const CreateProfile: React.FC = () => {
                     className="rounded xl:h-10 xl:py-0 md:text-xs lg:text-sm"
                     placeholder="Enter Email ID"
                     {...field}
-                    readOnly
+                    // readOnly
                   />
                 </FormControl>
                 <FormMessage />
@@ -186,7 +185,7 @@ const CreateProfile: React.FC = () => {
             type="submit"
             disabled={isCreating}
           >
-            {isCreating ? "Creating..." : "Create Account"}
+            {isCreating ? "Creating Account..." : "Create Account"}
           </Button>
 
           {errorMessage && (
@@ -200,4 +199,4 @@ const CreateProfile: React.FC = () => {
   );
 };
 
-export default CreateProfile;
+export default CreateUser;
