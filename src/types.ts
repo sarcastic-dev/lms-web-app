@@ -219,15 +219,6 @@ export interface Stage {
 	classes: Class[];
 }
 
-export type FormType =
-  | "welcomeHome"
-	| "login"
-	| "otp"
-	| "forgotpassword"
-	| "createnewpassword"
-	| "createProfile"
-	| "createInstitute";
-
 export interface StructuredStaffResponse {
 	basicInfo: Omit<BasicInfoStaffUser, "role" | "instituteId">;
 	staffInfo: Omit<BasicInfoStaff, "staffId">;

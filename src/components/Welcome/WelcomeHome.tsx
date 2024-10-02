@@ -49,7 +49,7 @@ const WelcomeHome: React.FC = () => {
                 <img
                   src="/lmsBuddyLogo.png"
                   alt="Brand Logo"
-                  className="w-40"
+                  className="w-40 h-10"
                 />
                 {/* LMS<span className="text-lmsAccent">Buddy</span> */}
               </h3>
