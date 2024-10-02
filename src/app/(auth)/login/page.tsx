@@ -69,6 +69,7 @@ const Login: React.FC = () => {
         email,
         firstName,
         imageUrl,
+        role,
       } = data;
 
       Cookies.set("refreshToken", refreshToken, {
@@ -107,6 +108,11 @@ const Login: React.FC = () => {
         secure: true,
       });
       // Cookies.set("logoImageUrl", imageUrl, {
+      //   expires: 7,
+      //   path: "/",
+      //   secure: true,
+      // });
+      // Cookies.set("role", role, {
       //   expires: 7,
       //   path: "/",
       //   secure: true,

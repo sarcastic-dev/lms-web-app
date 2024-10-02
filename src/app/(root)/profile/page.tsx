@@ -65,8 +65,6 @@ const page: React.FC = () => {
           localStorage.getItem("logoImageUrl")
         );
         setPreviewUrl(s3Url);
-        console.log("Logo image cookie set: ", localStorage.getItem("logoImageUrl"));
-        setPreviewUrl(s3Url);
       } else if (type === "admin") {
         Cookies.set("adminImageUrl", s3Url, {
           expires: 365 * 10,
@@ -247,7 +245,6 @@ const page: React.FC = () => {
         lastName: profileDetails.adminLastName,
         email: profileDetails.adminEmail,
         phone: profileDetails.adminPhone,
-        imageUrl: profileDetails.adminImageUrl,
         id: profileDetails.userId,
       },
       institute: {
@@ -257,14 +254,13 @@ const page: React.FC = () => {
         email: profileDetails.instituteEmail,
         address: profileDetails.instituteAddress,
         phone: profileDetails.institutePhoneNumber,
-        imageUrl: profileDetails.instituteImageUrl,
       },
     };
 
     try {
       console.log("Saving changes...", payload);
 
-      const response = await axiosInstance.put("/admin", payload); // Removed headers
+      const response = await axiosInstance.put("/admin", payload);
 
       console.log("Changes saved successfully:", response.data);
       setIsEdit(false);
@@ -299,7 +295,7 @@ const page: React.FC = () => {
         <div className="bg-white h-28 flex justify-between items-center relative">
           <div className=" flex items-center ml-10 absolute -top-6">
             <div className="h-28 w-28 bg-gradient-to-tr from-[#B06AB3] via-lmsAccent to-[#B06AB3] rounded-full border-[3px] border-white shadow-md	">
-              {previewUrl ? (
+              {profileDetails.instituteImageUrl !== null ? (
                 <img
                   src={profileDetails.instituteImageUrl}
                   alt="Selected file preview"

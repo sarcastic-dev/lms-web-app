@@ -1,12 +1,10 @@
 // SidebarMenu.tsx
 "use client";
 import React, { useEffect, useState } from "react";
-import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
 import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  Settings,
   User,
 } from "lucide-react";
 import SideButton from "./SideButton";
@@ -15,7 +13,7 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/newButton";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import Cookies from "js-cookie";
 
@@ -27,14 +25,18 @@ interface SidebarMenuProps {
 
 const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
   const pathName = usePathname();
-  const router = useRouter();
   const [name, setName] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [instituteLogo, setInstituteLogo] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if it's on the client side and fetch the name from cookies
     if (typeof window !== "undefined") {
       setName(Cookies.get("name") || "");
+    }
+
+    const storedInstituteLogo = localStorage.getItem("logoImageUrl");
+    if (storedInstituteLogo) {
+      setInstituteLogo(storedInstituteLogo);
     }
 
     const storedProfileImage = Cookies.get("adminImageUrl");
@@ -52,14 +54,13 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
     Cookies.remove("userId", { path: "/" });
     Cookies.remove("adminImageUrl", { path: "/" });
     Cookies.remove("logoImageUrl", { path: "/" });
-    
-    // router.push("/login")
+
     window.location.href = "/login";
   };
 
   return (
     <aside
-      className={`bg-lms-50 h-screen p-5  relative transition-all duration-500 ${
+      className={`bg-lms-50 h-screen p-5 relative transition-all duration-500 ${
         open ? "w-[248px]" : "w-[93px]"
       }`}
     >
@@ -71,7 +72,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
           />
         </div>
       ) : (
-        <div className="w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-3 right-3 rounded-full flex items-center justify-center bg-white transition-all duration-500 ">
+        <div className="w-8 h-8 border-2 border-lms-100 cursor-pointer absolute top-3 right-[30px] rounded-full flex items-center justify-center bg-white transition-all duration-500 ">
           <ChevronRight
             className="text-4xl text-lmgSecondary"
             onClick={() => setOpen(!open)}
@@ -80,10 +81,17 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
       )}
 
       <div className="h-full">
-        {/* <div className='text-lg font-semibold text-foreground transition-all duration-300 flex items-center justify-center'>
-					{open ? <h3>Logo.</h3> : <h3>Logo.</h3>}
-				</div> */}
-        <div className="mt-10">
+        <div className="flex justify-center">
+          <img
+            src={instituteLogo ?? undefined}
+            alt="Selected file preview"
+            className={`${
+              open ? "h-28 w-28" : "h-14 w-14"
+            } mt-14 rounded-full object-cover`}
+          />
+        </div>
+
+        <div className="mt-8">
           <div className="flex flex-col gap-2 w-full">
             {sidebarItems.links.map((link, index) => (
               <Link key={index} href={link.href}>
@@ -107,9 +115,11 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
         <Popover>
           <PopoverTrigger asChild>
             <div className="flex justify-center px-4 space-x-2">
-              <Avatar className="border-[0.5px]">
+              <Avatar
+                className={`border-[0.5px] ${open ? "ml-0" : "ml-[27px]"}`}
+              >
                 <AvatarImage
-                  src={profileImage ?? undefined} // If profileImage is null, use undefined
+                  src={profileImage ?? undefined}
                   alt="profileImage"
                 ></AvatarImage>
               </Avatar>
