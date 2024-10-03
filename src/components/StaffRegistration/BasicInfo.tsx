@@ -27,7 +27,7 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/context/store";
 import { formatDate } from "@/utils/formatDate";
-
+import Cookies from "js-cookie";
 const BasicInfo = ({
 	onNext,
 }: {
@@ -41,7 +41,7 @@ const BasicInfo = ({
 		setHasValue(event.target.value !== "");
 	};
 	const { viewState } = useSelector((state: RootState) => state.staff);
-
+	const instituteId = Cookies.get("instituteId");
 	const form = useForm<BasicInfoSchemaStaffType>({
 		resolver: zodResolver(basicSchemaStaff),
 		defaultValues: {
@@ -54,7 +54,7 @@ const BasicInfo = ({
 			middleName: basicStaffInfo?.user?.middleName || "",
 			phone: basicStaffInfo?.user?.phone || "",
 			role: basicStaffInfo?.user?.role || "teacher",
-			instituteId: basicStaffInfo?.user?.instituteId || "",
+			instituteId: instituteId || "",
 		},
 	});
 

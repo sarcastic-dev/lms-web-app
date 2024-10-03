@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
 
 		response.headers.append(
 			"Set-Cookie",
-			`accessToken=${data.accessToken}; HttpOnly; Secure; Max-Age=${
+			`accessToken=${data.accessToken}; Secure; Max-Age=${
 				60 * 60
 			}; Path=/`
 		);

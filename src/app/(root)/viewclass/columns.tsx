@@ -20,23 +20,6 @@ export type EnrolledStudent = {
 
 export const columns: ColumnDef<EnrolledStudent>[] = [
 	{
-		accessorKey: "rollNumber",
-		header: ({ column }) => {
-			return (
-				<Button
-					variant='ghost'
-					className='p-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					Roll Number
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
-		},
-	},
-	{
 		accessorKey: "name",
 		header: ({ column }) => {
 			return (
@@ -53,6 +36,24 @@ export const columns: ColumnDef<EnrolledStudent>[] = [
 			);
 		},
 	},
+	{
+		accessorKey: "rollNumber",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='p-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Roll Number
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
+	},
+
 	{
 		accessorKey: "parentName",
 		header: ({ column }) => {

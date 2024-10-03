@@ -167,18 +167,21 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 					},
 				};
 				try {
-					// if (viewState === "view" || viewState === "edit") {
-					// 	await axiosInstance.put(
-					// 		`/staffs/${searchParams.get("id")}`,
-					// 		modifiedRegistrationData
-					// 	);
-					// } else {
-					console.log("Here!!!");
-					await axiosInstance.post(
-						"/staffs",
-						modifiedRegistrationData
-					);
-					// }
+					const teacherId = new URLSearchParams(
+						window.location.search
+					).get("id");
+					if (teacherId) {
+						await axiosInstance.put(
+							`/staffs/${teacherId}`,
+							modifiedRegistrationData
+						);
+					} else {
+						console.log("Here!!!");
+						await axiosInstance.post(
+							"/staffs",
+							modifiedRegistrationData
+						);
+					}
 					dispatch(resetRegistrationData());
 					router.push("/staffInfo");
 				} catch (error) {

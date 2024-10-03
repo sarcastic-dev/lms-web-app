@@ -1,10 +1,8 @@
-// file: components/Button.tsx
-
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as LucideIcons from "lucide-react"; // Import all icons from Lucide React
-import { cn } from "@/lib/utils"; // Utility for combining class names
+import * as LucideIcons from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -35,7 +33,7 @@ const buttonVariants = cva(
 			size: {
 				default: "h-10 px-4 py-2",
 				sm: "h-9 rounded-md px-3",
-				lg: "h-10 rounded w-32 py-2.5 px-6",
+				lg: "h-10 rounded w-[130px] py-2.5 px-6",
 				icon: "h-10 w-10",
 				lms: "py-2.5 px-6 w-40 h-10",
 			},
@@ -51,10 +49,11 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
-	iconName?: keyof typeof LucideIcons; // Icon name from Lucide icons
-	iconSize?: number; // Size of the icon (Tailwind size)
-	iconPosition?: "left" | "right"; // Position of the icon
-	iconMargin?: string; // Tailwind margin classes like 'mr-2', 'ml-2'
+	iconName?: keyof typeof LucideIcons;
+	iconSize?: number;
+	iconPosition?: "left" | "right";
+	iconMargin?: string;
+	iconColor?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -65,9 +64,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			size,
 			asChild = false,
 			iconName,
-			iconSize = 5, // Default tailwind size class
-			iconPosition = "left", // Default position of icon is left
-			iconMargin = "mr-2", // Default margin when icon is on the left
+			iconSize = 5,
+			iconPosition = "left",
+			iconMargin = "mr-2",
+			iconColor,
 			children,
 			...props
 		},
@@ -75,7 +75,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	) => {
 		const Comp = asChild ? Slot : "button";
 
-		// Check if the iconName exists and is a valid component
 		const IconComponent =
 			iconName && LucideIcons[iconName]
 				? (LucideIcons[iconName] as React.FC<
@@ -83,21 +82,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				  >)
 				: null;
 
-		// Dynamically generate tailwind class based on the iconSize prop
-		const iconSizeClass = `h-${iconSize} w-${iconSize}`;
-
-		// Conditionally generate margin class based on iconPosition
 		const marginClass =
 			iconPosition === "left"
 				? iconMargin
 				: `ml-${iconMargin.split("-")[1]}`;
 
-		// Conditional rendering based on iconPosition
 		const renderIcon = () =>
 			IconComponent && (
 				<IconComponent
 					className={cn(
-						`text-lmsAccent ${iconSizeClass} ${marginClass}`
+						`h-${iconSize} w-${iconSize} ${marginClass}`,
+						iconColor || "text-lmsAccent"
 					)}
 				/>
 			);
@@ -108,11 +103,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...props}
 			>
-				{iconPosition === "left" && renderIcon()}{" "}
-				{/* Icon on the left */}
-				{children} {/* Button label/content */}
+				{iconPosition === "left" && renderIcon()} {children}{" "}
 				{iconPosition === "right" && renderIcon()}{" "}
-				{/* Icon on the right */}
 			</Comp>
 		);
 	}
