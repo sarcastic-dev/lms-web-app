@@ -8,6 +8,7 @@ import { CloudUpload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -126,6 +127,7 @@ const Page: React.FC = () => {
                 <DialogTitle className="text-2xl text-lmsPrimary">
                   Bulk Update
                 </DialogTitle>
+                <DialogDescription></DialogDescription>
               </DialogHeader>
               <div className="border border-dashed border-lmsAccent rounded-lg bg-lms-50">
                 <label className="col-span-3 w-full h-52 flex flex-col justify-center items-center cursor-pointer">
