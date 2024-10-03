@@ -30,7 +30,7 @@ const WelcomeUpcoming = () => {
               const IconComponent = data.icon ? iconMap[data.icon] : undefined;
 
               return (
-                <div key={index} className="p-5 bg-white opacity-70 rounded-sm hover:shadow-lg hover:shadow-lmsAccent ">
+                <div key={index} className="p-5 bg-white opacity-70 rounded-sm shadow-sm shadow-lmsAccent hover:shadow-lg hover:shadow-lmsAccent ">
                   <span className="flex flex-col items-center space-y-5">
                     <span className="flex items-center text-lmsAccent space-x-2">
                       {IconComponent && <IconComponent />}{" "}
