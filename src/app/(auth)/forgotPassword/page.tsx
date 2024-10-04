@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/newButton";
 import { Mail } from "lucide-react";
 import axiosInstance from "@/lib/axiosInstance";
-import { FormType } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { setToken, getToken, deleteToken } from "@/lib/tokenService";
 import { useForm, FormProvider } from "react-hook-form";
@@ -23,7 +22,7 @@ const ForgotPassword: React.FC = () => {
   const router = useRouter();
 
   const methods = useForm();
-  const { handleSubmit } = methods; // Destructure form methods
+  const { handleSubmit } = methods;
 
   useEffect(() => {
     if (user.formData.userData.email) {

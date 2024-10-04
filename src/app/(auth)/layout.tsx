@@ -1,6 +1,5 @@
 "use client"
 import Carousel from "@/components/Carousel";
-import { FormType } from "@/types";
 import Image from "next/image";
 import React, { ReactNode, useState } from "react";
 
