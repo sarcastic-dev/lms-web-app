@@ -14,7 +14,10 @@ import Autoplay from "embla-carousel-autoplay";
 const WelcomeCarousel = () => {
   return (
     <>
-      <Carousel plugins={[Autoplay()]} className="md:w-[650px] lg:w-[850px] xl:w-[1120px] 2xl:w-[1350px] mt-20">
+      <Carousel
+        plugins={[Autoplay()]}
+        className="md:w-[650px] lg:w-[850px] xl:w-[1120px] 2xl:w-[1350px] mt-20"
+      >
         <CarouselContent>
           {carouselData.map((data, index) => (
             <CarouselItem key={index}>
@@ -35,6 +38,16 @@ const WelcomeCarousel = () => {
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="rounded-sm shadow-2xl"
+                  />
+                  <Image
+                    src={data.mobileImage}
+                    alt={"dashboardImage"}
+                    // fill
+                    width={170}
+                    height={170}
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="rounded-sm shadow-lg absolute -top-16 -right-20"
                   />
                 </div>
               </div>

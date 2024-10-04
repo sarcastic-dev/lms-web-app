@@ -59,10 +59,10 @@ const page: React.FC = () => {
       console.log("File uploaded successfully:", s3Url);
 
       if (type === "logo") {
-        localStorage.setItem("logoImageUrl", s3Url);
+        Cookies.set("logoImageUrl", s3Url);
         console.log(
-          "Logo image stored in localStorage:",
-          localStorage.getItem("logoImageUrl")
+          "Logo image stored in cookies:",
+          Cookies.get("logoImageUrl")
         );
         setPreviewUrl(s3Url);
       } else if (type === "admin") {
@@ -140,11 +140,15 @@ const page: React.FC = () => {
       const s3Url = await uploadFileToS3(selectedFile, "logo");
       if (s3Url) {
         sendToBackend(s3Url, "logo", profileDetails);
+        Cookies.set("logoImageUrl", s3Url);
+        window.dispatchEvent(new Event("storage"));
       }
     } else if (type === "admin" && selectedAdminFile) {
       const s3Url = await uploadFileToS3(selectedAdminFile, "admin");
       if (s3Url) {
         sendToBackend(s3Url, "admin", profileDetails);
+        Cookies.set("adminImageUrl", s3Url);
+        window.dispatchEvent(new Event("storage"));
       }
     } else {
       console.log("No file selected for", type);
@@ -152,11 +156,11 @@ const page: React.FC = () => {
   };
 
   useEffect(() => {
-    const savedLogoUrl = localStorage.getItem("logoImageUrl");
+    const savedLogoUrl = Cookies.get("logoImageUrl");
     const savedAdminUrl = Cookies.get("adminImageUrl");
 
     if (savedLogoUrl) {
-      console.log("Retrieved logo from localStorage:", savedLogoUrl);
+      console.log("Retrieved logo from cookies:", savedLogoUrl);
 
       setPreviewUrl(savedLogoUrl);
     }

@@ -2,16 +2,19 @@
   {
     "title": "Dashboard Overview",
     "content": "The Dashboard serves as a central hub for administrators to access key information at a glance. It provides a comprehensive snapshot of academic performance, attendance records, upcoming events, and institute-wide announcements.",
-    "image": "/welcomeDashboard.png"
+    "image": "/welcomeDashboard.png",
+    "mobileImage": "/quickAttendance.jpeg"
   },
   {
     "title": "Student Attendance Report",
     "content": "The Student Attendance Report provides a detailed overview of student attendance patterns over a specified period. This report helps educators and administrators track student participation, identify trends, and ensure accountability.",
-    "image": "/welcomeAttendance.png"
+    "image": "/welcomeAttendance.png",
+    "mobileImage": "/attendanceReport.jpeg"
   },
   {
     "title": "Class Setup",
     "content": "The Class Setup feature allows administrators to efficiently organize the academic structure of the institution. By dividing students into different stages, classes, and sections, this tool ensures seamless management of student groups.",
-    "image": "/welcomeClass.png"
+    "image": "/welcomeClass.png",
+    "mobileImage": "/profile.jpeg"
   }
 ]

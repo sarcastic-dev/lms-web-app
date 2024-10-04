@@ -66,21 +66,14 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
 
   const fetchStudentsData = async (section: string) => {
     const instituteId = Cookies.get("instituteId");
-    const accessToken = Cookies.get("accessToken");
 
     if (!instituteId) return;
-    if (!accessToken) return;
 
     setLoading(true);
 
     try {
       const studentsResponse = await axiosInstance.get<StudentResponse>(
-        `/classes/section-details?instituteId=${instituteId}&classLevel=${selectedClass}&section=${section}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        `/classes/section-details?instituteId=${instituteId}&classLevel=${selectedClass}&section=${section}`
       );
 
       setStudentsList(studentsResponse.data.enrolled);
@@ -124,14 +117,14 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
   };
 
   const onStudentSelected = (value: string) => {
-    setSelectedStudent(value); // Update the selected student
-    fetchAttendanceData(value); // Fetch attendance data for the selected student
+    setSelectedStudent(value);
+    fetchAttendanceData(value);
   };
 
   const sectionsData = () => {
-    return classSectionData.find(
-      (classObj: ClassResponse) => classObj.level === selectedClass
-    );
+    return classSectionData
+      .find((classObj: ClassResponse) => classObj.level === selectedClass)
+      ?.sections.sort((a, b) => a.name.localeCompare(b.name));
   };
 
   return (
@@ -177,7 +170,7 @@ export const AttendanceByStudent: React.FC<AttendanceByStudentProps> = ({
             <SelectGroup>
               <SelectLabel>Section</SelectLabel>
 
-              {sectionsData()?.sections.map((sectionObj, index) => (
+              {sectionsData()?.map((sectionObj, index) => (
                 <SelectItem key={index} value={sectionObj.name}>
                   {sectionObj.name}
                 </SelectItem>

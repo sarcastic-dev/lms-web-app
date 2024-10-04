@@ -1,12 +1,7 @@
 // SidebarMenu.tsx
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
-  User,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut, User } from "lucide-react";
 import SideButton from "./SideButton";
 import { SidebarItems } from "@/types";
 import Link from "next/link";
@@ -34,15 +29,27 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
       setName(Cookies.get("name") || "");
     }
 
-    const storedInstituteLogo = localStorage.getItem("logoImageUrl");
-    if (storedInstituteLogo) {
-      setInstituteLogo(storedInstituteLogo);
-    }
+    const updateImagesFromCookies = () => {
+      const storedInstituteLogo = Cookies.get("logoImageUrl");
+      const storedProfileImage = Cookies.get("adminImageUrl");
 
-    const storedProfileImage = Cookies.get("adminImageUrl");
-    if (storedProfileImage) {
-      setProfileImage(storedProfileImage);
-    }
+      if (storedInstituteLogo) {
+        setInstituteLogo(storedInstituteLogo);
+      }
+      if (storedProfileImage) {
+        setProfileImage(storedProfileImage);
+      }
+    };
+
+    // Listen for changes in cookies
+    window.addEventListener("storage", updateImagesFromCookies);
+
+    // Initial load
+    updateImagesFromCookies();
+
+    return () => {
+      window.removeEventListener("storage", updateImagesFromCookies);
+    };
   }, []);
 
   const handleLogout = () => {

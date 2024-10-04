@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import {
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { DataTable } from "@/components/LmsDataTable";
@@ -65,21 +65,41 @@ export const AttendanceSummaryBySection: React.FC<
     to: todayDate,
   });
 
+  const classOrder = [
+    "Pre-Nursery",
+    "Nursery",
+    "LKG",
+    "UKG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ];
+
+  const sortedClassSectionData = classSectionData.sort((a, b) => {
+    return classOrder.indexOf(a.level) - classOrder.indexOf(b.level);
+  });
+
   const fetchAttendanceData = async (sectionId: string) => {
     if (!sectionId) return;
 
     setLoading(true);
 
     try {
-      // Fetch attendance data
       const attendanceResponse = await axiosInstance.get<AttendanceResponse>(
         `/attendances/summary?startDate=${format(
           date?.from!,
           "yyyy-MM-dd"
         )}&endDate=${format(date?.to!, "yyyy-MM-dd")}&sectionId=${sectionId}`
       );
-      console.log("From date:", date?.from);
-      console.log("To date:", date?.to);
 
       setAttendanceData(attendanceResponse.data || []);
     } catch (error) {
@@ -99,9 +119,11 @@ export const AttendanceSummaryBySection: React.FC<
   };
 
   const sectionsData = () => {
-    return classSectionData.find(
+    const selectedClassData = classSectionData.find(
       (classObj: ClassResponse) => classObj.level === selectedClass
     );
+
+    return selectedClassData?.sections.sort((a, b) => a.name.localeCompare(b.name));
   };
 
   return (
@@ -162,7 +184,7 @@ export const AttendanceSummaryBySection: React.FC<
           <SelectContent className="bg-white text-md tracking-wider">
             <SelectGroup>
               <SelectLabel>Class</SelectLabel>
-              {classSectionData.map((classObj, index) => (
+              {sortedClassSectionData.map((classObj, index) => (
                 <SelectItem key={index} value={classObj.level}>
                   {classObj.name}
                 </SelectItem>
@@ -186,7 +208,7 @@ export const AttendanceSummaryBySection: React.FC<
             <SelectGroup>
               <SelectLabel>Section</SelectLabel>
 
-              {sectionsData()?.sections.map((sectionObj, index) => (
+              {sectionsData()?.map((sectionObj, index) => (
                 <SelectItem key={index} value={sectionObj.id}>
                   {sectionObj.name}
                 </SelectItem>

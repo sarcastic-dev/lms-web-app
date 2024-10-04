@@ -20,7 +20,7 @@ interface Attendance {
     studentName: string;
     fatherName: string;
     status: string;
-  }[]; // Define attendance record structure
+  }[];
   classId: string;
   className: string;
   sectionId: string;
@@ -42,9 +42,7 @@ const AllSectionsAttendance = () => {
 
   const fetchAttendanceData = async () => {
     const instituteId = Cookies.get("instituteId");
-    const accessToken = Cookies.get("accessToken");
     if (!instituteId) return;
-    if (!accessToken) return;
 
     setLoading(true);
 
@@ -55,11 +53,6 @@ const AllSectionsAttendance = () => {
           date,
           "yyyy-MM-dd"
         )}&instituteId=${instituteId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
       );
 
       // console.log("Attendance Response:", attendanceResponse.data);
