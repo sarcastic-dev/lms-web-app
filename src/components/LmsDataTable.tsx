@@ -256,7 +256,7 @@ export function DataTable<TData, TValue>({
 							iconSize={4}
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}
-							className='flex items-center w-36'
+							className='flex items-center h-[38px]'
 						>
 							Next{" "}
 						</Button>
