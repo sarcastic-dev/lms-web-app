@@ -4,11 +4,11 @@ const WelcomeAbout = () => {
   return (
     <div>
       <div className="relative flex flex-col items-center z-10">
-        <h2 className="text-4xl text-lmsPrimary font-semibold mb-5">
+        <h2 className="sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-lmsPrimary font-semibold mb-5">
           About Us
         </h2>
 
-        <p className="text-center lg:text-base xl:text-lg px-48 mt-5 tracking-wide font-medium">
+        <p className="text-center sm:text-sm md:text-base xl:text-lg px-48 mt-5 tracking-wide font-medium">
           At LMSBuddy, we revolutionize the educational experience for teachers,
           students, administrators, and institutes as a whole. Our all-in-one
           Learning Management System offers an intuitive and powerful suite of
