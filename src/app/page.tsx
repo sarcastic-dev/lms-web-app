@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React from "react";
 import WelcomeHome from "../components/Welcome/WelcomeHome";
 
 const App: React.FC = () => {
