@@ -24,7 +24,8 @@ const initialState: RegistrationState = {
 			instituteId: instituteId || "",
 		},
 		student: {
-			enrollmentId: "",
+			registrationNumber: "",
+			serialNumber: "",
 			admissionDate: "",
 			boardUniversity: "",
 			class: "",
