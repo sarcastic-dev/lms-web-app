@@ -300,7 +300,7 @@ const CreateInstitute: React.FC = () => {
 
         <Button
           variant={"lmsActive"}
-          className="w-full mt-4"
+          className="w-full mt-5"
           type="submit"
           disabled={isCreating}
         >

@@ -59,19 +59,19 @@ const page: React.FC = () => {
       console.log("File uploaded successfully:", s3Url);
 
       if (type === "logo") {
-        Cookies.set("logoImageUrl", s3Url);
+        Cookies.set("instituteImageUrl", s3Url);
         console.log(
           "Logo image stored in cookies:",
-          Cookies.get("logoImageUrl")
+          Cookies.get("instituteImageUrl")
         );
         setPreviewUrl(s3Url);
       } else if (type === "admin") {
-        Cookies.set("adminImageUrl", s3Url, {
+        Cookies.set("userImageUrl", s3Url, {
           expires: 365 * 10,
           path: "/",
           secure: true,
         });
-        console.log("Admin image cookie set: ", Cookies.get("adminImageUrl"));
+        console.log("Admin image cookie set: ", Cookies.get("userImageUrl"));
         setAdminPreviewUrl(s3Url);
       }
       return s3Url;
@@ -140,14 +140,14 @@ const page: React.FC = () => {
       const s3Url = await uploadFileToS3(selectedFile, "logo");
       if (s3Url) {
         sendToBackend(s3Url, "logo", profileDetails);
-        Cookies.set("logoImageUrl", s3Url);
+        Cookies.set("instituteImageUrl", s3Url);
         window.dispatchEvent(new Event("storage"));
       }
     } else if (type === "admin" && selectedAdminFile) {
       const s3Url = await uploadFileToS3(selectedAdminFile, "admin");
       if (s3Url) {
         sendToBackend(s3Url, "admin", profileDetails);
-        Cookies.set("adminImageUrl", s3Url);
+        Cookies.set("userImageUrl", s3Url);
         window.dispatchEvent(new Event("storage"));
       }
     } else {
@@ -156,8 +156,8 @@ const page: React.FC = () => {
   };
 
   useEffect(() => {
-    const savedLogoUrl = Cookies.get("logoImageUrl");
-    const savedAdminUrl = Cookies.get("adminImageUrl");
+    const savedLogoUrl = Cookies.get("instituteImageUrl");
+    const savedAdminUrl = Cookies.get("userImageUrl");
 
     if (savedLogoUrl) {
       console.log("Retrieved logo from cookies:", savedLogoUrl);

@@ -38,7 +38,8 @@ export interface BasicInfoUser {
 }
 
 export interface BasicInfoStudent {
-	enrollmentId: string;
+	registrationNumber: string;
+	serialNumber: string;
 	admissionDate: string;
 	boardUniversity: string;
 	class: string;

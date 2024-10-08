@@ -23,6 +23,8 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
   const [name, setName] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [instituteLogo, setInstituteLogo] = useState<string | null>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -30,8 +32,8 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
     }
 
     const updateImagesFromCookies = () => {
-      const storedInstituteLogo = Cookies.get("logoImageUrl");
-      const storedProfileImage = Cookies.get("adminImageUrl");
+      const storedInstituteLogo = Cookies.get("instituteImageUrl");
+      const storedProfileImage = Cookies.get("userImageUrl");
 
       if (storedInstituteLogo) {
         setInstituteLogo(storedInstituteLogo);
@@ -59,10 +61,14 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
     Cookies.remove("email", { path: "/" });
     Cookies.remove("name", { path: "/" });
     Cookies.remove("userId", { path: "/" });
-    Cookies.remove("adminImageUrl", { path: "/" });
-    Cookies.remove("logoImageUrl", { path: "/" });
+    Cookies.remove("userImageUrl", { path: "/" });
+    Cookies.remove("instituteImageUrl", { path: "/" });
 
     window.location.href = "/login";
+  };
+
+  const handleProfileClick = () => {
+    setPopoverOpen(false);
   };
 
   return (
@@ -94,7 +100,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
             alt="Selected file preview"
             className={`${
               open ? "h-28 w-28" : "h-14 w-14"
-            } mt-14 rounded-full object-cover`}
+            } mt-10 rounded-full object-cover`}
           />
         </div>
 
@@ -119,7 +125,7 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
       </div>
       <div className="absolute bottom-4 w-full left-0 px-5">
         <Separator className="mb-4 bg-gray-500 shadow" />
-        <Popover>
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverTrigger asChild>
             <div className="flex justify-center px-4 space-x-2">
               <Avatar
@@ -156,12 +162,12 @@ const SidebarMenu = ({ sidebarItems, open, setOpen }: SidebarMenuProps) => {
           </PopoverTrigger>
           <PopoverContent className="w-[220px] h-32 mb-2 bg-white">
             <div className="flex flex-col justify-start items-center text-xs gap-2">
-              <Link href="/profile" className="flex w-full">
+              <Link href="/profile" className="flex w-full" onClick={handleProfileClick}>
                 <Button variant="ghost" className="gap-3 w-full justify-start">
                   <User size={20} color="#0067ff" /> <span>Profile</span>
                 </Button>
               </Link>
-              <Link href="/login" className="flex w-full">
+              <Link href="/login" className="flex w-full" onClick={handleProfileClick}>
                 <Button
                   variant="ghost"
                   className="gap-3 w-full justify-start"

@@ -45,7 +45,6 @@ const CreateUser: React.FC = () => {
     },
   });
 
-
   const parseName = (name: string) => {
     const nameParts = name.trim().split(" ");
     const parsedName: {
@@ -179,14 +178,16 @@ const CreateUser: React.FC = () => {
             )}
           />
 
-          <Button
-            variant={"lmsActive"}
-            className="w-full"
-            type="submit"
-            disabled={isCreating}
-          >
-            {isCreating ? "Creating Account..." : "Create Account"}
-          </Button>
+          <div className="pt-2">
+            <Button
+              variant={"lmsActive"}
+              className="w-full"
+              type="submit"
+              disabled={isCreating}
+            >
+              {isCreating ? "Creating Account..." : "Create Account"}
+            </Button>
+          </div>
 
           {errorMessage && (
             <div className="bg-red-200 text-lmsError h-10 px-3 w-full mt-5 rounded flex items-center gap-2 text-sm">

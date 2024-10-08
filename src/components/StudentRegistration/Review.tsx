@@ -49,7 +49,8 @@ const Review: React.FC = () => {
 			bloodGroup: registrationData.basicInfo.user.bloodGroup,
 		},
 		academicInfo: {
-			enrollmentId: registrationData.basicInfo.student.enrollmentId,
+			registrationNumber: registrationData.basicInfo.student.registrationNumber,
+			serialNumber: registrationData.basicInfo.student.serialNumber,
 			class: registrationData.basicInfo.student.class,
 			section: registrationData.basicInfo.student.section,
 			rollNumber: registrationData.basicInfo.student.rollNumber,

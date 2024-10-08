@@ -30,7 +30,8 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 			bloodGroup: studentData.basicInfo.user.bloodGroup,
 		},
 		academicInfo: {
-			enrollmentId: studentData.basicInfo.student.enrollmentId,
+			registrationNumber: studentData.basicInfo.student.registrationNumber,
+			serialNumber: studentData.basicInfo.student.serialNumber,
 			class: studentData.basicInfo.student.class,
 			section: studentData.basicInfo.student.section,
 			rollNumber: studentData.basicInfo.student.rollNumber,

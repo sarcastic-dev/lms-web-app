@@ -68,8 +68,8 @@ const Login: React.FC = () => {
         id,
         email,
         firstName,
-        imageUrl,
-        role,
+        userImageUrl,
+        instituteImageUrl,
       } = data;
 
       Cookies.set("refreshToken", refreshToken, {
@@ -102,16 +102,16 @@ const Login: React.FC = () => {
         path: "/",
         secure: true,
       });
-      Cookies.set("adminImageUrl", imageUrl, {
+      Cookies.set("userImageUrl", userImageUrl, {
         expires: 7,
         path: "/",
         secure: true,
       });
-      // Cookies.set("logoImageUrl", imageUrl, {
-      //   expires: 7,
-      //   path: "/",
-      //   secure: true,
-      // });
+      Cookies.set("instituteImageUrl", instituteImageUrl, {
+        expires: 7,
+        path: "/",
+        secure: true,
+      });
       // Cookies.set("role", role, {
       //   expires: 7,
       //   path: "/",

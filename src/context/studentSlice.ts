@@ -22,7 +22,8 @@ const initialStudentData: Student = {
 			role: "student",
 		},
 		student: {
-			enrollmentId: "",
+			registrationNumber: "",
+			serialNumber: "",
 			admissionDate: "",
 			boardUniversity: "",
 			rollNumber: "",
