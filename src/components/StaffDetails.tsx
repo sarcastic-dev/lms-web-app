@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { AppDispatch } from "@/context/store";
 import { useDispatch } from "react-redux";
 import { setViewState } from "@/context/staffSlice";
+import dayjs from "dayjs";
 interface StaffDetailsProps {
 	staffData: Staff;
 }
@@ -24,7 +25,7 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 			firstName: staffData.basicInfo.user.firstName,
 			middleName: staffData.basicInfo.user.middleName,
 			lastName: staffData.basicInfo.user.lastName,
-			dob: staffData.basicInfo.user.dob,
+			dob: dayjs(staffData.basicInfo.user.dob).format("DD-MM-YYYY"),
 			gender: staffData.basicInfo.user.gender,
 			bloodGroup: staffData.basicInfo.user.bloodGroup,
 		},
@@ -33,7 +34,9 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 			designation: staffData.basicInfo.staff.designation,
 			department: staffData.basicInfo.staff.department,
 			experienceYears: staffData.basicInfo.staff.experienceYears,
-			appointmentDate: staffData.basicInfo.staff.appointmentDate,
+			appointmentDate: dayjs(
+				staffData.basicInfo.staff.appointmentDate
+			).format("DD-MM-YYYY"),
 			jobTitle: staffData.basicInfo.staff.jobTitle,
 			employmentType: staffData.basicInfo.staff.employmentType,
 			highestQualification:
@@ -62,8 +65,12 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 		previousExperienceInfo: {
 			instituteName: staffData.previousExperienceInfo.instituteName,
 			jobTitle: staffData.previousExperienceInfo.jobTitle,
-			joiningDate: staffData.previousExperienceInfo.joiningDate,
-			relievingDate: staffData.previousExperienceInfo.relievingDate,
+			joiningDate: dayjs(
+				staffData.previousExperienceInfo.joiningDate
+			).format("DD-MM-YYYY"),
+			relievingDate: dayjs(
+				staffData.previousExperienceInfo.relievingDate
+			).format("DD-MM-YYYY"),
 			location: staffData.previousExperienceInfo.location,
 			referenceName: staffData.previousExperienceInfo.referenceName,
 			referenceMobileNumber:
@@ -120,17 +127,31 @@ const StaffDetails: React.FC<StaffDetailsProps> = ({ staffData }) => {
 				<h4 className='font-bold text-lmsPrimary text-2xl'>
 					{`${firstName} ${middleName} ${lastName}`}
 				</h4>
-				<Button
-					variant={"lmsOutline"}
-					className='py-0 h-10'
-					onClick={handleRedirectRoute}
-				>
-					<Pen
-						size={16}
-						className='mr-2'
-					/>
-					Update Data
-				</Button>
+				<div className='flex items-center gap-5'>
+					<Button
+						variant={"lmsOutline"}
+						// size={"lg"}
+						onClick={() => {
+							router.push("/staffInfo");
+						}}
+						className=''
+						iconName='ArrowLeft'
+					>
+						Back
+					</Button>
+					<Button
+						variant={"lmsActive"}
+						size={"lg"}
+						className='py-0 h-10'
+						onClick={handleRedirectRoute}
+					>
+						<Pen
+							size={16}
+							className='mr-2'
+						/>
+						Update Data
+					</Button>
+				</div>
 			</div>
 			<div className='py-6'>
 				{renderInfoSection(

@@ -25,8 +25,24 @@ import { resetRegistrationData } from "@/context/staffRegistrationSlice";
 import withAuthCheck from "@/components/withAuthCheck";
 import useUser from "@/hooks/useUser";
 
+// Define the base staff interface
+interface Staff {
+	id: string;
+	name: string;
+	contact: string;
+	email: string;
+	designation: string;
+	department: string;
+}
+
+// Extend Staff to include 'role' for teachers
+interface Teacher extends Staff {
+	role: string;
+}
+
 const Page: React.FC = () => {
-	const [data, setData] = useState([]);
+	const [teachingStaff, setTeachingStaff] = useState<Teacher[]>([]);
+	const [nonTeachingStaff, setNonTeachingStaff] = useState<Staff[]>([]);
 	const [file, setFile] = useState<File | null>(null);
 	const [fileName, setFileName] = useState<string>("");
 	const dispatch = useDispatch();
@@ -38,27 +54,36 @@ const Page: React.FC = () => {
 
 	const fetchStaffList = async () => {
 		if (userData) {
-			const filteredStaffData = userData?.map((obj: any) => {
-				const staffObj: any = {};
+			const teachingStaffData: Teacher[] = [];
+			const nonTeachingStaffData: Staff[] = [];
 
+			userData.forEach((obj: any) => {
 				const user = obj.basicInfo.user;
 				const staff = obj.basicInfo.staff;
 
-				staffObj.id = user.id;
-				staffObj.name =
-					user.firstName +
-					" " +
-					user.middleName +
-					" " +
-					user.lastName;
-				staffObj.contact = user.phone;
-				staffObj.email = user.email;
-				staffObj.designation = staff.designation;
-				staffObj.department = staff.department;
+				const staffObj: Staff = {
+					id: user.id,
+					name: `${user.firstName} ${user.middleName} ${user.lastName}`,
+					contact: user.phone,
+					email: user.email,
+					designation: staff.designation,
+					department: staff.department,
+				};
 
-				return staffObj;
+				// If the user is a teacher, include 'role'
+				if (user.role === "teacher") {
+					const teacherObj: Teacher = {
+						...staffObj,
+						role: user.role, // Include role for teacher
+					};
+					teachingStaffData.push(teacherObj);
+				} else {
+					nonTeachingStaffData.push(staffObj);
+				}
 			});
-			setData(filteredStaffData);
+
+			setTeachingStaff(teachingStaffData);
+			setNonTeachingStaff(nonTeachingStaffData);
 		}
 	};
 
@@ -116,7 +141,6 @@ const Page: React.FC = () => {
 			console.error("Error fetching staff data:", isError);
 		}
 	}, [isLoading, isError]);
-
 	return (
 		<div className='flex flex-col'>
 			<div className='h-20 flex items-center justify-between border-b border-lms-100 px-16'>
@@ -209,7 +233,6 @@ const Page: React.FC = () => {
 					</Link>
 				</div>
 			</div>
-			{/* <Separator /> */}
 			<div className=''>
 				<Tabs defaultValue='teaching'>
 					<div className='flex justify-between items-center'>
@@ -228,19 +251,16 @@ const Page: React.FC = () => {
 							</TabsTrigger>
 						</TabsList>
 					</div>
-					<TabsContent
-						value='teaching'
-						className=''
-					>
+					<TabsContent value='teaching'>
 						{isError ? (
 							<p>Error loading data.</p>
 						) : (
 							<DataTable
 								columns={columns}
-								data={data}
+								data={teachingStaff}
 								isLoading={isLoading}
 								headingText={`Total Teaching Staff (${
-									data.length || 0
+									teachingStaff.length || 0
 								})`}
 								searchColumn='name'
 							/>
@@ -248,15 +268,15 @@ const Page: React.FC = () => {
 					</TabsContent>
 					<TabsContent value='non-teaching'>
 						{isError ? (
-							<p>Error loading data</p>
+							<p>Error loading data.</p>
 						) : (
-							<DataTable
+							<DataTable<Staff, unknown> // Ensure DataTable is expecting Staff type
 								columns={columns}
-								data={data}
-								headingText={`Total Non-Teaching Staff (${
-									data.length || 0
-								})`}
+								data={nonTeachingStaff}
 								isLoading={isLoading}
+								headingText={`Total Non-Teaching Staff (${
+									nonTeachingStaff.length || 0
+								})`}
 								searchColumn='name'
 							/>
 						)}
