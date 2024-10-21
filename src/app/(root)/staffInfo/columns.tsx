@@ -7,16 +7,23 @@ import { ArrowUpDown } from "lucide-react";
 import ActionCell from "@/components/ActionCell";
 import { fetchStaffById, setViewState } from "@/context/staffSlice";
 
-export type Teacher = {
+// Define a base Staff type
+export type Staff = {
 	id: string;
 	name: string;
 	contact: string;
-	role: string;
+	email: string;
 	designation: string;
 	department: string;
 };
 
-const columns: ColumnDef<Teacher>[] = [
+// Extend Staff to include role for Teacher
+export type Teacher = Staff & {
+	role: string; // Only for teachers
+};
+
+// Shared columns for both Teacher and Staff
+const columns: ColumnDef<Staff | Teacher>[] = [
 	{
 		accessorKey: "name",
 		header: ({ column }) => {
@@ -103,6 +110,26 @@ const columns: ColumnDef<Teacher>[] = [
 		},
 	},
 	{
+		// Conditionally render the role column only for Teachers
+		accessorKey: "role",
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					className='px-0 py-0 outline-none border-none uppercase font-bold text-lmsBase leading-4 tracking-wider text-lmsPrimary hover:bg-white'
+					onClick={() =>
+						column.toggleSorting(column.getIsSorted() === "asc")
+					}
+				>
+					Role
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			);
+		},
+		// Only show this column if 'role' exists
+		cell: ({ row }) => (row.original as Teacher).role || "N/A",
+	},
+	{
 		id: "actions",
 		enableHiding: false,
 		cell: ({ row }) => (
@@ -111,7 +138,7 @@ const columns: ColumnDef<Teacher>[] = [
 				fetchById={fetchStaffById}
 				setViewState={setViewState}
 				pathName='users'
-				userType="staff"
+				userType='staff'
 			/>
 		),
 	},

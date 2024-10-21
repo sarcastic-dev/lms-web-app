@@ -25,9 +25,24 @@ import { resetRegistrationData } from "@/context/staffRegistrationSlice";
 import withAuthCheck from "@/components/withAuthCheck";
 import useUser from "@/hooks/useUser";
 
+// Define the base staff interface
+interface Staff {
+	id: string;
+	name: string;
+	contact: string;
+	email: string;
+	designation: string;
+	department: string;
+}
+
+// Extend Staff to include 'role' for teachers
+interface Teacher extends Staff {
+	role: string;
+}
+
 const Page: React.FC = () => {
-	const [teachingStaff, setTeachingStaff] = useState([]);
-	const [nonTeachingStaff, setNonTeachingStaff] = useState([]);
+	const [teachingStaff, setTeachingStaff] = useState<Teacher[]>([]);
+	const [nonTeachingStaff, setNonTeachingStaff] = useState<Staff[]>([]);
 	const [file, setFile] = useState<File | null>(null);
 	const [fileName, setFileName] = useState<string>("");
 	const dispatch = useDispatch();
@@ -39,14 +54,14 @@ const Page: React.FC = () => {
 
 	const fetchStaffList = async () => {
 		if (userData) {
-			const teachingStaffData = [];
-			const nonTeachingStaffData = [];
+			const teachingStaffData: Teacher[] = [];
+			const nonTeachingStaffData: Staff[] = [];
 
 			userData.forEach((obj: any) => {
 				const user = obj.basicInfo.user;
 				const staff = obj.basicInfo.staff;
 
-				const staffObj = {
+				const staffObj: Staff = {
 					id: user.id,
 					name: `${user.firstName} ${user.middleName} ${user.lastName}`,
 					contact: user.phone,
@@ -55,9 +70,13 @@ const Page: React.FC = () => {
 					department: staff.department,
 				};
 
-				// Check if the user is a teacher
+				// If the user is a teacher, include 'role'
 				if (user.role === "teacher") {
-					teachingStaffData.push(staffObj);
+					const teacherObj: Teacher = {
+						...staffObj,
+						role: user.role, // Include role for teacher
+					};
+					teachingStaffData.push(teacherObj);
 				} else {
 					nonTeachingStaffData.push(staffObj);
 				}
@@ -122,7 +141,6 @@ const Page: React.FC = () => {
 			console.error("Error fetching staff data:", isError);
 		}
 	}, [isLoading, isError]);
-
 	return (
 		<div className='flex flex-col'>
 			<div className='h-20 flex items-center justify-between border-b border-lms-100 px-16'>
@@ -250,15 +268,15 @@ const Page: React.FC = () => {
 					</TabsContent>
 					<TabsContent value='non-teaching'>
 						{isError ? (
-							<p>Error loading data</p>
+							<p>Error loading data.</p>
 						) : (
-							<DataTable
+							<DataTable<Staff, unknown> // Ensure DataTable is expecting Staff type
 								columns={columns}
 								data={nonTeachingStaff}
+								isLoading={isLoading}
 								headingText={`Total Non-Teaching Staff (${
 									nonTeachingStaff.length || 0
 								})`}
-								isLoading={isLoading}
 								searchColumn='name'
 							/>
 						)}
