@@ -26,7 +26,8 @@ import withAuthCheck from "@/components/withAuthCheck";
 import useUser from "@/hooks/useUser";
 
 const Page: React.FC = () => {
-	const [data, setData] = useState([]);
+	const [teachingStaff, setTeachingStaff] = useState([]);
+	const [nonTeachingStaff, setNonTeachingStaff] = useState([]);
 	const [file, setFile] = useState<File | null>(null);
 	const [fileName, setFileName] = useState<string>("");
 	const dispatch = useDispatch();
@@ -38,27 +39,32 @@ const Page: React.FC = () => {
 
 	const fetchStaffList = async () => {
 		if (userData) {
-			const filteredStaffData = userData?.map((obj: any) => {
-				const staffObj: any = {};
+			const teachingStaffData = [];
+			const nonTeachingStaffData = [];
 
+			userData.forEach((obj: any) => {
 				const user = obj.basicInfo.user;
 				const staff = obj.basicInfo.staff;
 
-				staffObj.id = user.id;
-				staffObj.name =
-					user.firstName +
-					" " +
-					user.middleName +
-					" " +
-					user.lastName;
-				staffObj.contact = user.phone;
-				staffObj.email = user.email;
-				staffObj.designation = staff.designation;
-				staffObj.department = staff.department;
+				const staffObj = {
+					id: user.id,
+					name: `${user.firstName} ${user.middleName} ${user.lastName}`,
+					contact: user.phone,
+					email: user.email,
+					designation: staff.designation,
+					department: staff.department,
+				};
 
-				return staffObj;
+				// Check if the user is a teacher
+				if (user.role === "teacher") {
+					teachingStaffData.push(staffObj);
+				} else {
+					nonTeachingStaffData.push(staffObj);
+				}
 			});
-			setData(filteredStaffData);
+
+			setTeachingStaff(teachingStaffData);
+			setNonTeachingStaff(nonTeachingStaffData);
 		}
 	};
 
@@ -209,7 +215,6 @@ const Page: React.FC = () => {
 					</Link>
 				</div>
 			</div>
-			{/* <Separator /> */}
 			<div className=''>
 				<Tabs defaultValue='teaching'>
 					<div className='flex justify-between items-center'>
@@ -228,19 +233,16 @@ const Page: React.FC = () => {
 							</TabsTrigger>
 						</TabsList>
 					</div>
-					<TabsContent
-						value='teaching'
-						className=''
-					>
+					<TabsContent value='teaching'>
 						{isError ? (
 							<p>Error loading data.</p>
 						) : (
 							<DataTable
 								columns={columns}
-								data={data}
+								data={teachingStaff}
 								isLoading={isLoading}
 								headingText={`Total Teaching Staff (${
-									data.length || 0
+									teachingStaff.length || 0
 								})`}
 								searchColumn='name'
 							/>
@@ -252,9 +254,9 @@ const Page: React.FC = () => {
 						) : (
 							<DataTable
 								columns={columns}
-								data={data}
+								data={nonTeachingStaff}
 								headingText={`Total Non-Teaching Staff (${
-									data.length || 0
+									nonTeachingStaff.length || 0
 								})`}
 								isLoading={isLoading}
 								searchColumn='name'

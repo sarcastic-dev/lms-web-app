@@ -2,11 +2,12 @@
 import React from "react";
 import { StructuredResponse, Student } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Pen } from "lucide-react";
+import { ChevronLeft, Pen } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AppDispatch } from "@/context/store";
 import { useDispatch } from "react-redux";
 import { setViewState } from "@/context/studentSlice";
+import dayjs from "dayjs";
 
 interface StudentDetailsProps {
 	studentData: Student;
@@ -25,7 +26,7 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 			firstName: studentData.basicInfo.user.firstName,
 			middleName: studentData.basicInfo.user.middleName,
 			lastName: studentData.basicInfo.user.lastName,
-			dob: studentData.basicInfo.user.dob,
+			dob: dayjs(studentData.basicInfo.user.dob).format("DD-MM-YYYY"),
 			gender: studentData.basicInfo.user.gender,
 			bloodGroup: studentData.basicInfo.user.bloodGroup,
 		},
@@ -35,7 +36,9 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 			class: studentData.basicInfo.student.class,
 			section: studentData.basicInfo.student.section,
 			rollNumber: studentData.basicInfo.student.rollNumber,
-			admissionDate: studentData.basicInfo.student.admissionDate,
+			admissionDate: dayjs(
+				studentData.basicInfo.student.admissionDate
+			).format("DD-MM-YYYY"),
 			boardUniversity: studentData.basicInfo.student.boardUniversity,
 		},
 		addressInfo: {
@@ -64,7 +67,9 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 			pulseRate: studentData.medicalInfo.pulseRate,
 			haemoglobin: studentData.medicalInfo.haemoglobin,
 			allergies: studentData.medicalInfo.allergies,
-			reportIssueDate: studentData.medicalInfo.reportIssueDate,
+			reportIssueDate: dayjs(
+				studentData.medicalInfo.reportIssueDate
+			).format("DD-MM-YYYY"),
 		},
 	};
 
@@ -111,17 +116,29 @@ const StudentDetails: React.FC<StudentDetailsProps> = ({ studentData }) => {
 				<h4 className='font-bold text-lmsPrimary text-2xl'>
 					{`${firstName} ${middleName} ${lastName}`}
 				</h4>
-				<Button
-					variant={"lmsOutline"}
-					className='py-0 h-10'
-					onClick={handleRedirectRoute}
-				>
-					<Pen
-						size={16}
-						className='mr-2'
-					/>
-					Update Data
-				</Button>
+				<div className='flex items-center gap-5'>
+					<Button
+						variant={"lmsOutline"}
+						// size={"lg"}
+						onClick={()=>{router.push('/studentInfo')}}
+						className=''
+						iconName='ArrowLeft'
+					>
+						Back
+					</Button>
+					<Button
+						variant={"lmsActive"}
+						size={"lg"}
+						className='py-0 h-10'
+						onClick={handleRedirectRoute}
+					>
+						<Pen
+							size={16}
+							className='mr-2'
+						/>
+						Update Data
+					</Button>
+				</div>
 			</div>
 			<div className='py-6'>
 				{renderInfoSection(

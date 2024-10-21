@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import StaffDetails from "@/components/StaffDetails";
 import StudentDetails from "@/components/StudentDetails";
 import getUserData from "@/utils/getUserData";
+import Loading from "@/components/Loading";
 
 const Page: React.FC = () => {
 	const searchParams = useSearchParams();
@@ -22,9 +23,13 @@ const Page: React.FC = () => {
 	}, [id, userType]);
 
 	if (!userData) {
-		return <div>Loading...</div>;
+		return (
+			<div className='flex justify-center items-center min-h-screen'>
+				<Loading />
+			</div>
+		);
 	}
-
+	console.log("🚀 ~ file: page.tsx:14 ~ userData:", userData);
 	return (
 		<div className='flex flex-col'>
 			{userType === "student" ? (
